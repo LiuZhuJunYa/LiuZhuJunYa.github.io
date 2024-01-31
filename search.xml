@@ -7,4 +7,24 @@
 <p>之后主要是做区块链安全方向，以前的安全知识，等有空重温之后，也会找机会放上来</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 01 - 理解汇编</title>
+    <url>/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-evm-smart-contracts-392fdadef32d">https://trustchain.medium.com/reversing-and-debugging-evm-smart-contracts-392fdadef32d</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/4913">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
 </search>
