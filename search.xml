@@ -20,7 +20,7 @@
 </blockquote>
 <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在这个系列的教程中，我们将学习如何调试和逆向 <strong>EVM</strong> 智能合约。</p>
 <p>你可能已经知道，当一个智能合约在区块链中没有被验证时，你无法读取它的实体代码，只有字节代码被显示。</p>
-<p><img src="/_posts/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/1.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/1.png" loading="lazy"></p>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
