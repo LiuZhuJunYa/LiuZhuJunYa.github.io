@@ -206,7 +206,14 @@
 <p>这意味着 msg.data 不能小于 4，你会在下一节明白为什么!</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (msg.data.size &lt; 4) &#123; revert(); &#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="函数选择器"><a href="#函数选择器" class="headerlink" title="函数选择器"></a>函数选择器</h1><p>一旦所有事先验证完成。</p>
+<h1 id="函数选择器"><a href="#函数选择器" class="headerlink" title="函数选择器"></a>函数选择器</h1><blockquote>
+<p>在开始这个小节之前，我们先来看看 test()、test2()、test3() 这三个函数的函数签名</p>
+<figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;golang.org/x/crypto/sha3&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 函数签名</span></span><br><span class="line">	functionName := <span class="string">&quot;test()&quot;</span></span><br><span class="line">	functionName2 := <span class="string">&quot;test2()&quot;</span></span><br><span class="line">	functionName3 := <span class="string">&quot;test3()&quot;</span></span><br><span class="line">	<span class="comment">// 计算Keccak-256哈希值</span></span><br><span class="line">	hash := sha3.NewLegacyKeccak256()</span><br><span class="line">	hash2 := sha3.NewLegacyKeccak256()</span><br><span class="line">	hash3 := sha3.NewLegacyKeccak256()</span><br><span class="line">	hash.Write([]<span class="type">byte</span>(functionName))</span><br><span class="line">	hash2.Write([]<span class="type">byte</span>(functionName2))</span><br><span class="line">	hash3.Write([]<span class="type">byte</span>(functionName3))</span><br><span class="line">	digest := hash.Sum(<span class="literal">nil</span>)</span><br><span class="line">	digest2 := hash2.Sum(<span class="literal">nil</span>)</span><br><span class="line">	digest3 := hash3.Sum(<span class="literal">nil</span>)</span><br><span class="line">	<span class="comment">// 提取前4个字节作为函数选择器</span></span><br><span class="line">	selector := digest[:<span class="number">4</span>]</span><br><span class="line">	selector2 := digest2[:<span class="number">4</span>]</span><br><span class="line">	selector3 := digest3[:<span class="number">4</span>]</span><br><span class="line">	<span class="comment">// 打印结果</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;bytes4(keccak256(\&quot;%s\&quot;)) = 0x%x\n&quot;</span>, functionName, selector)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;bytes4(keccak256(\&quot;%s\&quot;)) = 0x%x\n&quot;</span>, functionName2, selector2)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;bytes4(keccak256(\&quot;%s\&quot;)) = 0x%x\n&quot;</span>, functionName3, selector3)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bytes4(keccak256(&quot;test()&quot;)) = 0xf8a8fd6d</span><br><span class="line">bytes4(keccak256(&quot;test2()&quot;)) = 0x66e41cb7</span><br><span class="line">bytes4(keccak256(&quot;test3()&quot;)) = 0x0a8e8e01</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>一旦所有事先验证完成。</p>
 <p>我们需要调用函数 <strong>test()</strong> 并执行它的代码。但在我们的合约中有几个函数（**test() test2() 和 test3()**），如何找出 EVM 需要执行的函数呢？</p>
 <p>这就是函数选择器的作用。</p>
 <p>下面是接下来的反汇编步骤</p>
@@ -219,7 +226,58 @@
 <p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/18.png" loading="lazy"></p>
 <p>在此案例中，它存储 msg.data 的前 32 字节（因为 Stack(0) &#x3D; 0）。</p>
 <p>但只有 4 个字节（如前所述），因此堆栈将是这样的：<br><code>| 0xf8a8fd6d00000000000000000000000000000000000000000000000000000 |</code></p>
-<p>下一个操作码是 <strong>PUSH e0</strong> 和 <strong>SHR</strong> 位于第27指令（使用2个参数），它通过<strong>Stack(0)<strong>（这里是c0）向右（&gt;&gt;）执行二进制移位，堆栈（在</strong>SHR</strong>之前）的值为：</p>
+<p>下一个操作码是 <strong>PUSH e0</strong> 和 <strong>SHR</strong> 位于第27指令（使用2个参数），它通过 **Stack(0)**（这里是 c0）向右（&gt;&gt;）执行二进制移位，堆栈（在 <strong>SHR</strong> 之前）的值为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">| 0xe0 | 0xf8a8fd6d00000000000000000000000000000000000000000000000000000 |</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/19.png" loading="lazy"></p>
+<p>下面是用 SHR 进行的详细计算（如果你愿意可以跳过）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">A place in stack is of length 32 bytes = 256 bits</span><br><span class="line"></span><br><span class="line">In binary Stack(1) = 11111000101010001111110101101101 and 192 zeros after that</span><br><span class="line"></span><br><span class="line">e0 = 192 in decimal, so we will shift 192 time to the right</span><br><span class="line"></span><br><span class="line">0 times   : 11111000101010001111110101101101..... + 192 zeros</span><br><span class="line">1 times   : 011111000101010001111110101101101.... + 191 zeros</span><br><span class="line">2 times   : 0011111000101010001111110101101101... + 190 zeros</span><br><span class="line">192 times : 192 zeros + 0011111000101010001111110101101101...</span><br><span class="line"></span><br><span class="line">= 0x00000000000000000000000000000000000000000000000000000f8a8fd6d</span><br><span class="line">= 0x00..60zeros00f8a8fd6d</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>实际上既是 0xe0&#x3D;14*16&#x3D;224(b)&#x3D;28(B)，然而函数签名占 4B，4+28&#x3D;32，所以即将签名结果移到最后</p>
+</blockquote>
+<p>在 DUP 操作码之后，堆栈看起来像<code>| 0xf8a8fd6d | 0xf8a8fd6d |</code>。</p>
+<p>值得注意的是，这就是我们的 <strong>test()</strong> 签名，这很正常！函数的签名总是出现在交易数据的前 4 个字节中。</p>
+<p>在以太坊交易中，我们不会直接发送要执行的函数的名称，而只是发送 4 个字节的签名。</p>
+<p>在第 31 个操作码中，EVM PUSH 一个 4 字节的值到堆栈：0a8e8e01</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">| 0x0a8e8e01 | 0xf8a8fd6d | 0xf8a8fd6d |</span><br><span class="line">// 在前文中我们有计算过，其实 0a8e8e01 是 test3() 的函数签名</span><br></pre></td></tr></table></figure>
+
+<p>并调用 <strong>EQ</strong>，比较（**Stack(0) 和 Stack(1)**）。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/20.png" loading="lazy"></p>
+<p>这两个值显然是不相等的：因此我们用 0 代替它们<br><code>| 0x0 | 0xf8a8fd6d |</code></p>
+<p>这样我们就不会 JUMP 到 41（65 的十六进制）（后面有指令 PUSH1 41 和一个 <strong>JUMPI</strong>）。</p>
+<p>EVM 对 <strong>0x66e41cb7</strong>（操作码 41 到 50）也做了同样的事情，这也不等于 <strong>0xf8a8fd6d</strong>。</p>
+<blockquote>
+<p>66e41cb7 实际上是 test2() 的函数签名</p>
+</blockquote>
+<p>最后，EVM 用 <strong>0xf8a8fd6d</strong> 来执行，由于现在等于 <strong>0xf8a8fd6d</strong>! 所以我们跳到 51（十进制是 81），这是 <strong>test()</strong> 函数的开始：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">081 JUMPDEST | 0xf8a8fd6d |</span><br><span class="line">082 PUSH1 57 | 0x57 | 0xf8a8fd6d |</span><br><span class="line">084 PUSH1 5d | 0x5d | 0x57 | 0xf8a8fd6d |</span><br><span class="line">086 JUMP     | 0x57 | 0xf8a8fd6d |</span><br><span class="line">087 JUMPDEST | 0xf8a8fd6d |</span><br><span class="line">088 STOP     ||</span><br><span class="line">093 JUMPDEST | 0x57 | 0xf8a8fd6d |</span><br><span class="line">094 JUMP     | 0xf8a8fd6d |</span><br></pre></td></tr></table></figure>
+
+<p>你可以很容易地分析我们的 <strong>test()</strong> 函数中最后执行的 8 条指令。</p>
+<p>它只执行了一系列的 JUMP 指令，在函数的最后，操作码 <strong>STOP</strong>，它停止了合约的执行而没有产生错误。<br>所有这些代码的行为就像编程中的一个开关。</p>
+<p><strong>0xf8a8fd6d</strong> 是 “<strong>test()</strong>“ 函数的签名<br>0x0a8e8e01 和 0x66e41cb7 是 test2 和 test3 函数的签名。</p>
+<p>如果交易数据中的签名与这些签名之一相符，那么通过跳转到函数的代码位置（代码中的 41，49 和 51）来执行函数的代码。</p>
+<p>否则。如果交易数据中的签名与代码中的任何函数签名不匹配，EVM 将调用回退函数，但在我们的智能合约中没有这样的函数（至少现在没有）！因此：EVM 将重新调用回退函数。结果是：EVM 回退，故事到此结束。</p>
+<p>这是 59（函数选择器开关）之后的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">060 JUMPDEST</span><br><span class="line">061 PUSH1 00</span><br><span class="line">063 DUP1</span><br><span class="line">064 REVERT</span><br></pre></td></tr></table></figure>
+
+<p>因此，我们可以重构智能合约的完整代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mstore(0x40,0x80)                              </span><br><span class="line">if (msg.value &gt; 0) &#123; revert(); &#125;                              </span><br><span class="line">if (msg.data.size &lt; 4) &#123; revert(); &#125;</span><br><span class="line">byte4 selector = msg.data[0x00:0x04]                                </span><br><span class="line">switch (selector) &#123;                               </span><br><span class="line">   case 0x0a8e8e01:   // JUMP to 41 (65 in dec)   stop()</span><br><span class="line">   case 0x66e41cb7:   // JUMP to 49 (73 in dec)   stop()</span><br><span class="line">   case 0xf8a8fd6d:   // JUMP to 51 (85 in dec)   stop()</span><br><span class="line">   default: revert();</span><br><span class="line">stop()</span><br></pre></td></tr></table></figure>
+
+<p>我们完成了!</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我们成功地学会了。</p>
+<ul>
+<li>一些基本的 EVM 汇编。</li>
+<li>EVM 如何执行智能合约。</li>
+<li>哪些代码在执行函数之前被执行。</li>
+<li>LIFO 堆栈如何工作。</li>
+<li>remix 调试器的基本使用。</li>
+<li>函数选择器。</li>
+<li>还有很多…</li>
+</ul>
+<p>这个系列的第一篇关于通过调试理解 EVM 的内容就到此为止。我希望你在这里学到很多东西。</p>
+<p>下一部分见!</p>
+<p>这是我们关于**通过调试理解 EVM 系列的第 1 **部分，在这里你可以找到之前和接下来的部分。</p>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
