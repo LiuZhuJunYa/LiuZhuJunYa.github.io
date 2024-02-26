@@ -287,4 +287,34 @@
         <tag>静态代码分析</tag>
       </tags>
   </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 02 - 部署智能合约</title>
+    <url>/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-evm-smart-contracts-part-2-e6106b9983a">https://trustchain.medium.com/reversing-and-debugging-evm-smart-contracts-part-2-e6106b9983a</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/4927">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+<p>本文是关于<strong>通过逆向和调试理解EVM系列的第2篇</strong>，本系列包含 7 篇文章：</p>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://learnblockchain.cn/article/4927">第2篇：部署智能合约</a></li>
+<li><a href="https://learnblockchain.cn/article/4943">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://learnblockchain.cn/article/4965">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://learnblockchain.cn/article/4987">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://learnblockchain.cn/article/5019">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://medium.com/@TrustChain/reversing-and-debugging-theevm-part-7-2a20a44a555e">第7篇：外部调用和合约部署</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
 </search>
