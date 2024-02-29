@@ -35,7 +35,7 @@
 <p>本文是关于<strong>通过逆向和调试理解 EVM 系列的第 1 篇</strong>，本系列包含 7 篇文章：</p>
 <ul>
 <li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
-<li><a href="https://learnblockchain.cn/article/4927">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
 <li><a href="https://learnblockchain.cn/article/4943">第3篇：存储布局是如何工作的？</a></li>
 <li><a href="https://learnblockchain.cn/article/4965">第4篇：结束&#x2F;中止执行的5个指令</a></li>
 <li><a href="https://learnblockchain.cn/article/4987">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
@@ -298,16 +298,38 @@
 <li>本文永久链接：<a href="https://learnblockchain.cn/article/4927">learnblockchain.cn&#x2F;article…</a></li>
 </ul>
 </blockquote>
-<p>本文是关于<strong>通过逆向和调试理解EVM系列的第2篇</strong>，本系列包含 7 篇文章：</p>
+<p>本文是关于<strong>通过逆向和调试理解 EVM 系列的第2篇</strong>，本系列包含 7 篇文章：</p>
 <ul>
 <li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
-<li><a href="https://learnblockchain.cn/article/4927">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
 <li><a href="https://learnblockchain.cn/article/4943">第3篇：存储布局是如何工作的？</a></li>
 <li><a href="https://learnblockchain.cn/article/4965">第4篇：结束&#x2F;中止执行的5个指令</a></li>
 <li><a href="https://learnblockchain.cn/article/4987">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
 <li><a href="https://learnblockchain.cn/article/5019">第6篇：完整的智能合约布局</a></li>
 <li><a href="https://medium.com/@TrustChain/reversing-and-debugging-theevm-part-7-2a20a44a555e">第7篇：外部调用和合约部署</a></li>
 </ul>
+<p>在第二部分（本文）中，我们将分析当你在区块链中部署一个智能合约时发生了什么，例如，在点击 remix 中的 “部署 “按钮时。</p>
+<p>下面是我们要部署的合约示例:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123;      </span><br><span class="line">    uint balance;      </span><br><span class="line">    constructor() &#123;         </span><br><span class="line">        balance = 9;     </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在深入学习本教程之前，不要忘记:</p>
+<ul>
+<li>打开你的电脑并启动 remix。</li>
+<li><strong>启动优化器</strong>，runs 为 1，它可以帮助编译器产生更有效的代码。(点击 “高级配置 “和 “启用优化”)</li>
+</ul>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/1.png" loading="lazy"></p>
+<ul>
+<li>使用 solidity 版本 <strong>0.8.7</strong> 编译上述代码。(其他版本可能会产生稍微不同的代码)</li>
+<li>在 JavaScript EVM 中部署智能合约（使用最新版本：London)</li>
+</ul>
+<h1 id="开始调试"><a href="#开始调试" class="headerlink" title="开始调试"></a>开始调试</h1><p>简要提示，要调试一个交易，必须在部署智能合约后按下面的”调试”按钮。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/2.png" loading="lazy"></p>
+<p>所有的调试信息都位于屏幕的左边，你可以看到堆栈、局部变量、状态、内存、存储、反汇编等等。</p>
+<p><strong>但是在开始调试之前，你能不能回答这个问题：</strong></p>
+<p>问：智能合约部署后，我们要调试的代码在哪里？</p>
+<p>答：代码位于数据字段。代码位于交易的数据字段中，它就是在部署智能合约时要执行的代码。他的作用是在区块链上部署智能合约并执行构造函数。</p>
+<p>现在，我们可以继续了。</p>
+<p>默认情况下，调试器显示的是第17字节的构造函数代码，为了了解第17字节之前的代码，让我们点击下图中的左箭头。</p>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
@@ -315,6 +337,192 @@
       <tags>
         <tag>区块链</tag>
         <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Trusta 的 AI 和机器学习框架用于空投中的强大 Sybil 攻击防御</title>
+    <url>/2024/02/29/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240229%20Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://medium.com/@trustalabs.ai/trustas-ai-and-machine-learning-framework-for-robust-sybil-resistance-in-airdrops-ba17059ec5b7">https://medium.com/@trustalabs.ai/trustas-ai-and-machine-learning-framework-for-robust-sybil-resistance-in-airdrops-ba17059ec5b7</a></li>
+</ul>
+</blockquote>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>Sybil 攻击破坏了 Web3 中回顾性空投的完整性。贪婪的行为者创建假账户以不公平地获得更多空投代币。文章讨论了不同的 Sybil 防御方法，如真人认证和社区报告，同时强调了它们的局限性。接着，文章引入了 Trusta 的 AI 和机器学习驱动框架，该框架系统地分析链上数据，识别可疑的 Sybil 群体。这一两阶段方法首先使用图挖掘算法检测协同社区，然后通过用户行为分析细化结果，以减少误报。例子展示了 Trusta 如何识别真实的链上 Sybil 群体。文章提倡使用 AI-ML 作为一个强大的 Sybil 防御解决方案，它保护了用户隐私和无需许可的参与。</p>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><h2 id="Sybil-攻击破坏了回顾性空投的完整性"><a href="#Sybil-攻击破坏了回顾性空投的完整性" class="headerlink" title="Sybil 攻击破坏了回顾性空投的完整性"></a>Sybil 攻击破坏了回顾性空投的完整性</h2><p>自从 Uniswap 在 2020 年开始使用空投来奖励早期用户以来，空投在 Web3 中变得非常流行。空投是指将代币分发给当前或过去用户的钱包，以传播意识、建立所有权或回溯性地奖励早期采用者。然而，空投的原始意图可能会被 Sybil 攻击所破坏。当不诚实的行为者生成假账户并操纵活动以不公平地获得更多空投代币时，就会发生 Sybil 攻击。因此，识别被空投农场主和攻击者伪造的 Sybil 账户已成为一个关键问题。</p>
+<h2 id="真人认证VS-AI驱动的机器学习算法"><a href="#真人认证VS-AI驱动的机器学习算法" class="headerlink" title="真人认证VS. AI驱动的机器学习算法"></a>真人认证VS. AI驱动的机器学习算法</h2><p>像生物识别扫描（例如 World Coin 项目中的虹膜扫描）或社交媒体验证等真人认证方法通过要求身份确认来检验人性。然而，无需许可和匿名参与是 Web3 的核心价值。虽然真人认证可以防止 Sybil 账户的创建，但它也为用户增加了障碍，并且损害了隐私。我们需要找到既能阻止空投农场行为，又不损害隐私或独立性的解决方案。</p>
+<p>链上活动代表了用户的独特足迹，提供了大量数据集，数据科学家可以从中获得洞见。Trusta 利用大数据和 AI 及机器学习的专业知识来解决 Sybil 问题。比较这两种方法，AI 驱动的机器学习（AI-ML）Sybil 识别相较于真人认证有其优势：</p>
+<ul>
+<li>AI-ML 保护隐私，因为用户不需要提供他们的生物信息和 Web2 中的身份。真人认证通过要求身份确认而损害匿名性。</li>
+<li>AI-ML 全面分析大量链上数据，以减少脆弱性。真人认证容易被利用，因为验证过的身份可能会被滥用。</li>
+<li>AI-ML 本质上是无需许可的，因为任何人都可以分析同样的公开链上数据。</li>
+<li>由于分析的透明性，Sybil 判断可以被公开双重验证。</li>
+</ul>
+<p>Gitcoin 护照结合了这两种方法。它主要使用真人认证，但在 GG18 之前加入了 Trusta 的 AI-ML TrustScan 评分，结合了它们的优势，以实现可靠的 Sybil 防御。</p>
+<h2 id="项目空投与Sybil防御方法"><a href="#项目空投与Sybil防御方法" class="headerlink" title="项目空投与Sybil防御方法"></a>项目空投与Sybil防御方法</h2><table>
+<thead>
+<tr>
+<th align="center">NUM</th>
+<th align="center">项目</th>
+<th align="center">日期</th>
+<th align="center">合格地址数</th>
+<th align="center">Sybil防御</th>
+<th align="center">已识别Sybil</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">Uniswap</td>
+<td align="center">2020&#x2F;09&#x2F;17</td>
+<td align="center">312726</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">ENS</td>
+<td align="center">2021&#x2F;11&#x2F;8</td>
+<td align="center">137689</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">DYDX</td>
+<td align="center">2021&#x2F;9&#x2F;8</td>
+<td align="center">64306</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">Aptos</td>
+<td align="center">2022&#x2F;10&#x2F;19</td>
+<td align="center">110235</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">Safe</td>
+<td align="center">2022&#x2F;9&#x2F;28</td>
+<td align="center">43575</td>
+<td align="center">社区报告</td>
+<td align="center">12168 (27.9%)</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">HOP</td>
+<td align="center">2022&#x2F;5&#x2F;9</td>
+<td align="center">145329</td>
+<td align="center">社区报告</td>
+<td align="center">14195 (9.8%)</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">CONNEXT</td>
+<td align="center">2023&#x2F;9&#x2F;5</td>
+<td align="center">57801</td>
+<td align="center">社区报告</td>
+<td align="center">5725 (9.9%)</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">Optimism</td>
+<td align="center">2022&#x2F;4&#x2F;27</td>
+<td align="center">248699</td>
+<td align="center">社区报告</td>
+<td align="center">17101 (6.9%)</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">Arbitrum</td>
+<td align="center">2023&#x2F;3&#x2F;16</td>
+<td align="center">625143</td>
+<td align="center">AI-ML 算法</td>
+<td align="center">135000 (21.6%)</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">Zigzag</td>
+<td align="center">2023&#x2F;4&#x2F;6</td>
+<td align="center">110000+</td>
+<td align="center">AI-ML 算法</td>
+<td align="center">12000+ (10.9%)</td>
+</tr>
+</tbody></table>
+<p>最近的一些重大空投揭示了反 Sybil 专业知识的不足。在推出他们的空投时，Aptos 缺乏反 Sybil 规则。空投猎手们声称获得了许多 $APT 代币，在交易所上市后推高了价格，然后大量抛售代币。研究人员发现，Sybil 地址占到了存入交易所代币的 40%。</p>
+<p>一些项目如 HOP 和 Optimism 鼓励社区从合格地址中报告 Sybil。这将抵抗 Sybil 的责任转移到了社区。尽管出发点是好的，但该程序引发了争议。被报告的 Sybil 账户甚至威胁要污染其他钱包，这可能会破坏整个社区主导的 Sybil 抵抗努力。</p>
+<p>自 2023 年以来，AI-ML 的 Sybil 防御变得更加流行。Zigzag 使用数据挖掘来识别相似的行为序列。Arbitrum 基于链上活动进行分配，并使用像 Louvain 这样的社区检测算法来识别 Sybil 群体。</p>
+<h1 id="Trusta-的-AI-ML-Sybil-防御框架"><a href="#Trusta-的-AI-ML-Sybil-防御框架" class="headerlink" title="Trusta 的 AI-ML Sybil 防御框架"></a>Trusta 的 AI-ML Sybil 防御框架</h1><p>Sybil 通过使用机器人和脚本在其账户间自动化交互。这导致他们的账户作为恶意社区聚集在一起。Trusta 的两阶段 AI-ML 框架使用聚类算法识别 Sybil 社区：</p>
+<ul>
+<li>第一阶段使用 Louvain 和 K-Core 等社区检测算法分析资产转移图（ATGs），以检测密集连接的可疑 Sybil 群体。 </li>
+<li>第二阶段计算每个地址的用户档案和活动。K-means 通过筛选不相似的地址来细化群体，以减少第一阶段的误报。</li>
+</ul>
+<p>总结来说，Trusta 首先使用图挖掘算法识别协同的 Sybil 社区。然后，额外的用户分析过滤掉异常值以提高精确性，结合连通性和行为模式进行强大的 Sybil 检测。</p>
+<h2 id="第一阶段：资产转移图上的社区检测"><a href="#第一阶段：资产转移图上的社区检测" class="headerlink" title="第一阶段：资产转移图上的社区检测"></a>第一阶段：资产转移图上的社区检测</h2><p>Trusta 分析独立操作账户（EOA）之间的资产转移图（ATGs）。如桥接、交易所、智能合约等实体地址会被移除，以便专注于用户关系。Trusta 开发了专有的分析工具来检测和移除图中的枢纽地址。会生成两个 ATGs：</p>
+<ul>
+<li>带有任意代币转移的地址之间边的一般转移图。</li>
+<li>其中边显示对一个地址的首次提供燃气的燃气供应网络。</li>
+</ul>
+<p>首次燃气转移激活新的 EOAs，形成了一个稀疏的图结构，非常适合分析。它还代表了一种强烈的关系，因为新账户依赖于他们的燃气供应商。燃气网络的稀疏性和重要性使其对于 Sybil 防御非常有价值。复杂的算法可以挖掘网络，而燃气供应链接揭示了有意义的账户激活关系。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/1.png" loading="lazy"></p>
+<div style="text-align: center;">ATG 模式被检测为可疑 Sybil 簇</div>
+
+<p>Trusta 通过以下方式分析资产转移图来检测 Sybil 群体：</p>
+<ol>
+<li>通过将 ATGs 分割成像 P1+P2 这样的连接部分来生成群集。然后社区检测算法将大型组件细分为像 P1 和 P2 这样连接紧密的子社区，并且通过少量边切割来优化模块性。</li>
+<li>Trusta 根据已知的攻击模式识别 Sybil 群体，如图所示：<ul>
+<li>类星形发散攻击：由同一来源资助的地址</li>
+<li>类星形汇聚攻击：将资金发送到同一目标的地址</li>
+<li>树形结构攻击：资金以树状拓扑分布</li>
+<li>链式攻击：资金从一个地址顺序转移到链式拓扑中的下一个地址。</li>
+</ul>
+</li>
+</ol>
+<p>第一阶段基于资产转移关系单独产生初步的 Sybil 群体。Trusta 在第二阶段通过分析账户行为的相似性来进一步细化结果。</p>
+<h2 id="第二阶段：基于行为相似性的K-均值细化"><a href="#第二阶段：基于行为相似性的K-均值细化" class="headerlink" title="第二阶段：基于行为相似性的K-均值细化"></a>第二阶段：基于行为相似性的K-均值细化</h2><p>交易日志揭示了地址活动模式。Sybil 可能表现出诸如与相同合约&#x2F;方法交互、时间和金额相似的特点。Trusta 通过分析链上行为的两种变量类型来验证第一阶段的群体：</p>
+<p>交易变量：这些变量直接来自链上动作，包括信息如第一次和最近的交易日期，以及互动过的协议或智能合约。</p>
+<p>档案变量：这些变量提供了关于行为的聚合统计数据，如互动金额、频率和体积。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/2.png" loading="lazy"></p>
+<div style="text-align: center;">用于细化 Sybil 集群的类似 K 均值的过程</div>
+
+<p>为了使用地址行为的多维表示来细化初步的 Sybil 群体，Trusta 采用了类似 K-均值 的程序。如图所示，这个程序涉及的步骤会重复直到收敛：</p>
+<p>步骤1：计算群集的质心：</p>
+<ul>
+<li>对于连续变量，在每个群集中计算所有地址的平均值。</li>
+<li>对于分类变量，在每个群集中确定所有地址的众数。</li>
+</ul>
+<p>步骤2：通过排除远离质心的地址来细化群集：</p>
+<ul>
+<li>位于远离质心的特定阈值之外的地址将被排除在群集之外。</li>
+<li>然后根据细化的地址集更新或刷新群集成员资格。</li>
+</ul>
+<p>这两个步骤迭代执行，直到达到收敛，从而得到细化的 Sybil 群集。</p>
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p>在两阶段框架内，我们已经在以太坊上识别了几个示例 Sybil 群体。这些群体不仅通过 ATGs 可视化，而且我们还提供了基于每个群体中地址之间行为相似性的推理。这三个群体可以通过链接找到。</p>
+<h2 id="类星形资产转移图"><a href="#类星形资产转移图" class="headerlink" title="类星形资产转移图"></a>类星形资产转移图</h2><p>群体 1 有 170 个地址，在以太坊上完成了两次交互，即存款和购买。这两次交互都发生在 2021年12月5日 和 2023年2月26日。所有地址第一次都是从 Binance 地址获得资金。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/3.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/4.png" loading="lazy"></p>
+<h2 id="链式资产转移图"><a href="#链式资产转移图" class="headerlink" title="链式资产转移图"></a>链式资产转移图</h2><p>群体 2 有 24 个地址，在以太坊上完成了一系列类似的交互。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/5.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/6.png" loading="lazy"></p>
+<h2 id="树形资产转移图"><a href="#树形资产转移图" class="headerlink" title="树形资产转移图"></a>树形资产转移图</h2><p>群体 3 有 50 个地址，可以被视为 2 个子群体，在以太坊上分别进行一系列类似的交互。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/7.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/8.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/9.png" loading="lazy"></p>
+<h1 id="讨论"><a href="#讨论" class="headerlink" title="讨论"></a>讨论</h1><p>基于聚类的算法是目前阶段抵抗 Sybil 的最佳选择，原因有几个：</p>
+<ol>
+<li>仅依赖历史Sybil列表，如 HOP 和 OP 的 Sybil 是不够的，因为新的 rollups 和钱包继续出现。仅使用之前的列表不能涵盖这些新实体。 </li>
+<li>在 2022 年，没有可用于训练监督模型的基准 Sybil 标记数据集。在静态的 Sybil&#x2F;非Sybil 数据上进行训练，会引起对模型精度和召回率的担忧。由于单一数据集无法涵盖所有 Sybil 模式，召回率有限。此外，被误分类的用户没有提供反馈的手段，这阻碍了精度的提高。 </li>
+<li>异常检测不适合识别 Sybil，因为它们的行为类似于普通用户。</li>
+</ol>
+<p>因此，我们得出结论，基于聚类的框架是目前阶段最合适的方法。然而，随着更多地址被标记，Trusta 当然会探索监督学习算法，如基于深度神经网络的分类器。</p>
+]]></content>
+      <categories>
+        <category>区块链-推荐学习文章</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>Sybil 攻击</tag>
       </tags>
   </entry>
 </search>
