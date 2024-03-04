@@ -308,7 +308,7 @@
 <li><a href="https://learnblockchain.cn/article/5019">第6篇：完整的智能合约布局</a></li>
 <li><a href="https://medium.com/@TrustChain/reversing-and-debugging-theevm-part-7-2a20a44a555e">第7篇：外部调用和合约部署</a></li>
 </ul>
-<p>在第二部分（本文）中，我们将分析当你在区块链中部署一个智能合约时发生了什么，例如，在点击 remix 中的 “部署 “按钮时。</p>
+<p>在第二部分（本文）中，我们将分析当你在区块链中部署一个智能合约时发生了什么，例如，在点击 remix 中的 “部署”按钮时。</p>
 <p>下面是我们要部署的合约示例:</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123;      </span><br><span class="line">    uint balance;      </span><br><span class="line">    constructor() &#123;         </span><br><span class="line">        balance = 9;     </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -329,7 +329,33 @@
 <p>问：智能合约部署后，我们要调试的代码在哪里？</p>
 <p>答：代码位于数据字段。代码位于交易的数据字段中，它就是在部署智能合约时要执行的代码。他的作用是在区块链上部署智能合约并执行构造函数。</p>
 <p>现在，我们可以继续了。</p>
-<p>默认情况下，调试器显示的是第17字节的构造函数代码，为了了解第17字节之前的代码，让我们点击下图中的左箭头。</p>
+<p>默认情况下，调试器显示的是第 17 字节的构造函数代码，为了了解第 17 字节之前的代码，让我们点击下图中的左箭头。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/3.png" loading="lazy"></p>
+<p>因此，我们回到第 0 字节。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">000 PUSH 80 | 0x80 |</span><br><span class="line">002 PUSH 40 | 0x40 | 0x80 |</span><br><span class="line">004 MSTORE  ||</span><br></pre></td></tr></table></figure>
+
+<p>我们已经知道了前 3 条指令。</p>
+<p>它将 <strong>0x80</strong> 存储在 EVM 内存的地址 <strong>0x40</strong>，相当于内联汇编：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mstore(0x40,0x80)</span><br></pre></td></tr></table></figure>
+
+<p>这是空闲内存指针，别担心，我们稍后会讲到这部分:)</p>
+<p>接下来的操作码也已经知道了（参考<a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">本系列的第一篇</a>）。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">005 CALLVALUE |msg.value|</span><br><span class="line">006 DUP1      |msg.value|msg.value|</span><br><span class="line">007 ISZERO    |0x01|msg.value|</span><br><span class="line">008 PUSH1 0f  |0x0f|0x01|msg.value|</span><br><span class="line">010 JUMPI     |msg.value|</span><br><span class="line">011 PUSH1 00  |0x00|msg.value| (if jumpi don&#x27;t jump to 0f)</span><br><span class="line">013 DUP1      |0x00|0x00|msg.value|</span><br><span class="line">014 REVERT</span><br><span class="line">015 JUMPDEST</span><br></pre></td></tr></table></figure>
+
+<p>基本上，它通过 <strong>CALLVALUE</strong> 操作码获得 <strong>msg.value</strong> 的值（发送到合约的以太币），如果返回值严格地大于 <strong>0</strong>，则回退。</p>
+<p>我们在本系列的第一篇中详细解释了发生了什么。</p>
+<p>它等同于：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (msg.value &gt; 0) &#123; revert() &#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于我们的构造函数是不支付的，所以我们不能发送正常的资金! 事情与第一部分相同，至少到第 14 个字节为止。</p>
+<h1 id="继续深入"><a href="#继续深入" class="headerlink" title="继续深入"></a>继续深入</h1><p>现在发生了什么？</p>
+<p>函数签名在哪里？我们的函数中心在哪里？当然不见了，在部署的时候，除了构造函数之外，没有任何可用的函数!</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">15 JUMPDEST |0x00|</span><br><span class="line">16 POP      ||</span><br><span class="line">17 PUSH1 09 |0x09|</span><br><span class="line">19 PUSH1 00 |0x00|0x09|</span><br><span class="line">21 SSTORE   ||</span><br></pre></td></tr></table></figure>
+
+<p>在第 16 个指令，EVM 弹出堆栈中的剩余值 (0)。</p>
+<p>之后我们把 9 和 0 推到堆栈中，并调用 <strong>SSTORE</strong>，堆栈现在是：<br><code>|0x00|0x09|</code>。</p>
+<p><strong>SSTORE</strong>操作码将Stack(1)存储到Stack(0)槽中（顾名思义）。(所以它使用了2个参数，因此在执行<strong>SSTORE</strong>的第21指令后，它们被从堆栈中移除了)</p>
+<p>此时，EVM在第一个槽（槽号为0）中存储数值9，这相当于内联汇编：</p>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
