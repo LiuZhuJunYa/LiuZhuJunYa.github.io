@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>重新建站说明</title>
-    <url>/2024/01/31/%E9%87%8D%E6%96%B0%E5%BB%BA%E7%AB%99%E8%AF%B4%E6%98%8E/</url>
-    <content><![CDATA[<p>之前站点的内容突然发现有点混乱，所以重新建站</p>
-<p>之后主要是做区块链安全方向，以前的安全知识，等有空重温之后，也会找机会放上来</p>
+    <title>通过逆向和调试深入 EVM 03 - 存储布局如何工作？</title>
+    <url>/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-ethereum-evm-smart-contracts-part-3-ebe032a08f97">https://trustchain.medium.com/reversing-and-debugging-ethereum-evm-smart-contracts-part-3-ebe032a08f97</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/4943">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
 ]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
   </entry>
   <entry>
     <title>通过逆向和调试深入 EVM 01 - 理解汇编</title>
@@ -366,6 +379,73 @@
       </tags>
   </entry>
   <entry>
+    <title>通过逆向和调试深入 EVM 04 - 结束/中止执行的5种指令</title>
+    <url>/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-evm-the-end-of-time-part-4-3eafe5b0511a">https://trustchain.medium.com/reversing-and-debugging-evm-the-end-of-time-part-4-3eafe5b0511a</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/4965">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>重新建站说明</title>
+    <url>/2024/01/31/%E9%87%8D%E6%96%B0%E5%BB%BA%E7%AB%99%E8%AF%B4%E6%98%8E/</url>
+    <content><![CDATA[<p>之前站点的内容突然发现有点混乱，所以重新建站</p>
+<p>之后主要是做区块链安全方向，以前的安全知识，等有空重温之后，也会找机会放上来</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 07 - 与其他智能合约的交互</title>
+    <url>/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-the-evm-part-7-2a20a44a555e">https://trustchain.medium.com/reversing-and-debugging-the-evm-part-7-2a20a44a555e</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/5054">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 06 - 完整的智能合约布局</title>
+    <url>/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-part-6-full-smart-contract-layout-f236c3121bd1">https://trustchain.medium.com/reversing-and-debugging-part-6-full-smart-contract-layout-f236c3121bd1</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/5019">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Trusta 的 AI 和机器学习框架用于空投中的强大 Sybil 攻击防御</title>
     <url>/2024/02/29/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240229%20Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/</url>
     <content><![CDATA[<blockquote>
@@ -549,6 +629,26 @@
       <tags>
         <tag>区块链</tag>
         <tag>Sybil 攻击</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 05 - EVM如何处理 if/else/for/functions</title>
+    <url>/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-evm-the-execution-flow-part-5-2ffc97ef0b77">https://trustchain.medium.com/reversing-and-debugging-evm-the-execution-flow-part-5-2ffc97ef0b77</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/4987">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
       </tags>
   </entry>
 </search>
