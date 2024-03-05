@@ -11,6 +11,16 @@
 <li>本文永久链接：<a href="https://learnblockchain.cn/article/4943">learnblockchain.cn&#x2F;article…</a></li>
 </ul>
 </blockquote>
+<hr>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
@@ -49,11 +59,11 @@
 <ul>
 <li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
 <li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
-<li><a href="https://learnblockchain.cn/article/4943">第3篇：存储布局是如何工作的？</a></li>
-<li><a href="https://learnblockchain.cn/article/4965">第4篇：结束&#x2F;中止执行的5个指令</a></li>
-<li><a href="https://learnblockchain.cn/article/4987">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
-<li><a href="https://learnblockchain.cn/article/5019">第6篇：完整的智能合约布局</a></li>
-<li><a href="https://medium.com/@TrustChain/reversing-and-debugging-theevm-part-7-2a20a44a555e">第7篇：外部调用和合约部署</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
 </ul>
 <h1 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h1><p>下面是我们将进行逆向&#x2F;调试的智能合约：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;  </span><br><span class="line">   function test() external &#123;      &#125; </span><br><span class="line">   function test2() external &#123;      &#125;  </span><br><span class="line">   function test3() external &#123;      &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -315,11 +325,11 @@
 <ul>
 <li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
 <li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
-<li><a href="https://learnblockchain.cn/article/4943">第3篇：存储布局是如何工作的？</a></li>
-<li><a href="https://learnblockchain.cn/article/4965">第4篇：结束&#x2F;中止执行的5个指令</a></li>
-<li><a href="https://learnblockchain.cn/article/4987">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
-<li><a href="https://learnblockchain.cn/article/5019">第6篇：完整的智能合约布局</a></li>
-<li><a href="https://medium.com/@TrustChain/reversing-and-debugging-theevm-part-7-2a20a44a555e">第7篇：外部调用和合约部署</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
 </ul>
 <p>在第二部分（本文）中，我们将分析当你在区块链中部署一个智能合约时发生了什么，例如，在点击 remix 中的 “部署”按钮时。</p>
 <p>下面是我们要部署的合约示例:</p>
@@ -389,6 +399,16 @@
 <li>本文永久链接：<a href="https://learnblockchain.cn/article/4965">learnblockchain.cn&#x2F;article…</a></li>
 </ul>
 </blockquote>
+<hr>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
@@ -416,6 +436,16 @@
 <li>本文永久链接：<a href="https://learnblockchain.cn/article/5054">learnblockchain.cn&#x2F;article…</a></li>
 </ul>
 </blockquote>
+<hr>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
@@ -436,6 +466,16 @@
 <li>本文永久链接：<a href="https://learnblockchain.cn/article/5019">learnblockchain.cn&#x2F;article…</a></li>
 </ul>
 </blockquote>
+<hr>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
@@ -642,6 +682,16 @@
 <li>本文永久链接：<a href="https://learnblockchain.cn/article/4987">learnblockchain.cn&#x2F;article…</a></li>
 </ul>
 </blockquote>
+<hr>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
