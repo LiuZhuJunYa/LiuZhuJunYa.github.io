@@ -199,7 +199,7 @@
 <p>所以这第二部分的代码只是验证是否有任何以太币发送到合约中，否则它就会被回退。</p>
 <p>在第 15个 指令时，堆栈为 <code>| 0x00 |</code> (因为 <strong>JUMP</strong> 在堆栈中使用了 2 个参数，EVM将它们删除)</p>
 <p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/13.png" loading="lazy"></p>
-<h1 id="CALLDATASIZE"><a href="#CALLDATASIZE" class="headerlink" title="CALLDATASIZE"></a>CALLDATASIZE</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">015 JUMPDEST     | 0x00 |</span><br><span class="line">016 POP          ||</span><br><span class="line">017 PUSH1 04     | 0x04 |</span><br><span class="line">019 CALLDATASIZE | msg.data.size | 0x04 |</span><br><span class="line">020 LT           | msg.data.size &gt; 0x04 |</span><br><span class="line">021 PUSH1 3c     | 0x3c | msg.data.size &gt; 0x04 |</span><br><span class="line">023 JUMPI        || (JUMPI takes 2 arguments)060 JUMPDEST ||</span><br><span class="line">061 PUSH1 00     | 0x00 |</span><br><span class="line">063 DUP1         | 0x00 | 0x00 |</span><br><span class="line">064 REVERT       ||</span><br></pre></td></tr></table></figure>
+<h1 id="CALLDATASIZE"><a href="#CALLDATASIZE" class="headerlink" title="CALLDATASIZE"></a>CALLDATASIZE</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">015 JUMPDEST     | 0x00 |</span><br><span class="line">016 POP          ||</span><br><span class="line">017 PUSH1 04     | 0x04 |</span><br><span class="line">019 CALLDATASIZE | msg.data.size | 0x04 |</span><br><span class="line">020 LT           | msg.data.size &lt; 0x04 |</span><br><span class="line">021 PUSH1 3c     | 0x3c | msg.data.size &lt; 0x04 |</span><br><span class="line">023 JUMPI        || (JUMPI takes 2 arguments)060 JUMPDEST ||</span><br><span class="line">061 PUSH1 00     | 0x00 |</span><br><span class="line">063 DUP1         | 0x00 | 0x00 |</span><br><span class="line">064 REVERT       ||</span><br></pre></td></tr></table></figure>
 
 <p><strong>JUMPDEST</strong> 没有任何作用。它只是表示一条 <strong>JUMP</strong> 或 <strong>JUMPI</strong> 指令指向这里，如果 EVM 跳到一个没有标记为 “<strong>JUMPDEST</strong>“ 的地址(比如 16 号是 <strong>POP</strong>)，它就会自动回退。</p>
 <p>接下来，EVM 将堆栈的最后一个元素 POP 出来，然后 <strong>PUSH1 04</strong>，因此在第 17 个指令之后，堆栈内只有一个元素： <code>| 0x04 |</code></p>
@@ -333,7 +333,7 @@
 </ul>
 <p>在第二部分（本文）中，我们将分析当你在区块链中部署一个智能合约时发生了什么，例如，在点击 remix 中的 “部署”按钮时。</p>
 <p>下面是我们要部署的合约示例:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123;      </span><br><span class="line">    uint balance;      </span><br><span class="line">    constructor() &#123;         </span><br><span class="line">        balance = 9;     </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123;      </span><br><span class="line">    uint balance;      </span><br><span class="line">    constructor() &#123;         </span><br><span class="line">        balance = 9;     </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>在深入学习本教程之前，不要忘记:</p>
 <ul>
@@ -361,7 +361,7 @@
 <p>它将 <strong>0x80</strong> 存储在 EVM 内存的地址 <strong>0x40</strong>，相当于内联汇编：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mstore(0x40,0x80)</span><br></pre></td></tr></table></figure>
 
-<p>这是空闲内存指针，别担心，我们稍后会讲到这部分:)</p>
+<p>这是空闲内存指针，别担心，我们稍后会讲到这部分。</p>
 <p>接下来的操作码也已经知道了（参考<a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">本系列的第一篇</a>）。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">005 CALLVALUE |msg.value|</span><br><span class="line">006 DUP1      |msg.value|msg.value|</span><br><span class="line">007 ISZERO    |0x01|msg.value|</span><br><span class="line">008 PUSH1 0f  |0x0f|0x01|msg.value|</span><br><span class="line">010 JUMPI     |msg.value|</span><br><span class="line">011 PUSH1 00  |0x00|msg.value| (if jumpi don&#x27;t jump to 0f)</span><br><span class="line">013 DUP1      |0x00|0x00|msg.value|</span><br><span class="line">014 REVERT</span><br><span class="line">015 JUMPDEST</span><br></pre></td></tr></table></figure>
 
@@ -377,8 +377,24 @@
 
 <p>在第 16 个指令，EVM 弹出堆栈中的剩余值 (0)。</p>
 <p>之后我们把 9 和 0 推到堆栈中，并调用 <strong>SSTORE</strong>，堆栈现在是：<br><code>|0x00|0x09|</code>。</p>
-<p><strong>SSTORE</strong>操作码将Stack(1)存储到Stack(0)槽中（顾名思义）。(所以它使用了2个参数，因此在执行<strong>SSTORE</strong>的第21指令后，它们被从堆栈中移除了)</p>
-<p>此时，EVM在第一个槽（槽号为0）中存储数值9，这相当于内联汇编：</p>
+<p><strong>SSTORE</strong> 操作码将 Stack(1) 存储到 Stack(0) 槽中（顾名思义）。(所以它使用了 2 个参数，因此在执行 <strong>SSTORE</strong> 的第 21 指令后，它们被从堆栈中移除了)</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/4.png" loading="lazy"></p>
+<p>此时，EVM在第一个槽（槽号为 0）中存储数值 9，这相当于内联汇编：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sstore(0x00,0x09)</span><br></pre></td></tr></table></figure>
+
+<p>这正是我们构造函数中的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">balance = 9</span><br></pre></td></tr></table></figure>
+
+<p>它在变量 “balance” 中存储了 9，但是 balance 位于存储中。</p>
+<p>由于 balance 是智能合约中第一个声明的变量，这意味着分配给 “balance” 是第一个存储槽（slot 0）。你可以在 “存储（Storage）” 部分看到这一点：</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/5.png" loading="lazy"></p>
+<p>**当合约部署时，在EVM中执行的代码是非常短的，我们已经到达了终点，也就是第32字节! (使用类似于STOP的REUTRN操作码) **</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">22 PUSH1 3f |0x3f|</span><br><span class="line">24 DUP1     |0x3f|0x3f|</span><br><span class="line">25 PUSH1 22 |0x22|0x3f|0x3f|</span><br><span class="line">27 PUSH1 00 |0x00|0x22|0x3f|0x3f|</span><br><span class="line">29 CODECOPY |0x3f|</span><br><span class="line">30 PUSH1 00 |0x00|0x3f|</span><br><span class="line">32 RETURN   ||</span><br></pre></td></tr></table></figure>
+
+<p>堆栈现在在第 21 字节是空的（因为 <strong>SSTORE</strong> 不在堆栈中保留两个参数）</p>
+<p>3f 被推入堆栈并重复，<code>| 0x3f |</code> 之后推入 22 和 00，<strong>在第 27 个指令</strong>堆栈现在是：<code>| 0x00 | 0x22 | 0x3f | 0x3f |</code> 。</p>
+<p>如果我们看一下文档，我们会发现 <strong>CODECOPY</strong> 是一个特殊的操作码，它可以在 EVM 内存中复制当前智能合约代码。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/6.png" loading="lazy"></p>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
@@ -699,6 +715,19 @@
       <tags>
         <tag>区块链</tag>
         <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>杂项技术 —— git</title>
+    <url>/2024/03/05/%E6%9D%82%E9%A1%B9%E6%8A%80%E6%9C%AF/20240305%20%E6%9D%82%E9%A1%B9%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94git/</url>
+    <content><![CDATA[<h1 id="配置-GitHub-交互的-ssh-密钥"><a href="#配置-GitHub-交互的-ssh-密钥" class="headerlink" title="配置 GitHub 交互的 ssh 密钥"></a>配置 GitHub 交互的 ssh 密钥</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa			# 生成密钥</span><br><span class="line">cat ~/.ssh/id_rsa.pub		# 查看密钥信息</span><br><span class="line">ssh -T git@github.com		# 验证链接结果</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>杂项技术</category>
+      </categories>
+      <tags>
+        <tag>杂项</tag>
       </tags>
   </entry>
 </search>
