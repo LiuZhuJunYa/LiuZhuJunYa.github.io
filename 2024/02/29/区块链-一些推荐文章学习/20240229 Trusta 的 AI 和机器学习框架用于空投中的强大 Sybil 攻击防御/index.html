@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="流竹均雅"><meta name="copyright" content="流竹均雅"><meta name="generator" content="Hexo 6.2.0"><meta name="theme" content="hexo-theme-yun"><title>Trusta 的 AI 和机器学习框架用于空投中的强大 Sybil 攻击防御 | 流竹の家</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/star-markdown-css@0.3.3/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="https://fastly.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><link rel="icon" type="image/svg+xml" href="/yun.svg"><link rel="mask-icon" href="/yun.svg" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://fastly.jsdelivr.net/npm/" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"example.com","root":"/","title":"流竹君的小站","version":"1.10.6","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.yunyoujun.cn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"local_search":{"path":"/search.xml"},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"fireworks":{"colors":null},"waline":{"config":{"enable":true,"serverURL":"https://liuzhujunya-blog-10gh8t2h3-liuzhujunya.vercel.app/","comment":true,"visitor":true,"emoji":["https://fastly.jsdelivr.net/npm/@waline/emojis@latest/bilibili/","https://fastly.jsdelivr.net/npm/@waline/emojis@latest/weibo/","https://fastly.jsdelivr.net/npm/@waline/emojis@latest/qq/"],"locale":{"placeholder":"填写邮箱，可以收到回复通知哦～"},"requiredMeta":["nick"],"el":"#waline","lang":"zh-CN"},"cdn":"https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.js","dark":"html.dark"},"vendors":{"host":"https://fastly.jsdelivr.net/npm/","darken":"https://fastly.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><link rel="preconnect" href="https://www.google-analytics.com" crossorigin><script async src="https://www.googletagmanager.com/gtag/js?id=G-499JF3W1EH"></script><script>if (CONFIG.hostname === location.hostname) {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-499JF3W1EH');
+}</script><meta name="description" content="原文链接： https:&#x2F;&#x2F;medium.com&#x2F;@trustalabs.ai&#x2F;trustas-ai-and-machine-learning-framework-for-robust-sybil-resistance-in-airdrops-ba17059ec5b7   摘要Sybil 攻击破坏了 Web3 中回顾性空投的完整性。贪婪的行为者创建假账户以不公平地获得更多空投代币。文章讨论了不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Trusta 的 AI 和机器学习框架用于空投中的强大 Sybil 攻击防御">
+<meta property="og:url" content="http://example.com/2024/02/29/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240229%20Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/index.html">
+<meta property="og:site_name" content="流竹の家">
+<meta property="og:description" content="原文链接： https:&#x2F;&#x2F;medium.com&#x2F;@trustalabs.ai&#x2F;trustas-ai-and-machine-learning-framework-for-robust-sybil-resistance-in-airdrops-ba17059ec5b7   摘要Sybil 攻击破坏了 Web3 中回顾性空投的完整性。贪婪的行为者创建假账户以不公平地获得更多空投代币。文章讨论了不">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/1.png">
+<meta property="og:image" content="http://example.com/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/2.png">
+<meta property="og:image" content="http://example.com/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/3.png">
+<meta property="og:image" content="http://example.com/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/4.png">
+<meta property="og:image" content="http://example.com/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/5.png">
+<meta property="og:image" content="http://example.com/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/6.png">
+<meta property="og:image" content="http://example.com/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/7.png">
+<meta property="og:image" content="http://example.com/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/8.png">
+<meta property="og:image" content="http://example.com/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/9.png">
+<meta property="article:published_time" content="2024-02-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-29T08:37:18.115Z">
+<meta property="article:author" content="流竹均雅">
+<meta property="article:tag" content="区块链">
+<meta property="article:tag" content="Sybil 攻击">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/1.png"><script>(function() {
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script><script>// Define global variable
+IconifyProviders = {
+  // Empty prefix: overwrite default API provider configuration
+  '': {
+    // Use custom API first, use Iconify public API as backup
+    resources: [
+        'https://api.iconify.design',
+    ],
+    // Wait for 1 second before switching API hosts
+    rotate: 1000,
+  },
+};</script><script defer src="https://fastly.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><span class="icon iconify" data-icon="ri:list-ordered"></span></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><span class="icon iconify" data-icon="ri:passport-line"></span></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="流竹均雅"><img width="96" loading="lazy" src="/images/avatar.jpg" alt="流竹均雅"><span class="site-author-status" title="Looking for dawn.">🌑</span></a><div class="site-author-name"><a href="/about/">流竹均雅</a></div><a class="site-name" href="/about/site.html">流竹の家</a><sub class="site-subtitle">I Fall Apart</sub><div class="site-description">希望能成为一个有趣的人</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:home-4-line"></span></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:archive-line"></span></span><span class="site-state-item-count">11</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:folder-2-line"></span></span><span class="site-state-item-count">4</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="site-state-item-count">6</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:settings-line"></span></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" title="RSS" target="_blank" style="color:orange"><span class="icon iconify" data-icon="ri:rss-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="QQ 频道 - 小云之家" target="_blank" style="color:#12B7F5"><span class="icon iconify" data-icon="ri:qq-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/LiuZhuJunYa" title="GitHub" target="_blank" style="color:#181717"><span class="icon iconify" data-icon="ri:github-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:liuzhujunya@gmain.com" title="E-Mail" target="_blank" style="color:#8E71C1"><span class="icon iconify" data-icon="ri:mail-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="微博" target="_blank" style="color:#E6162D"><span class="icon iconify" data-icon="ri:weibo-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="豆瓣" target="_blank" style="color:#007722"><span class="icon iconify" data-icon="ri:douban-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=1371064945" title="网易云音乐" target="_blank" style="color:#C10D0C"><span class="icon iconify" data-icon="ri:netease-cloud-music-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="知乎" target="_blank" style="color:#0084FF"><span class="icon iconify" data-icon="ri:zhihu-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/482465495" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><span class="icon iconify" data-icon="ri:bilibili-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="微信公众号" target="_blank" style="color:#1AAD19"><span class="icon iconify" data-icon="ri:wechat-2-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Twitter" target="_blank" style="color:#1da1f2"><span class="icon iconify" data-icon="ri:twitter-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Telegram" target="_blank" style="color:#0088CC"><span class="icon iconify" data-icon="ri:telegram-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Telegram Channel" target="_blank" style="color:#0088CC"><span class="icon iconify" data-icon="ri:telegram-fill"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" title="Travelling" target="_blank" style="color:var(--hty-text-color)"><span class="icon iconify" data-icon="ri:send-plane-2-line"></span></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><span class="icon iconify" data-icon="ri:genderless-line"></span></a><a class="links-item hty-icon-button" href="/" title="喜欢的女孩子" style="color:hotpink"><span class="icon iconify" data-icon="ri:women-line"></span></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><span class="icon iconify" data-icon="ri:contrast-2-line"></span></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%91%98%E8%A6%81"><span class="toc-number">1.</span> <span class="toc-text">摘要</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">2.</span> <span class="toc-text">引言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Sybil-%E6%94%BB%E5%87%BB%E7%A0%B4%E5%9D%8F%E4%BA%86%E5%9B%9E%E9%A1%BE%E6%80%A7%E7%A9%BA%E6%8A%95%E7%9A%84%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">2.1.</span> <span class="toc-text">Sybil 攻击破坏了回顾性空投的完整性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9C%9F%E4%BA%BA%E8%AE%A4%E8%AF%81VS-AI%E9%A9%B1%E5%8A%A8%E7%9A%84%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">真人认证VS. AI驱动的机器学习算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%A9%BA%E6%8A%95%E4%B8%8ESybil%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">项目空投与Sybil防御方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Trusta-%E7%9A%84-AI-ML-Sybil-%E9%98%B2%E5%BE%A1%E6%A1%86%E6%9E%B6"><span class="toc-number">3.</span> <span class="toc-text">Trusta 的 AI-ML Sybil 防御框架</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5%EF%BC%9A%E8%B5%84%E4%BA%A7%E8%BD%AC%E7%A7%BB%E5%9B%BE%E4%B8%8A%E7%9A%84%E7%A4%BE%E5%8C%BA%E6%A3%80%E6%B5%8B"><span class="toc-number">3.1.</span> <span class="toc-text">第一阶段：资产转移图上的社区检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5%EF%BC%9A%E5%9F%BA%E4%BA%8E%E8%A1%8C%E4%B8%BA%E7%9B%B8%E4%BC%BC%E6%80%A7%E7%9A%84K-%E5%9D%87%E5%80%BC%E7%BB%86%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">第二阶段：基于行为相似性的K-均值细化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-number">4.</span> <span class="toc-text">案例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E6%98%9F%E5%BD%A2%E8%B5%84%E4%BA%A7%E8%BD%AC%E7%A7%BB%E5%9B%BE"><span class="toc-number">4.1.</span> <span class="toc-text">类星形资产转移图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E5%BC%8F%E8%B5%84%E4%BA%A7%E8%BD%AC%E7%A7%BB%E5%9B%BE"><span class="toc-number">4.2.</span> <span class="toc-text">链式资产转移图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E5%BD%A2%E8%B5%84%E4%BA%A7%E8%BD%AC%E7%A7%BB%E5%9B%BE"><span class="toc-number">4.3.</span> <span class="toc-text">树形资产转移图</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A8%E8%AE%BA"><span class="toc-number">5.</span> <span class="toc-text">讨论</span></a></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://example.com/2024/02/29/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240229%20Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="流竹均雅"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="流竹の家"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Trusta 的 AI 和机器学习框架用于空投中的强大 Sybil 攻击防御</h1><div class="post-meta"><div class="post-time"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:calendar-line"></span></span> <time title="创建时间：2024-02-29 00:00:00" itemprop="dateCreated datePublished" datetime="2024-02-29T00:00:00+08:00">2024-02-29</time></div><span class="leancloud_visitors" id="/2024/02/29/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240229%20Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/" data-flag-title="Trusta 的 AI 和机器学习框架用于空投中的强大 Sybil 攻击防御"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><span class="icon iconify" data-icon="ri:eye-line"></span> <span class="leancloud-visitors-count"></span></span></span><span class="post-meta-divider">-</span><a href="#comment"><span class="post-meta-item-icon" title="评论数"><span class="icon iconify" data-icon="ri:chat-3-line"></span> <span class="waline-comment-count" id="/2024/02/29/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240229%20Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/"></span></span></a><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><span class="icon iconify" data-icon="ri:folder-line"></span></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE-%E6%8E%A8%E8%8D%90%E5%AD%A6%E4%B9%A0%E6%96%87%E7%AB%A0/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">区块链-推荐学习文章</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">区块链</span></a><a class="tag-item" href="/tags/Sybil-%E6%94%BB%E5%87%BB/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">Sybil 攻击</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><blockquote>
+<ul>
+<li>原文链接： <a target="_blank" rel="noopener" href="https://medium.com/@trustalabs.ai/trustas-ai-and-machine-learning-framework-for-robust-sybil-resistance-in-airdrops-ba17059ec5b7">https://medium.com/@trustalabs.ai/trustas-ai-and-machine-learning-framework-for-robust-sybil-resistance-in-airdrops-ba17059ec5b7</a></li>
+</ul>
+</blockquote>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>Sybil 攻击破坏了 Web3 中回顾性空投的完整性。贪婪的行为者创建假账户以不公平地获得更多空投代币。文章讨论了不同的 Sybil 防御方法，如真人认证和社区报告，同时强调了它们的局限性。接着，文章引入了 Trusta 的 AI 和机器学习驱动框架，该框架系统地分析链上数据，识别可疑的 Sybil 群体。这一两阶段方法首先使用图挖掘算法检测协同社区，然后通过用户行为分析细化结果，以减少误报。例子展示了 Trusta 如何识别真实的链上 Sybil 群体。文章提倡使用 AI-ML 作为一个强大的 Sybil 防御解决方案，它保护了用户隐私和无需许可的参与。</p>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><h2 id="Sybil-攻击破坏了回顾性空投的完整性"><a href="#Sybil-攻击破坏了回顾性空投的完整性" class="headerlink" title="Sybil 攻击破坏了回顾性空投的完整性"></a>Sybil 攻击破坏了回顾性空投的完整性</h2><p>自从 Uniswap 在 2020 年开始使用空投来奖励早期用户以来，空投在 Web3 中变得非常流行。空投是指将代币分发给当前或过去用户的钱包，以传播意识、建立所有权或回溯性地奖励早期采用者。然而，空投的原始意图可能会被 Sybil 攻击所破坏。当不诚实的行为者生成假账户并操纵活动以不公平地获得更多空投代币时，就会发生 Sybil 攻击。因此，识别被空投农场主和攻击者伪造的 Sybil 账户已成为一个关键问题。</p>
+<h2 id="真人认证VS-AI驱动的机器学习算法"><a href="#真人认证VS-AI驱动的机器学习算法" class="headerlink" title="真人认证VS. AI驱动的机器学习算法"></a>真人认证VS. AI驱动的机器学习算法</h2><p>像生物识别扫描（例如 World Coin 项目中的虹膜扫描）或社交媒体验证等真人认证方法通过要求身份确认来检验人性。然而，无需许可和匿名参与是 Web3 的核心价值。虽然真人认证可以防止 Sybil 账户的创建，但它也为用户增加了障碍，并且损害了隐私。我们需要找到既能阻止空投农场行为，又不损害隐私或独立性的解决方案。</p>
+<p>链上活动代表了用户的独特足迹，提供了大量数据集，数据科学家可以从中获得洞见。Trusta 利用大数据和 AI 及机器学习的专业知识来解决 Sybil 问题。比较这两种方法，AI 驱动的机器学习（AI-ML）Sybil 识别相较于真人认证有其优势：</p>
+<ul>
+<li>AI-ML 保护隐私，因为用户不需要提供他们的生物信息和 Web2 中的身份。真人认证通过要求身份确认而损害匿名性。</li>
+<li>AI-ML 全面分析大量链上数据，以减少脆弱性。真人认证容易被利用，因为验证过的身份可能会被滥用。</li>
+<li>AI-ML 本质上是无需许可的，因为任何人都可以分析同样的公开链上数据。</li>
+<li>由于分析的透明性，Sybil 判断可以被公开双重验证。</li>
+</ul>
+<p>Gitcoin 护照结合了这两种方法。它主要使用真人认证，但在 GG18 之前加入了 Trusta 的 AI-ML TrustScan 评分，结合了它们的优势，以实现可靠的 Sybil 防御。</p>
+<h2 id="项目空投与Sybil防御方法"><a href="#项目空投与Sybil防御方法" class="headerlink" title="项目空投与Sybil防御方法"></a>项目空投与Sybil防御方法</h2><table>
+<thead>
+<tr>
+<th align="center">NUM</th>
+<th align="center">项目</th>
+<th align="center">日期</th>
+<th align="center">合格地址数</th>
+<th align="center">Sybil防御</th>
+<th align="center">已识别Sybil</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">Uniswap</td>
+<td align="center">2020&#x2F;09&#x2F;17</td>
+<td align="center">312726</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">ENS</td>
+<td align="center">2021&#x2F;11&#x2F;8</td>
+<td align="center">137689</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">DYDX</td>
+<td align="center">2021&#x2F;9&#x2F;8</td>
+<td align="center">64306</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">Aptos</td>
+<td align="center">2022&#x2F;10&#x2F;19</td>
+<td align="center">110235</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">Safe</td>
+<td align="center">2022&#x2F;9&#x2F;28</td>
+<td align="center">43575</td>
+<td align="center">社区报告</td>
+<td align="center">12168 (27.9%)</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">HOP</td>
+<td align="center">2022&#x2F;5&#x2F;9</td>
+<td align="center">145329</td>
+<td align="center">社区报告</td>
+<td align="center">14195 (9.8%)</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">CONNEXT</td>
+<td align="center">2023&#x2F;9&#x2F;5</td>
+<td align="center">57801</td>
+<td align="center">社区报告</td>
+<td align="center">5725 (9.9%)</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">Optimism</td>
+<td align="center">2022&#x2F;4&#x2F;27</td>
+<td align="center">248699</td>
+<td align="center">社区报告</td>
+<td align="center">17101 (6.9%)</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">Arbitrum</td>
+<td align="center">2023&#x2F;3&#x2F;16</td>
+<td align="center">625143</td>
+<td align="center">AI-ML 算法</td>
+<td align="center">135000 (21.6%)</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">Zigzag</td>
+<td align="center">2023&#x2F;4&#x2F;6</td>
+<td align="center">110000+</td>
+<td align="center">AI-ML 算法</td>
+<td align="center">12000+ (10.9%)</td>
+</tr>
+</tbody></table>
+<p>最近的一些重大空投揭示了反 Sybil 专业知识的不足。在推出他们的空投时，Aptos 缺乏反 Sybil 规则。空投猎手们声称获得了许多 $APT 代币，在交易所上市后推高了价格，然后大量抛售代币。研究人员发现，Sybil 地址占到了存入交易所代币的 40%。</p>
+<p>一些项目如 HOP 和 Optimism 鼓励社区从合格地址中报告 Sybil。这将抵抗 Sybil 的责任转移到了社区。尽管出发点是好的，但该程序引发了争议。被报告的 Sybil 账户甚至威胁要污染其他钱包，这可能会破坏整个社区主导的 Sybil 抵抗努力。</p>
+<p>自 2023 年以来，AI-ML 的 Sybil 防御变得更加流行。Zigzag 使用数据挖掘来识别相似的行为序列。Arbitrum 基于链上活动进行分配，并使用像 Louvain 这样的社区检测算法来识别 Sybil 群体。</p>
+<h1 id="Trusta-的-AI-ML-Sybil-防御框架"><a href="#Trusta-的-AI-ML-Sybil-防御框架" class="headerlink" title="Trusta 的 AI-ML Sybil 防御框架"></a>Trusta 的 AI-ML Sybil 防御框架</h1><p>Sybil 通过使用机器人和脚本在其账户间自动化交互。这导致他们的账户作为恶意社区聚集在一起。Trusta 的两阶段 AI-ML 框架使用聚类算法识别 Sybil 社区：</p>
+<ul>
+<li>第一阶段使用 Louvain 和 K-Core 等社区检测算法分析资产转移图（ATGs），以检测密集连接的可疑 Sybil 群体。 </li>
+<li>第二阶段计算每个地址的用户档案和活动。K-means 通过筛选不相似的地址来细化群体，以减少第一阶段的误报。</li>
+</ul>
+<p>总结来说，Trusta 首先使用图挖掘算法识别协同的 Sybil 社区。然后，额外的用户分析过滤掉异常值以提高精确性，结合连通性和行为模式进行强大的 Sybil 检测。</p>
+<h2 id="第一阶段：资产转移图上的社区检测"><a href="#第一阶段：资产转移图上的社区检测" class="headerlink" title="第一阶段：资产转移图上的社区检测"></a>第一阶段：资产转移图上的社区检测</h2><p>Trusta 分析独立操作账户（EOA）之间的资产转移图（ATGs）。如桥接、交易所、智能合约等实体地址会被移除，以便专注于用户关系。Trusta 开发了专有的分析工具来检测和移除图中的枢纽地址。会生成两个 ATGs：</p>
+<ul>
+<li>带有任意代币转移的地址之间边的一般转移图。</li>
+<li>其中边显示对一个地址的首次提供燃气的燃气供应网络。</li>
+</ul>
+<p>首次燃气转移激活新的 EOAs，形成了一个稀疏的图结构，非常适合分析。它还代表了一种强烈的关系，因为新账户依赖于他们的燃气供应商。燃气网络的稀疏性和重要性使其对于 Sybil 防御非常有价值。复杂的算法可以挖掘网络，而燃气供应链接揭示了有意义的账户激活关系。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/1.png" loading="lazy"></p>
+<div style="text-align: center;">ATG 模式被检测为可疑 Sybil 簇</div>
+
+<p>Trusta 通过以下方式分析资产转移图来检测 Sybil 群体：</p>
+<ol>
+<li>通过将 ATGs 分割成像 P1+P2 这样的连接部分来生成群集。然后社区检测算法将大型组件细分为像 P1 和 P2 这样连接紧密的子社区，并且通过少量边切割来优化模块性。</li>
+<li>Trusta 根据已知的攻击模式识别 Sybil 群体，如图所示：<ul>
+<li>类星形发散攻击：由同一来源资助的地址</li>
+<li>类星形汇聚攻击：将资金发送到同一目标的地址</li>
+<li>树形结构攻击：资金以树状拓扑分布</li>
+<li>链式攻击：资金从一个地址顺序转移到链式拓扑中的下一个地址。</li>
+</ul>
+</li>
+</ol>
+<p>第一阶段基于资产转移关系单独产生初步的 Sybil 群体。Trusta 在第二阶段通过分析账户行为的相似性来进一步细化结果。</p>
+<h2 id="第二阶段：基于行为相似性的K-均值细化"><a href="#第二阶段：基于行为相似性的K-均值细化" class="headerlink" title="第二阶段：基于行为相似性的K-均值细化"></a>第二阶段：基于行为相似性的K-均值细化</h2><p>交易日志揭示了地址活动模式。Sybil 可能表现出诸如与相同合约&#x2F;方法交互、时间和金额相似的特点。Trusta 通过分析链上行为的两种变量类型来验证第一阶段的群体：</p>
+<p>交易变量：这些变量直接来自链上动作，包括信息如第一次和最近的交易日期，以及互动过的协议或智能合约。</p>
+<p>档案变量：这些变量提供了关于行为的聚合统计数据，如互动金额、频率和体积。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/2.png" loading="lazy"></p>
+<div style="text-align: center;">用于细化 Sybil 集群的类似 K 均值的过程</div>
+
+<p>为了使用地址行为的多维表示来细化初步的 Sybil 群体，Trusta 采用了类似 K-均值 的程序。如图所示，这个程序涉及的步骤会重复直到收敛：</p>
+<p>步骤1：计算群集的质心：</p>
+<ul>
+<li>对于连续变量，在每个群集中计算所有地址的平均值。</li>
+<li>对于分类变量，在每个群集中确定所有地址的众数。</li>
+</ul>
+<p>步骤2：通过排除远离质心的地址来细化群集：</p>
+<ul>
+<li>位于远离质心的特定阈值之外的地址将被排除在群集之外。</li>
+<li>然后根据细化的地址集更新或刷新群集成员资格。</li>
+</ul>
+<p>这两个步骤迭代执行，直到达到收敛，从而得到细化的 Sybil 群集。</p>
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p>在两阶段框架内，我们已经在以太坊上识别了几个示例 Sybil 群体。这些群体不仅通过 ATGs 可视化，而且我们还提供了基于每个群体中地址之间行为相似性的推理。这三个群体可以通过链接找到。</p>
+<h2 id="类星形资产转移图"><a href="#类星形资产转移图" class="headerlink" title="类星形资产转移图"></a>类星形资产转移图</h2><p>群体 1 有 170 个地址，在以太坊上完成了两次交互，即存款和购买。这两次交互都发生在 2021年12月5日 和 2023年2月26日。所有地址第一次都是从 Binance 地址获得资金。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/3.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/4.png" loading="lazy"></p>
+<h2 id="链式资产转移图"><a href="#链式资产转移图" class="headerlink" title="链式资产转移图"></a>链式资产转移图</h2><p>群体 2 有 24 个地址，在以太坊上完成了一系列类似的交互。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/5.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/6.png" loading="lazy"></p>
+<h2 id="树形资产转移图"><a href="#树形资产转移图" class="headerlink" title="树形资产转移图"></a>树形资产转移图</h2><p>群体 3 有 50 个地址，可以被视为 2 个子群体，在以太坊上分别进行一系列类似的交互。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/7.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/8.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/9.png" loading="lazy"></p>
+<h1 id="讨论"><a href="#讨论" class="headerlink" title="讨论"></a>讨论</h1><p>基于聚类的算法是目前阶段抵抗 Sybil 的最佳选择，原因有几个：</p>
+<ol>
+<li>仅依赖历史Sybil列表，如 HOP 和 OP 的 Sybil 是不够的，因为新的 rollups 和钱包继续出现。仅使用之前的列表不能涵盖这些新实体。 </li>
+<li>在 2022 年，没有可用于训练监督模型的基准 Sybil 标记数据集。在静态的 Sybil&#x2F;非Sybil 数据上进行训练，会引起对模型精度和召回率的担忧。由于单一数据集无法涵盖所有 Sybil 模式，召回率有限。此外，被误分类的用户没有提供反馈的手段，这阻碍了精度的提高。 </li>
+<li>异常检测不适合识别 Sybil，因为它们的行为类似于普通用户。</li>
+</ol>
+<p>因此，我们得出结论，基于聚类的框架是目前阶段最合适的方法。然而，随着更多地址被标记，Trusta 当然会探索监督学习算法，如基于深度神经网络的分类器。</p>
+</div></section><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><span class="icon iconify" data-icon="ri:hand-coin-line"></span></span><div id="reward-comment">I'm so cute. Please give me money.</div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>流竹均雅</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://example.com/2024/02/29/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240229%20Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/" title="Trusta 的 AI 和机器学习框架用于空投中的强大 Sybil 攻击防御">http://example.com/2024/02/29/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240229%20Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><span class="icon iconify" data-icon="ri:creative-commons-line"></span><span class="icon iconify" data-icon="ri:creative-commons-by-line"></span><span class="icon iconify" data-icon="ri:creative-commons-nc-line"></span><span class="icon iconify" data-icon="ri:creative-commons-sa-line"></span></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2024/03/05/%E6%9D%82%E9%A1%B9%E6%8A%80%E6%9C%AF/20240305%20%E6%9D%82%E9%A1%B9%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94git/" rel="prev" title="杂项技术 —— git"><span class="icon iconify" data-icon="ri:arrow-left-s-line"></span><span class="post-nav-text">杂项技术 —— git</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/" rel="next" title="通过逆向和调试深入 EVM 07 - 与其他智能合约的交互"><span class="post-nav-text">通过逆向和调试深入 EVM 07 - 与其他智能合约的交互</span><span class="icon iconify" data-icon="ri:arrow-right-s-line"></span></a></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span>若您想及时得到回复提醒，建议添加流竹君的联系方式。</span><br></div><div id="waline"></div><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.css"><script>window.CONFIG.waline.config.path = "/2024/02/29/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240229%20Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/"</script><div class="js-Pjax"><script src="/js/comments/waline.js" type="module" defer></script></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2022 – 2024 </span><span class="with-love" id="animate"><span class="icon iconify" data-icon="ri:cloud-line"></span></span><span class="author"> 流竹均雅</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.2.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.10.6</span></div><div class="live-time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2022-11-22T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = ` ${passDay} 天 ${passHour} 小时 ${passMinute} 分 ${passSecond} 秒`;
+}
+blog_live_time();
+</script></div></footer></div><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><span class="icon iconify" data-icon="ri:arrow-up-s-line"></span><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="搜索"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:search-line"></span></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="https://fastly.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js"></script><script src="/js/search/local-search.js" defer type="module"></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><span class="icon iconify" data-icon="ri:close-line"></span></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="搜索..." value=""></div><div class="search-result-container"></div></div></body></html>

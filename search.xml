@@ -1,0 +1,1452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Trusta 的 AI 和机器学习框架用于空投中的强大 Sybil 攻击防御</title>
+    <url>/2024/02/29/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240229%20Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://medium.com/@trustalabs.ai/trustas-ai-and-machine-learning-framework-for-robust-sybil-resistance-in-airdrops-ba17059ec5b7">https://medium.com/@trustalabs.ai/trustas-ai-and-machine-learning-framework-for-robust-sybil-resistance-in-airdrops-ba17059ec5b7</a></li>
+</ul>
+</blockquote>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>Sybil 攻击破坏了 Web3 中回顾性空投的完整性。贪婪的行为者创建假账户以不公平地获得更多空投代币。文章讨论了不同的 Sybil 防御方法，如真人认证和社区报告，同时强调了它们的局限性。接着，文章引入了 Trusta 的 AI 和机器学习驱动框架，该框架系统地分析链上数据，识别可疑的 Sybil 群体。这一两阶段方法首先使用图挖掘算法检测协同社区，然后通过用户行为分析细化结果，以减少误报。例子展示了 Trusta 如何识别真实的链上 Sybil 群体。文章提倡使用 AI-ML 作为一个强大的 Sybil 防御解决方案，它保护了用户隐私和无需许可的参与。</p>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><h2 id="Sybil-攻击破坏了回顾性空投的完整性"><a href="#Sybil-攻击破坏了回顾性空投的完整性" class="headerlink" title="Sybil 攻击破坏了回顾性空投的完整性"></a>Sybil 攻击破坏了回顾性空投的完整性</h2><p>自从 Uniswap 在 2020 年开始使用空投来奖励早期用户以来，空投在 Web3 中变得非常流行。空投是指将代币分发给当前或过去用户的钱包，以传播意识、建立所有权或回溯性地奖励早期采用者。然而，空投的原始意图可能会被 Sybil 攻击所破坏。当不诚实的行为者生成假账户并操纵活动以不公平地获得更多空投代币时，就会发生 Sybil 攻击。因此，识别被空投农场主和攻击者伪造的 Sybil 账户已成为一个关键问题。</p>
+<h2 id="真人认证VS-AI驱动的机器学习算法"><a href="#真人认证VS-AI驱动的机器学习算法" class="headerlink" title="真人认证VS. AI驱动的机器学习算法"></a>真人认证VS. AI驱动的机器学习算法</h2><p>像生物识别扫描（例如 World Coin 项目中的虹膜扫描）或社交媒体验证等真人认证方法通过要求身份确认来检验人性。然而，无需许可和匿名参与是 Web3 的核心价值。虽然真人认证可以防止 Sybil 账户的创建，但它也为用户增加了障碍，并且损害了隐私。我们需要找到既能阻止空投农场行为，又不损害隐私或独立性的解决方案。</p>
+<p>链上活动代表了用户的独特足迹，提供了大量数据集，数据科学家可以从中获得洞见。Trusta 利用大数据和 AI 及机器学习的专业知识来解决 Sybil 问题。比较这两种方法，AI 驱动的机器学习（AI-ML）Sybil 识别相较于真人认证有其优势：</p>
+<ul>
+<li>AI-ML 保护隐私，因为用户不需要提供他们的生物信息和 Web2 中的身份。真人认证通过要求身份确认而损害匿名性。</li>
+<li>AI-ML 全面分析大量链上数据，以减少脆弱性。真人认证容易被利用，因为验证过的身份可能会被滥用。</li>
+<li>AI-ML 本质上是无需许可的，因为任何人都可以分析同样的公开链上数据。</li>
+<li>由于分析的透明性，Sybil 判断可以被公开双重验证。</li>
+</ul>
+<p>Gitcoin 护照结合了这两种方法。它主要使用真人认证，但在 GG18 之前加入了 Trusta 的 AI-ML TrustScan 评分，结合了它们的优势，以实现可靠的 Sybil 防御。</p>
+<h2 id="项目空投与Sybil防御方法"><a href="#项目空投与Sybil防御方法" class="headerlink" title="项目空投与Sybil防御方法"></a>项目空投与Sybil防御方法</h2><table>
+<thead>
+<tr>
+<th align="center">NUM</th>
+<th align="center">项目</th>
+<th align="center">日期</th>
+<th align="center">合格地址数</th>
+<th align="center">Sybil防御</th>
+<th align="center">已识别Sybil</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">Uniswap</td>
+<td align="center">2020&#x2F;09&#x2F;17</td>
+<td align="center">312726</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">ENS</td>
+<td align="center">2021&#x2F;11&#x2F;8</td>
+<td align="center">137689</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">DYDX</td>
+<td align="center">2021&#x2F;9&#x2F;8</td>
+<td align="center">64306</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="center">Aptos</td>
+<td align="center">2022&#x2F;10&#x2F;19</td>
+<td align="center">110235</td>
+<td align="center">N</td>
+<td align="center">N</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">Safe</td>
+<td align="center">2022&#x2F;9&#x2F;28</td>
+<td align="center">43575</td>
+<td align="center">社区报告</td>
+<td align="center">12168 (27.9%)</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="center">HOP</td>
+<td align="center">2022&#x2F;5&#x2F;9</td>
+<td align="center">145329</td>
+<td align="center">社区报告</td>
+<td align="center">14195 (9.8%)</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="center">CONNEXT</td>
+<td align="center">2023&#x2F;9&#x2F;5</td>
+<td align="center">57801</td>
+<td align="center">社区报告</td>
+<td align="center">5725 (9.9%)</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="center">Optimism</td>
+<td align="center">2022&#x2F;4&#x2F;27</td>
+<td align="center">248699</td>
+<td align="center">社区报告</td>
+<td align="center">17101 (6.9%)</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="center">Arbitrum</td>
+<td align="center">2023&#x2F;3&#x2F;16</td>
+<td align="center">625143</td>
+<td align="center">AI-ML 算法</td>
+<td align="center">135000 (21.6%)</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="center">Zigzag</td>
+<td align="center">2023&#x2F;4&#x2F;6</td>
+<td align="center">110000+</td>
+<td align="center">AI-ML 算法</td>
+<td align="center">12000+ (10.9%)</td>
+</tr>
+</tbody></table>
+<p>最近的一些重大空投揭示了反 Sybil 专业知识的不足。在推出他们的空投时，Aptos 缺乏反 Sybil 规则。空投猎手们声称获得了许多 $APT 代币，在交易所上市后推高了价格，然后大量抛售代币。研究人员发现，Sybil 地址占到了存入交易所代币的 40%。</p>
+<p>一些项目如 HOP 和 Optimism 鼓励社区从合格地址中报告 Sybil。这将抵抗 Sybil 的责任转移到了社区。尽管出发点是好的，但该程序引发了争议。被报告的 Sybil 账户甚至威胁要污染其他钱包，这可能会破坏整个社区主导的 Sybil 抵抗努力。</p>
+<p>自 2023 年以来，AI-ML 的 Sybil 防御变得更加流行。Zigzag 使用数据挖掘来识别相似的行为序列。Arbitrum 基于链上活动进行分配，并使用像 Louvain 这样的社区检测算法来识别 Sybil 群体。</p>
+<h1 id="Trusta-的-AI-ML-Sybil-防御框架"><a href="#Trusta-的-AI-ML-Sybil-防御框架" class="headerlink" title="Trusta 的 AI-ML Sybil 防御框架"></a>Trusta 的 AI-ML Sybil 防御框架</h1><p>Sybil 通过使用机器人和脚本在其账户间自动化交互。这导致他们的账户作为恶意社区聚集在一起。Trusta 的两阶段 AI-ML 框架使用聚类算法识别 Sybil 社区：</p>
+<ul>
+<li>第一阶段使用 Louvain 和 K-Core 等社区检测算法分析资产转移图（ATGs），以检测密集连接的可疑 Sybil 群体。 </li>
+<li>第二阶段计算每个地址的用户档案和活动。K-means 通过筛选不相似的地址来细化群体，以减少第一阶段的误报。</li>
+</ul>
+<p>总结来说，Trusta 首先使用图挖掘算法识别协同的 Sybil 社区。然后，额外的用户分析过滤掉异常值以提高精确性，结合连通性和行为模式进行强大的 Sybil 检测。</p>
+<h2 id="第一阶段：资产转移图上的社区检测"><a href="#第一阶段：资产转移图上的社区检测" class="headerlink" title="第一阶段：资产转移图上的社区检测"></a>第一阶段：资产转移图上的社区检测</h2><p>Trusta 分析独立操作账户（EOA）之间的资产转移图（ATGs）。如桥接、交易所、智能合约等实体地址会被移除，以便专注于用户关系。Trusta 开发了专有的分析工具来检测和移除图中的枢纽地址。会生成两个 ATGs：</p>
+<ul>
+<li>带有任意代币转移的地址之间边的一般转移图。</li>
+<li>其中边显示对一个地址的首次提供燃气的燃气供应网络。</li>
+</ul>
+<p>首次燃气转移激活新的 EOAs，形成了一个稀疏的图结构，非常适合分析。它还代表了一种强烈的关系，因为新账户依赖于他们的燃气供应商。燃气网络的稀疏性和重要性使其对于 Sybil 防御非常有价值。复杂的算法可以挖掘网络，而燃气供应链接揭示了有意义的账户激活关系。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/1.png" loading="lazy"></p>
+<div style="text-align: center;">ATG 模式被检测为可疑 Sybil 簇</div>
+
+<p>Trusta 通过以下方式分析资产转移图来检测 Sybil 群体：</p>
+<ol>
+<li>通过将 ATGs 分割成像 P1+P2 这样的连接部分来生成群集。然后社区检测算法将大型组件细分为像 P1 和 P2 这样连接紧密的子社区，并且通过少量边切割来优化模块性。</li>
+<li>Trusta 根据已知的攻击模式识别 Sybil 群体，如图所示：<ul>
+<li>类星形发散攻击：由同一来源资助的地址</li>
+<li>类星形汇聚攻击：将资金发送到同一目标的地址</li>
+<li>树形结构攻击：资金以树状拓扑分布</li>
+<li>链式攻击：资金从一个地址顺序转移到链式拓扑中的下一个地址。</li>
+</ul>
+</li>
+</ol>
+<p>第一阶段基于资产转移关系单独产生初步的 Sybil 群体。Trusta 在第二阶段通过分析账户行为的相似性来进一步细化结果。</p>
+<h2 id="第二阶段：基于行为相似性的K-均值细化"><a href="#第二阶段：基于行为相似性的K-均值细化" class="headerlink" title="第二阶段：基于行为相似性的K-均值细化"></a>第二阶段：基于行为相似性的K-均值细化</h2><p>交易日志揭示了地址活动模式。Sybil 可能表现出诸如与相同合约&#x2F;方法交互、时间和金额相似的特点。Trusta 通过分析链上行为的两种变量类型来验证第一阶段的群体：</p>
+<p>交易变量：这些变量直接来自链上动作，包括信息如第一次和最近的交易日期，以及互动过的协议或智能合约。</p>
+<p>档案变量：这些变量提供了关于行为的聚合统计数据，如互动金额、频率和体积。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/2.png" loading="lazy"></p>
+<div style="text-align: center;">用于细化 Sybil 集群的类似 K 均值的过程</div>
+
+<p>为了使用地址行为的多维表示来细化初步的 Sybil 群体，Trusta 采用了类似 K-均值 的程序。如图所示，这个程序涉及的步骤会重复直到收敛：</p>
+<p>步骤1：计算群集的质心：</p>
+<ul>
+<li>对于连续变量，在每个群集中计算所有地址的平均值。</li>
+<li>对于分类变量，在每个群集中确定所有地址的众数。</li>
+</ul>
+<p>步骤2：通过排除远离质心的地址来细化群集：</p>
+<ul>
+<li>位于远离质心的特定阈值之外的地址将被排除在群集之外。</li>
+<li>然后根据细化的地址集更新或刷新群集成员资格。</li>
+</ul>
+<p>这两个步骤迭代执行，直到达到收敛，从而得到细化的 Sybil 群集。</p>
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p>在两阶段框架内，我们已经在以太坊上识别了几个示例 Sybil 群体。这些群体不仅通过 ATGs 可视化，而且我们还提供了基于每个群体中地址之间行为相似性的推理。这三个群体可以通过链接找到。</p>
+<h2 id="类星形资产转移图"><a href="#类星形资产转移图" class="headerlink" title="类星形资产转移图"></a>类星形资产转移图</h2><p>群体 1 有 170 个地址，在以太坊上完成了两次交互，即存款和购买。这两次交互都发生在 2021年12月5日 和 2023年2月26日。所有地址第一次都是从 Binance 地址获得资金。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/3.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/4.png" loading="lazy"></p>
+<h2 id="链式资产转移图"><a href="#链式资产转移图" class="headerlink" title="链式资产转移图"></a>链式资产转移图</h2><p>群体 2 有 24 个地址，在以太坊上完成了一系列类似的交互。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/5.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/6.png" loading="lazy"></p>
+<h2 id="树形资产转移图"><a href="#树形资产转移图" class="headerlink" title="树形资产转移图"></a>树形资产转移图</h2><p>群体 3 有 50 个地址，可以被视为 2 个子群体，在以太坊上分别进行一系列类似的交互。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/7.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/8.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/Trusta%20%E7%9A%84%20AI%20%E5%92%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%A1%86%E6%9E%B6%E7%94%A8%E4%BA%8E%E7%A9%BA%E6%8A%95%E4%B8%AD%E7%9A%84%E5%BC%BA%E5%A4%A7%20Sybil%20%E6%94%BB%E5%87%BB%E9%98%B2%E5%BE%A1/9.png" loading="lazy"></p>
+<h1 id="讨论"><a href="#讨论" class="headerlink" title="讨论"></a>讨论</h1><p>基于聚类的算法是目前阶段抵抗 Sybil 的最佳选择，原因有几个：</p>
+<ol>
+<li>仅依赖历史Sybil列表，如 HOP 和 OP 的 Sybil 是不够的，因为新的 rollups 和钱包继续出现。仅使用之前的列表不能涵盖这些新实体。 </li>
+<li>在 2022 年，没有可用于训练监督模型的基准 Sybil 标记数据集。在静态的 Sybil&#x2F;非Sybil 数据上进行训练，会引起对模型精度和召回率的担忧。由于单一数据集无法涵盖所有 Sybil 模式，召回率有限。此外，被误分类的用户没有提供反馈的手段，这阻碍了精度的提高。 </li>
+<li>异常检测不适合识别 Sybil，因为它们的行为类似于普通用户。</li>
+</ol>
+<p>因此，我们得出结论，基于聚类的框架是目前阶段最合适的方法。然而，随着更多地址被标记，Trusta 当然会探索监督学习算法，如基于深度神经网络的分类器。</p>
+]]></content>
+      <categories>
+        <category>区块链-推荐学习文章</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>Sybil 攻击</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>重新建站说明</title>
+    <url>/2024/01/31/%E9%87%8D%E6%96%B0%E5%BB%BA%E7%AB%99%E8%AF%B4%E6%98%8E/</url>
+    <content><![CDATA[<p>之前站点的内容突然发现有点混乱，所以重新建站</p>
+<p>之后主要是做区块链安全方向，以前的安全知识，等有空重温之后，也会找机会放上来</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 01 - 理解汇编</title>
+    <url>/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-evm-smart-contracts-392fdadef32d">https://trustchain.medium.com/reversing-and-debugging-evm-smart-contracts-392fdadef32d</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/4913">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在这个系列的教程中，我们将学习如何调试和逆向 <strong>EVM</strong> 智能合约。</p>
+<p>你可能已经知道，当一个智能合约在区块链中没有被验证时，你无法读取它的实体代码，只有字节代码被显示。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/1.png" loading="lazy"></p>
+<blockquote>
+<p>难以辨认的智能合约</p>
+</blockquote>
+<p>问题是很难从字节码中完全 “反编译（de-compile）”，以重建编译前的solidity代码。</p>
+<p><strong>但是不用担心，在这一系列的教程中，我将清楚地教你所有的技术，以逆向区块链中的任何智能合约</strong>。</p>
+<p>与不知道的人相比，学习这项技术有几个好处：</p>
+<ul>
+<li>你将能够阅读不透明的智能合约(即使源代码没有被验证)。</li>
+<li>你会对 EVM 有深刻的理解，从而成为一个更好的开发者&#x2F;智能合约审计。(从而赚更多的钱:))。</li>
+<li>你会在你的智能合约中更有效地调试代码，避免在出现错误时浪费大量的时间。(特别是如果顶层错误是通用的，如：”执行被回退（Execution reverted）”)</li>
+</ul>
+<p>本文是关于<strong>通过逆向和调试理解 EVM 系列的第 1 篇</strong>，本系列包含 7 篇文章：</p>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
+<h1 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h1><p>下面是我们将进行逆向&#x2F;调试的智能合约：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;  </span><br><span class="line">   function test() external &#123;      &#125; </span><br><span class="line">   function test2() external &#123;      &#125;  </span><br><span class="line">   function test3() external &#123;      &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看上去很简单，对吗？</p>
+<p>是的，我们就从简单合约开始。</p>
+<p><strong>1. 在Remix IDE中编译</strong>（0.8.7版） <a href="https://remix.ethereum.org/">https://remix.ethereum.org</a></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/2.png" loading="lazy"></p>
+<blockquote>
+<p>编译我们的智能合约</p>
+</blockquote>
+<p><strong>2. 部署</strong>（选择 JavaScript London 虚拟机）</p>
+<blockquote>
+<p>注：原文此处使用的是 JavaScript London 虚拟机，但是在 Remix 中已经没有找到这个虚拟机了，应该是银行了更名，所以我们选用的是 Remix VM London 虚拟机。</p>
+</blockquote>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/3.png" loading="lazy"></p>
+<p><strong>3. 调用</strong> <code>test()</code> <strong>函数并点击蓝色的调试按钮，以显示调试器</strong>。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/4.png" loading="lazy"></p>
+<p><strong>4.</strong> 一旦完成，你应该在 Remix 中看到<strong>调试标签</strong>。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/5.png" loading="lazy"></p>
+<p>我们 90% 的工作将在这里进行。</p>
+<p>在深入研究这个问题之前，这里有一些前备知识，你需要了解：</p>
+<ul>
+<li>一些 solidity 开发经验</li>
+<li>十六进制数字和基本的计算机科学知识</li>
+<li>Remix IDE 的基础知识。</li>
+<li>兴趣和可能（很多）的咖啡。</li>
+</ul>
+<h1 id="什么是字节码-x2F-汇编？"><a href="#什么是字节码-x2F-汇编？" class="headerlink" title="什么是字节码&#x2F;汇编？"></a>什么是字节码&#x2F;汇编？</h1><p>每个智能合约都是由字节码构成的，例如，这是我们在文章开头创建的智能合约的字节码（十六进制）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0x6080604052348015600f57600080fd5b5060958061001e6000396000f3fe6080604052348015600f57600080fd5b5060043610603c5760003560e01c80630a8e8e0114604157806366e41cb7146049578063f8a8fd6d146051575b600080fd5b60476059565b005b604f605b565b005b6057605d565b005b565b565b56fea26469706673582212202b8a623727ebbf12f20653b059d5927ea67b69153e5cce7f25cf7a6d683d92b064736f6c63430008070033</span><br></pre></td></tr></table></figure>
+
+<p>这个字节码的每一个字节都对应着汇编语言中的一条指令。你可能已经知道，<strong>EVM</strong> 并不直接理解 solidity 语言，它<strong>只理解汇编</strong>中的指令，这是一种低级语言。</p>
+<p>在编译的时候，编译的作用只是把 solidity 代码翻译成汇编代码。</p>
+<p>汇编是一种非常原始的 “语言”，只有指令和参数， 例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">000 PUSH 80</span><br><span class="line">041 PUSH1 00</span><br><span class="line">056 DUP1</span><br></pre></td></tr></table></figure>
+
+<p>智能合约中第 00 字节（第一个指令）的指令是<code>PUSH 80</code>（在字节码操作码中翻译为<code>6080</code>）。<br>第41字节的指令是<code>PUSH1 00</code>（并且有1个参数是00）（在字节码操作码中是<code>6000</code>）。<br>第56字节的指令是<code>DUP1 </code>没有参数（字节码操作码为<code>80</code>）。</p>
+<p>在后面，我们将逐步解释这些指令的内部作用。<br>在 EVM 中，大约有 100 条有效指令，有些是很容易猜到其含义，比如：</p>
+<ul>
+<li>ADD&#x2F;SUB&#x2F;OR&#x2F;XOR</li>
+<li>但其他的则需要更多的解释。</li>
+</ul>
+<p>提示。每次有不明白的指令，你可以去 <a href="https://www.ethervm.io/">https://www.ethervm.io/</a> ，这个网站总结了所有以太坊指令，显示了参数和返回值。</p>
+<h1 id="Solidity-中的存储"><a href="#Solidity-中的存储" class="headerlink" title="Solidity 中的存储"></a>Solidity 中的存储</h1><p>你可能已经知道，在 solidity 中有 3 种类型的存储。</p>
+<ol>
+<li>存储（storage），直接存储在区块链中，使用 32 字节数字 “槽（slot）”来标识，。一个槽的大小是 32 个字节（或 64 个十六进制数字）。</li>
+<li>“内存（memory）”，在智能合约执行结束时被清除，由一个名为 “十六进制数字 “的地址来标识。</li>
+<li>还有栈，它是一个 <strong>LIFO（后进先出）类型的队列</strong>，当每个项由一个数字标识(以 0 开始)。</li>
+</ol>
+<blockquote>
+<p>这个段落，我认为可能是作者出现的笔误问题，这里出现的 3 种存储类型应该是 EVM 的存储类型，而不是 Solidity 的，这个概念要区分清楚。</p>
+<ul>
+<li><strong>存储（Storage）</strong>：用于持久化数据，成本较高，适用于需要跨交易保持状态的数据。</li>
+<li><strong>内存（Memory）</strong>：用于临时数据存储，仅在当前合约调用期间有效，成本低于存储。</li>
+<li><strong>栈（Stack）</strong>：用于非常基本的数据操作，最快速但空间有限。</li>
+</ul>
+</blockquote>
+<h1 id="LIFO-栈是如何工作的？"><a href="#LIFO-栈是如何工作的？" class="headerlink" title="LIFO 栈是如何工作的？"></a>LIFO 栈是如何工作的？</h1><p>默认情况下，在智能合约开始的时候，堆栈是空的，它包含的内容是不存在的!<br>现在有 2 种方法可以操作堆栈，可以通过使用指令 <strong>PUSH</strong> 或 <strong>POP</strong>。</p>
+<h2 id="PUSH"><a href="#PUSH" class="headerlink" title="PUSH"></a>PUSH</h2><p>它将数据推在第 0 位，并将每个数据往前推 1 个位置。例如，如果我们使用 PUSH 指令在堆栈中写入 <strong>0xff</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Stack before (3 elems): </span><br><span class="line">|Place 0: 0x50|Place 1: 0x17|Place 2: 0x05|</span><br><span class="line">----------------------------</span><br><span class="line">Stack after PUSH ff: </span><br><span class="line">|Place 0: 0xff|Place 1: 0x50|Place 2: 0x17|Place 3: 0x05|</span><br></pre></td></tr></table></figure>
+
+<p><strong>0xff <strong>被写在 0 位，</strong>0x50</strong> 从 0 位到 1 位，<strong>0x17</strong> 从 1 位到 2 位，**0x05 **从 2 位到 3 位，现在栈包含 4 个元素而不是 3 个。</p>
+<p>让我们看看另一个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Stack before (0 elems, empty): </span><br><span class="line">||</span><br><span class="line">----------------------------</span><br><span class="line">Stack after PUSH 33: </span><br><span class="line">|Place 0: 0x33|</span><br></pre></td></tr></table></figure>
+
+<p>堆栈现在包含 1 个元素。最后一个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Stack before (1 elems): </span><br><span class="line">|Place 0: 0x33|</span><br><span class="line">----------------------------</span><br><span class="line">Stack after PUSH 00: </span><br><span class="line">|Place 0: 0x00|Place 1: 0x33|</span><br></pre></td></tr></table></figure>
+
+<p>堆栈现在包含 2 个元素，就像这样简单。</p>
+<h2 id="POP"><a href="#POP" class="headerlink" title="POP"></a>POP</h2><p>POP 指令，做逆向操作：弹出第 0 槽中的数据，并将每个数据向后推 1 槽。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Stack before (3 elems): </span><br><span class="line">|Place 0: 0x50|Place 1: 0x17|Place 2: 0x05|</span><br><span class="line">----------------------------</span><br><span class="line">Stack after POP (2 elems): </span><br><span class="line">|Place 0: 0x17|Place 1: 0x05|</span><br></pre></td></tr></table></figure>
+
+<p>第 0 位的数据被弹出了，<strong>0x17</strong> 的位置从 1 位变成了 0 位，同样，**0x05 **的位置从 2 位变成了 1 位。栈现在包含 2 个元素</p>
+<p>下面是另一个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Stack before (1 elems): </span><br><span class="line">|Place 0: 0x33|</span><br><span class="line">----------------------------</span><br><span class="line">Stack before POP (0 elems, empty): </span><br><span class="line">||</span><br></pre></td></tr></table></figure>
+
+<p>如果你理解了这一点，也就这么简单。你理解了 LIFO 类型的存储，你就可以更进一步了:)</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/6.png" loading="lazy"></p>
+<blockquote>
+<p>堆栈（LIFO）如何工作</p>
+</blockquote>
+<p>在 EVM（以及其他汇编）中，堆栈通常用于存储函数和指令的参数 + 返回值。</p>
+<p>在这个系列的文章中，我们将使用以下表示：<br><strong>Stack(0)</strong> &#x3D; 堆栈中的第一个值（在位置 0）。<br><strong>Stack(1)</strong> &#x3D; 堆栈中的第二个值（在位置 1 处）。<br><strong>Stack(n)</strong> &#x3D;堆栈中的第 n+1 个值（在位置 n 处）。</p>
+<p>每次我解释一条指令时，堆栈的内容<strong>以这种格式</strong>： <code>|0x15|0x25|0x00|</code>, <strong>这里：</strong></p>
+<ul>
+<li>0x15 是 Stack(0)，是堆栈中的第一个值，位置为 0</li>
+<li>0x25 是 Stack(1)，是Stack的第二个值</li>
+<li>0x00 是 Stack(2)。</li>
+<li>以此类推，如果堆栈里有更多的值的话</li>
+</ul>
+<h1 id="汇编的第一行"><a href="#汇编的第一行" class="headerlink" title="汇编的第一行"></a>汇编的第一行</h1><p>一旦你理解了这些概念，现在就可以开始了， 点击下面的按钮，重新启动智能合约的执行：（默认情况下，remix 在函数 <code>test()</code> 的开始处启动调试会话，因为在执行函数之前有一些代码，我们需要改变这一点）</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/7.png" loading="lazy"></p>
+<p>如果一切顺利，第一批指令应该弹出，可以通过点击这些箭头在指令之间逐一导航。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/8.png" loading="lazy"></p>
+<p>第一条指令是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">000 PUSH 80 | 0x80 |</span><br><span class="line">002 PUSH 40 | 0x40 | 0x80 |</span><br><span class="line">004 MSTORE  ||</span><br></pre></td></tr></table></figure>
+
+<p>EVM在堆栈中 <strong>PUSH 80</strong> 和 <strong>PUSH 40</strong>，结果它看起来像：<br><code>| 0x40 | 0x80 |</code></p>
+<p>**在第 4 字节：MSTORE **需要 2 个参数（offset，value）： <strong>Stack(0)</strong> 和 <strong>Stack(1)</strong><br><strong>MSTORE</strong> 将 <strong>Stack(1)</strong> 的值存储在内存中的 <strong>Stack(0)</strong> 位置中。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/9.png" loading="lazy"></p>
+<p>因此，EVM 将 <strong>0x80</strong> 存储在内存的 <strong>0x40</strong> 地址，在调试标签的内存部分，你应该看到：</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/10.png" loading="lazy"></p>
+<p>由于内存中的每一个插槽都是 32 个字节的长度（使用小端序的十六进制 0x20），因此插槽 40 的内存位于 0x40 和 <strong>0x40+0x20&#x3D;0x60</strong> 之间（我们将其记为内存 **[0x40:0x60]**。这就是为什么0x80在最后（0x5f位置）。</p>
+<p>“????? “ 是内存中的字节的 ASCII 表示。</p>
+<p>内存中的 “0x40 “ 槽在 EVM 中被命名为空闲内存指针，当需要内存时，它被用来分配内存的新槽。(我将在后面解释为什么它是有用的）。</p>
+<p><strong>重要的是：注意在一条指令之后，堆栈中所有需要的参数都会从堆栈中清除，并被返回值所取代。</strong></p>
+<p>由于 MSTORE 在堆栈中占用了 2 个参数，在 MSTORE 指令完成后，这 2 个参数会从堆栈中删除。</p>
+<p>所以堆栈现在什么都不包含。</p>
+<blockquote>
+<p>可以看到图中的结果与描述有所出入，可能是因为新版本的 Remix 直接就按照 32 字节分配，所以是 0x20 后面直接就是 0x40，而不是 0x30</p>
+</blockquote>
+<h1 id="MSG-VALUE"><a href="#MSG-VALUE" class="headerlink" title="MSG.VALUE"></a>MSG.VALUE</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">005 CALLVALUE |msg.value|</span><br><span class="line">006 DUP1      |msg.value|msg.value|</span><br><span class="line">007 ISZERO    |0x01|msg.value|</span><br><span class="line">008 PUSH1 0f  |0x0f|0x01|msg.value|</span><br><span class="line">010 JUMPI     |msg.value|</span><br><span class="line">011 PUSH1 00  |0x00|msg.value| (if jumpi don&#x27;t jump to 0f)</span><br><span class="line">013 DUP1      |0x00|0x00|msg.value|</span><br><span class="line">014 REVERT </span><br></pre></td></tr></table></figure>
+
+<p><strong>CALLVALUE</strong> 指令把 <strong>msg.value</strong>（发送给智能合约的以太币）放在堆栈中。<br>由于我们没有向智能合约发送任何以太币，堆栈中的值是：<code>| 0x00 |</code></p>
+<p><strong>DUP1</strong> 指令将 Stack(0) 推入堆栈，我们可以说它 “复制” 了堆栈开头的第一个指令：<br><code>| 0x00 | 0x00 |</code></p>
+<p>注意还有 DUP2, DUP3…DUPn (直到 DUP16)，它们将第 n 个值 (Stack n-1) 推到堆栈中。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/11.png" loading="lazy"></p>
+<p>而 EVM 在第 7 字节调用 <strong>ISZERO</strong>，<strong>ISZERO</strong> 使用 Stack 中的 1 个参数（它是 **Stack(0)**）。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/12.png" loading="lazy"></p>
+<p>顾名思义，<strong>ISZERO</strong> 验证 Stack(0) 是否等于 0，如果是，EVM 在第一个槽中推送 “1” 的值，即True。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Before ISZERO:</span><br><span class="line">| 0x00 | 0x00 |</span><br><span class="line">----------------------------</span><br><span class="line">After ISZERO:</span><br><span class="line">| 0x01 | 0x00 |</span><br></pre></td></tr></table></figure>
+
+<p><strong>EVM</strong> 还删除了第一个 <strong>0x00</strong>，因为它是 <strong>ISZERO</strong> 的参数。</p>
+<p>之后在第 8 个指令，<strong>EVM 将 0x0f</strong> 推到堆栈中 ： <code>| 0x0f | 0x01 | 0x00 |</code>。</p>
+<p>接下来我们有一个条件跳转 (<strong>JUMPI</strong>)，如果 Stack(1) 是 1，EVM 直接进入字节数 Stack(0) 所在的位置(因为 Stack(0)&#x3D;0f，十进制 15），因此 Stack(1)&#x3D;1，EVM 直接跳转到第 15 个指令</p>
+<p>如果不是，EVM 继续执行它的路径，执行 <strong>PUSH</strong>、<strong>DUP1</strong> 和最后在第 14 字节的 <strong>REVERT</strong> 指令一样，以一个错误停止执行。</p>
+<p>但是在这里，一切都很好！因为 Stack(1)&#x3D;1，所以在执行过程中会出现错误。由于 Stack(1)&#x3D;1，所以 EVM 跳到了 <strong>0x0f</strong>（相当于 15 的十进制）。</p>
+<p>我们将尝试理解在第 5 个指令和第 14 个指令之间发生了什么。</p>
+<p>请注意，我们声明函数 <code>test()</code> 是非 payable 的，而且合约中没有 <strong>receive()</strong> 或 <strong>fallback()</strong> 函数可以接收以太币。</p>
+<p>因此，这个合约不能接收到任何以太币（除了一个特定的情况，但在这里并不重要），所以如果我们发送以太币，它就会回退！汇编中的代码相当于：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">005 CALLVALUE load msg.value</span><br><span class="line">006 DUP1      duplicate msg.value</span><br><span class="line">007 ISZERO    verify if msg.value is equal to 0</span><br><span class="line">008 PUSH1 0f  push 0f in the Stack (the byte location after the REVERT byte location)</span><br><span class="line">010 JUMPI     jump to this location if msg.value is not equal to 0</span><br><span class="line">011 PUSH1 00  push 00 in the Stack</span><br><span class="line">013 DUP1      duplicate 00 in the Stack</span><br><span class="line">014 REVERT    revert the execution</span><br><span class="line"></span><br><span class="line">用 Solidity 表示，等价于:</span><br><span class="line"></span><br><span class="line">if (msg.value &gt; 0) &#123; </span><br><span class="line">   revert(); </span><br><span class="line">&#125; else &#123;</span><br><span class="line">   // Jump to byte 15</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以这第二部分的代码只是验证是否有任何以太币发送到合约中，否则它就会被回退。</p>
+<p>在第 15个 指令时，堆栈为 <code>| 0x00 |</code> (因为 <strong>JUMP</strong> 在堆栈中使用了 2 个参数，EVM将它们删除)</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/13.png" loading="lazy"></p>
+<h1 id="CALLDATASIZE"><a href="#CALLDATASIZE" class="headerlink" title="CALLDATASIZE"></a>CALLDATASIZE</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">015 JUMPDEST     | 0x00 |</span><br><span class="line">016 POP          ||</span><br><span class="line">017 PUSH1 04     | 0x04 |</span><br><span class="line">019 CALLDATASIZE | msg.data.size | 0x04 |</span><br><span class="line">020 LT           | msg.data.size &lt; 0x04 |</span><br><span class="line">021 PUSH1 3c     | 0x3c | msg.data.size &lt; 0x04 |</span><br><span class="line">023 JUMPI        || (JUMPI takes 2 arguments)060 JUMPDEST ||</span><br><span class="line">061 PUSH1 00     | 0x00 |</span><br><span class="line">063 DUP1         | 0x00 | 0x00 |</span><br><span class="line">064 REVERT       ||</span><br></pre></td></tr></table></figure>
+
+<p><strong>JUMPDEST</strong> 没有任何作用。它只是表示一条 <strong>JUMP</strong> 或 <strong>JUMPI</strong> 指令指向这里，如果 EVM 跳到一个没有标记为 “<strong>JUMPDEST</strong>“ 的地址(比如 16 号是 <strong>POP</strong>)，它就会自动回退。</p>
+<p>接下来，EVM 将堆栈的最后一个元素 POP 出来，然后 <strong>PUSH1 04</strong>，因此在第 17 个指令之后，堆栈内只有一个元素： <code>| 0x04 |</code></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/14.png" loading="lazy"></p>
+<p>EVM 调用 <strong>CALLDATASIZE</strong>，等于 msg.data.size（以太坊交易中数据字段的大小），现在堆栈是：<code>| 0x04 | 0x04 |</code></p>
+<p>(当一个函数被调用时没有参数 msg.data.size &#x3D; 4，这 4 个字节被称为函数 “签名”)</p>
+<blockquote>
+<p><code>msg.data</code>包含了函数的签名和任何传递给函数的参数。函数签名是一个特定函数的唯一标识符，由函数的名称和参数类型列表的哈希构成，占用4个字节。</p>
+</blockquote>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/15.png" loading="lazy"></p>
+<blockquote>
+<p>以太坊的原始交易</p>
+</blockquote>
+<p>例如这里 msg.data 等于 <strong>“0x12345678”<strong>，</strong>msg.data.size&#x3D;4（8 个十六进制数字）</strong>。</p>
+<p>后来在第 20 个指令，EVM 调用 <strong>LT</strong>（小于），它比较堆栈上的两个值（如果 **Stack(0) &lt; Stack(1)**，那么我们写 1，否则写 0）。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/16.png" loading="lazy"></p>
+<p>在我们的例子中，它是假的! 4 不小于 4（运算符 LT 是严格的）。</p>
+<p>所以 EVM 不会跳到 3c（因为 <strong>Stack(0)</strong> &#x3D; 3c 和 <strong>Stack(1)</strong> &#x3D; 0），EVM 继续执行流程，就像什么都没发生一样。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/17.png" loading="lazy"></p>
+<p>但是如果 CALLDATASIZE 小于 4（如 0、1、2 或 3），那么 <strong>Stack(1)&#x3D;1</strong>，然后 EVM 跳到<del>0x28（十进制的40）</del>，EVM 回退 !</p>
+<blockquote>
+<p>应该是跳到 60 （0x3c）</p>
+</blockquote>
+<p>下面是发生的情况：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">015 JUMPDEST     </span><br><span class="line">016 POP           pop</span><br><span class="line">017 PUSH1 04      store 0x04 in the stack</span><br><span class="line">019 CALLDATASIZE  get msg.data.size in the stack</span><br><span class="line">020 LT            verify if msg.data.size &lt; 0x04</span><br><span class="line">021 PUSH1 3c      push 0x3c (60 in dec)</span><br><span class="line">023 JUMPI         jump to 60 if msg.data.size &lt; 0x04060 JUMPDEST   </span><br><span class="line">......</span><br><span class="line">060 JUMPDEST  </span><br><span class="line">061 PUSH1 00     </span><br><span class="line">063 DUP1         </span><br><span class="line">064 REVERT        revert the execution</span><br></pre></td></tr></table></figure>
+
+<p>这意味着 msg.data 不能小于 4，你会在下一节明白为什么!</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (msg.data.size &lt; 4) &#123; revert(); &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="函数选择器"><a href="#函数选择器" class="headerlink" title="函数选择器"></a>函数选择器</h1><blockquote>
+<p>在开始这个小节之前，我们先来看看 test()、test2()、test3() 这三个函数的函数签名</p>
+<figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;golang.org/x/crypto/sha3&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 函数签名</span></span><br><span class="line">	functionName := <span class="string">&quot;test()&quot;</span></span><br><span class="line">	functionName2 := <span class="string">&quot;test2()&quot;</span></span><br><span class="line">	functionName3 := <span class="string">&quot;test3()&quot;</span></span><br><span class="line">	<span class="comment">// 计算Keccak-256哈希值</span></span><br><span class="line">	hash := sha3.NewLegacyKeccak256()</span><br><span class="line">	hash2 := sha3.NewLegacyKeccak256()</span><br><span class="line">	hash3 := sha3.NewLegacyKeccak256()</span><br><span class="line">	hash.Write([]<span class="type">byte</span>(functionName))</span><br><span class="line">	hash2.Write([]<span class="type">byte</span>(functionName2))</span><br><span class="line">	hash3.Write([]<span class="type">byte</span>(functionName3))</span><br><span class="line">	digest := hash.Sum(<span class="literal">nil</span>)</span><br><span class="line">	digest2 := hash2.Sum(<span class="literal">nil</span>)</span><br><span class="line">	digest3 := hash3.Sum(<span class="literal">nil</span>)</span><br><span class="line">	<span class="comment">// 提取前4个字节作为函数选择器</span></span><br><span class="line">	selector := digest[:<span class="number">4</span>]</span><br><span class="line">	selector2 := digest2[:<span class="number">4</span>]</span><br><span class="line">	selector3 := digest3[:<span class="number">4</span>]</span><br><span class="line">	<span class="comment">// 打印结果</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;bytes4(keccak256(\&quot;%s\&quot;)) = 0x%x\n&quot;</span>, functionName, selector)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;bytes4(keccak256(\&quot;%s\&quot;)) = 0x%x\n&quot;</span>, functionName2, selector2)</span><br><span class="line">	fmt.Printf(<span class="string">&quot;bytes4(keccak256(\&quot;%s\&quot;)) = 0x%x\n&quot;</span>, functionName3, selector3)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bytes4(keccak256(&quot;test()&quot;)) = 0xf8a8fd6d</span><br><span class="line">bytes4(keccak256(&quot;test2()&quot;)) = 0x66e41cb7</span><br><span class="line">bytes4(keccak256(&quot;test3()&quot;)) = 0x0a8e8e01</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>一旦所有事先验证完成。</p>
+<p>我们需要调用函数 <strong>test()</strong> 并执行它的代码。但在我们的合约中有几个函数（**test() test2() 和 test3()**），如何找出 EVM 需要执行的函数呢？</p>
+<p>这就是函数选择器的作用。</p>
+<p>下面是接下来的反汇编步骤</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">024 PUSH1 00       | 0x00 | (the stack was previously empty in byte 23)</span><br><span class="line">026 CALLDATALOAD   | 0xf8a8fd6d0000000.60zeros.000000000 |</span><br><span class="line">027 PUSH1 e0       | 0xe0 | 0xf8a8fd6d0000000.60zeros.000000000 |</span><br><span class="line">029 SHR            | 0xf8a8fd6d |</span><br><span class="line">030 DUP1           | 0xf8a8fd6d | 0xf8a8fd6d |</span><br><span class="line">031 PUSH4 0a8e8e01 | 0x0a8e8e01 | 0xf8a8fd6d | 0xf8a8fd6d |</span><br><span class="line">036 EQ             | 0x0 | 0xf8a8fd6d | 0xf8a8fd6d | </span><br><span class="line">037 PUSH1 41       | 0x41 | 0x1 | 0xf8a8fd6d |</span><br><span class="line">039 JUMPI          | 0xf8a8fd6d |</span><br><span class="line">040 DUP1           | 0xf8a8fd6d | 0xf8a8fd6d |</span><br><span class="line">041 PUSH4 66e41cb7 | 0x66e41cb7 | 0xf8a8fd6d | 0xf8a8fd6d|</span><br><span class="line">046 EQ             | 0x0 | 0xf8a8fd6d |</span><br><span class="line">047 PUSH1 49       | 0x49 | 0x1 | 0xf8a8fd6d |</span><br><span class="line">049 JUMPI          | 0xf8a8fd6d |</span><br><span class="line">050 DUP1           | 0xf8a8fd6d | 0xf8a8fd6d|</span><br><span class="line">051 PUSH4 f8a8fd6d | 0xf8a8fd6d | 0xf8a8fd6d | 0xf8a8fd6d|</span><br><span class="line">056 EQ             | 0x1 | 0xf8a8fd6d |</span><br><span class="line">057 PUSH1 51       | 0x51 | 0x1 | 0xf8a8fd6d |</span><br><span class="line">059 JUMPI          | 0xf8a8fd6d |</span><br></pre></td></tr></table></figure>
+
+<p>你可能已经知道什么是以太坊的函数签名：它是函数名称的哈希值的前4个字节，对于**test()**来说，它是 ：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">bytes4(keccak256(”test()”)) = 0xf8a8fd6d</span><br></pre></td></tr></table></figure>
+
+<p><strong>CALLDATALOAD</strong> 接受 1 个参数 Stack(0) 作为偏移量，并将 msg.data 之后的在参数位置（这里是 Stack(0)）的下一个 32 字节存储在堆栈中 Stack(0)</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/18.png" loading="lazy"></p>
+<p>在此案例中，它存储 msg.data 的前 32 字节（因为 Stack(0) &#x3D; 0）。</p>
+<p>但只有 4 个字节（如前所述），因此堆栈将是这样的：<br><code>| 0xf8a8fd6d00000000000000000000000000000000000000000000000000000 |</code></p>
+<p>下一个操作码是 <strong>PUSH e0</strong> 和 <strong>SHR</strong> 位于第27指令（使用2个参数），它通过 **Stack(0)**（这里是 c0）向右（&gt;&gt;）执行二进制移位，堆栈（在 <strong>SHR</strong> 之前）的值为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">| 0xe0 | 0xf8a8fd6d00000000000000000000000000000000000000000000000000000 |</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/19.png" loading="lazy"></p>
+<p>下面是用 SHR 进行的详细计算（如果你愿意可以跳过）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">A place in stack is of length 32 bytes = 256 bits</span><br><span class="line"></span><br><span class="line">In binary Stack(1) = 11111000101010001111110101101101 and 192 zeros after that</span><br><span class="line"></span><br><span class="line">e0 = 192 in decimal, so we will shift 192 time to the right</span><br><span class="line"></span><br><span class="line">0 times   : 11111000101010001111110101101101..... + 192 zeros</span><br><span class="line">1 times   : 011111000101010001111110101101101.... + 191 zeros</span><br><span class="line">2 times   : 0011111000101010001111110101101101... + 190 zeros</span><br><span class="line">192 times : 192 zeros + 0011111000101010001111110101101101...</span><br><span class="line"></span><br><span class="line">= 0x00000000000000000000000000000000000000000000000000000f8a8fd6d</span><br><span class="line">= 0x00..60zeros00f8a8fd6d</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>实际上既是 0xe0&#x3D;14*16&#x3D;224(b)&#x3D;28(B)，然而函数签名占 4B，4+28&#x3D;32，所以即将签名结果移到最后</p>
+</blockquote>
+<p>在 DUP 操作码之后，堆栈看起来像<code>| 0xf8a8fd6d | 0xf8a8fd6d |</code>。</p>
+<p>值得注意的是，这就是我们的 <strong>test()</strong> 签名，这很正常！函数的签名总是出现在交易数据的前 4 个字节中。</p>
+<p>在以太坊交易中，我们不会直接发送要执行的函数的名称，而只是发送 4 个字节的签名。</p>
+<p>在第 31 个操作码中，EVM PUSH 一个 4 字节的值到堆栈：0a8e8e01</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">| 0x0a8e8e01 | 0xf8a8fd6d | 0xf8a8fd6d |</span><br><span class="line">// 在前文中我们有计算过，其实 0a8e8e01 是 test3() 的函数签名</span><br></pre></td></tr></table></figure>
+
+<p>并调用 <strong>EQ</strong>，比较（**Stack(0) 和 Stack(1)**）。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/20.png" loading="lazy"></p>
+<p>这两个值显然是不相等的：因此我们用 0 代替它们<br><code>| 0x0 | 0xf8a8fd6d |</code></p>
+<p>这样我们就不会 JUMP 到 41（65 的十六进制）（后面有指令 PUSH1 41 和一个 <strong>JUMPI</strong>）。</p>
+<p>EVM 对 <strong>0x66e41cb7</strong>（操作码 41 到 50）也做了同样的事情，这也不等于 <strong>0xf8a8fd6d</strong>。</p>
+<blockquote>
+<p>66e41cb7 实际上是 test2() 的函数签名</p>
+</blockquote>
+<p>最后，EVM 用 <strong>0xf8a8fd6d</strong> 来执行，由于现在等于 <strong>0xf8a8fd6d</strong>! 所以我们跳到 51（十进制是 81），这是 <strong>test()</strong> 函数的开始：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">081 JUMPDEST | 0xf8a8fd6d |</span><br><span class="line">082 PUSH1 57 | 0x57 | 0xf8a8fd6d |</span><br><span class="line">084 PUSH1 5d | 0x5d | 0x57 | 0xf8a8fd6d |</span><br><span class="line">086 JUMP     | 0x57 | 0xf8a8fd6d |</span><br><span class="line">087 JUMPDEST | 0xf8a8fd6d |</span><br><span class="line">088 STOP     ||</span><br><span class="line">093 JUMPDEST | 0x57 | 0xf8a8fd6d |</span><br><span class="line">094 JUMP     | 0xf8a8fd6d |</span><br></pre></td></tr></table></figure>
+
+<p>你可以很容易地分析我们的 <strong>test()</strong> 函数中最后执行的 8 条指令。</p>
+<p>它只执行了一系列的 JUMP 指令，在函数的最后，操作码 <strong>STOP</strong>，它停止了合约的执行而没有产生错误。<br>所有这些代码的行为就像编程中的一个开关。</p>
+<p><strong>0xf8a8fd6d</strong> 是 “<strong>test()</strong>“ 函数的签名<br>0x0a8e8e01 和 0x66e41cb7 是 test2 和 test3 函数的签名。</p>
+<p>如果交易数据中的签名与这些签名之一相符，那么通过跳转到函数的代码位置（代码中的 41，49 和 51）来执行函数的代码。</p>
+<p>否则。如果交易数据中的签名与代码中的任何函数签名不匹配，EVM 将调用回退函数，但在我们的智能合约中没有这样的函数（至少现在没有）！因此：EVM 将重新调用回退函数。结果是：EVM 回退，故事到此结束。</p>
+<p>这是 59（函数选择器开关）之后的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">060 JUMPDEST</span><br><span class="line">061 PUSH1 00</span><br><span class="line">063 DUP1</span><br><span class="line">064 REVERT</span><br></pre></td></tr></table></figure>
+
+<p>因此，我们可以重构智能合约的完整代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mstore(0x40,0x80)                              </span><br><span class="line">if (msg.value &gt; 0) &#123; revert(); &#125;                              </span><br><span class="line">if (msg.data.size &lt; 4) &#123; revert(); &#125;</span><br><span class="line">byte4 selector = msg.data[0x00:0x04]                                </span><br><span class="line">switch (selector) &#123;                               </span><br><span class="line">   case 0x0a8e8e01:   // JUMP to 41 (65 in dec)   stop()</span><br><span class="line">   case 0x66e41cb7:   // JUMP to 49 (73 in dec)   stop()</span><br><span class="line">   case 0xf8a8fd6d:   // JUMP to 51 (85 in dec)   stop()</span><br><span class="line">   default: revert();</span><br><span class="line">stop()</span><br></pre></td></tr></table></figure>
+
+<p>我们完成了!</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我们成功地学会了。</p>
+<ul>
+<li>一些基本的 EVM 汇编。</li>
+<li>EVM 如何执行智能合约。</li>
+<li>哪些代码在执行函数之前被执行。</li>
+<li>LIFO 堆栈如何工作。</li>
+<li>remix 调试器的基本使用。</li>
+<li>函数选择器。</li>
+<li>还有很多…</li>
+</ul>
+<p>这个系列的第一篇关于通过调试理解 EVM 的内容就到此为止。我希望你在这里学到很多东西。</p>
+<p>下一部分见!</p>
+<p>这是我们关于**通过调试理解 EVM 系列的第 1 **部分，在这里你可以找到之前和接下来的部分。</p>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【零知识证明精品课程】从 Tornado Cash 学习零知识证明</title>
+    <url>/2024/04/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/20240407%20%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/</url>
+    <content><![CDATA[<h1 id="课程介绍与免责声明"><a href="#课程介绍与免责声明" class="headerlink" title="课程介绍与免责声明"></a>课程介绍与免责声明</h1><p>在这个系列中，将展示一个端到端的演示，介绍如何构建像 Tornado Cash 这样的混币交易系统。</p>
+<p>从基础开始讲起：<code>有限域</code> —— 现代密码学的数学结构基础；讨论一些加密哈希和构造；</p>
+<p>然后会转向与零知识证明相关的理论；</p>
+<p>这个项目的建设需要使用三种语言：</p>
+<ol>
+<li>JavaScript（web3 前端交互）：Next.js + React</li>
+<li>solidity（后端智能合约）：部署到测试网 + hardhat</li>
+<li>Circom：一种用于创建零知识证明（Zero-Knowledge Proofs, ZKP）的电路的特殊编程语言。</li>
+</ol>
+<h2 id="为什么是零知识证明（ZKP）？"><a href="#为什么是零知识证明（ZKP）？" class="headerlink" title="为什么是零知识证明（ZKP）？"></a>为什么是零知识证明（ZKP）？</h2><p>大多数公众认为区块链上的数据是公开和完全透明的，但是通过 ZKP 就不再是这样了。研究人员发现：即使区块链上的数据是公开的，如果这些数据以加密形式被隐匿了，那么即使你可以读取数据 你也无法从中提取太多信息，因为它被加密了 用加密构造掩盖了。</p>
+<h2 id="免责声明"><a href="#免责声明" class="headerlink" title="免责声明"></a>免责声明</h2><p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/1.png" loading="lazy"></p>
+<h2 id="系列意图"><a href="#系列意图" class="headerlink" title="系列意图"></a>系列意图</h2><ol>
+<li>向公众介绍如何识别加密货币混币器。所有人都可以在以太坊上发布智能合约，这就导致了一个问题：<code>Tornado Cash</code> 和 <code>Blunder</code> 不会是最后一个进入市场的加密货币混合器，当新手进入市场时，有时他们会有非常欺骗性或者其他非常吸引人的营销叙述。例如，一个服务可以被打造成一个社区储蓄库，但它实际上是一个用于洗钱的加密货币混合器。在这种情况下，公众需要具备识别这种类型服务并避免使用的知识，这是为了防止公众无意中卷入洗钱计划。</li>
+<li>增加这个称为密码学的领域的技术知识。密码学曾经是一个非常小众的领域，但在最近，它发现了广泛的实用性，尤其是在智能合约编程中。在过去，这是一个小众领域，在一个具有广泛公众吸引力的平台上发现了实用性。</li>
+<li>为其他智能合约开发人员引入了一个全工作流程参考。市场上有太多待办清单类型的应用程序了，我发现它们不是很有趣，很难跟进，这个特定项目受到了最近事件的启发，因此，我相信你跟着学习并将其作为自己工作的参考将会更有趣。</li>
+<li>它将普通大众引入一个将隐私用于区块链服务的渠道。关于隐私有一件有趣的事情，当涉及到其他人的行为时，我们希望他们尽可能透明，政府做什么，其他公司在做什么；但当涉及到我们自己的行为时，我们希望它们尽可能私密，我们拥有什么，我们做了什么，在一天结束的时候，人们都是自私的。因此，隐私将永远是区块链空间的一个重要话题。</li>
+</ol>
+<p>区块链基础设施本身是相当可靠的，当然，也存在组织上的失败，我们在最近几个月见证了这一点，但最终，隐私将是用户对区块链服务渴望的东西。而本系列将向你介绍如何将其引入你的用户中。</p>
+<h1 id="有限域"><a href="#有限域" class="headerlink" title="有限域"></a>有限域</h1><p>有限域是现代密码学的数学结构基础，它是与你所知的实数系统完全不同的数值系统。我们将讨论其背后的动机，如何构建它，域内的数学运算以及所有相关内容。在本视频结束时，你将非常熟悉有限域是如何构建的，以及如何进行计算和操作。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>如果你上过高中，你可能知道这些叫做数字的东西，我希望是这样。不只是 0，1，2，3，4，5，……，还有无穷无尽的例如<code>根号 2</code>，<code>1/3</code>，…… 等等，这给计算机带来了很大的挑战，因为计算机无法表示无限小数，计算机内存有限，无法表示到任意精度，这就产生了精度问题。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/2.png" loading="lazy"></p>
+<p>在某种程度上，甚至在最流行最可靠的语言中，它也会直接放弃表示任意精度。这是个大问题，这是密码学家无法容忍的问题。</p>
+<p>由于这个问题，有一天，密码学中的一个人醒来说：“好吧，不再这样了，我们将设计一个新的数学系统，一个新的数字系统，它将实现以下目标：</p>
+<ol>
+<li>第一个目标是它只使用整数 0 1 2 3 4 5（甚至没有负数）</li>
+<li>没有无限多的数字，你只会有一组有限的这些可数的介绍（这与有限域的概念有关，有限意味着它不是一个无限的集合）</li>
+<li>第三个是即使成员元素，将从这个多样化的实数集减少到只有孩子们可以接受的可数整数，但我们仍然希望在这个特定的数字系统中定义我们在学校学到的所有操作：即加法 减法 乘法 除法 指数运算等。你想定义函数，你想做所有这些好的事情，我们将看到如何实现这一点”</li>
+</ol>
+<p>这是关于如何处理这样的东西的基本想法。</p>
+<h2 id="时钟的例子"><a href="#时钟的例子" class="headerlink" title="时钟的例子"></a>时钟的例子</h2><p>有一天，有人观察到了时钟上的算术。与数字不同线相比，你将有一个循环结构，在时钟上询问你的数字系统的基础，你会发现它是你唯一看到的数字，我们正在谈论的是整点，你能看到的唯一的数字将是整数，从一点到十二点 元素的数量是有限的。你可以在时钟上进行非常直观的加减操作，你这样做的方法是通过所谓的模运算。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/3.png" loading="lazy"></p>
+<p>这是一个简单的加法，不需要模。每个时钟面上的数字代表将时钟的手向前移动那个数字的滴答声数，在这种情况下两加五是多少？当你移动时，你的手向前移动了两个间隔，然后又向前移动了五个间隔，所以两加五等于七。</p>
+<p>现在如果你用一些更大的数字来做加法，情况就变得更有趣了。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/4.png" loading="lazy"></p>
+<p>例如，在这种情况下，它将是七加十。七加十是多少？你将手移动七个间隔，然后再移动十个间隔。现在，你能直观地看到时钟面上的数字是什么吗？那个数字是五。</p>
+<p>我们所指的是将时钟的指针向前移动七个间隔后，再移动十个间隔达到相同的效果，就像简单地向前移动五个间隔一样。因为时钟是一个循环结构，这个操作与模运算相同，你也可能知道它叫做余数运算符。你减去，你从你的操作中去掉完整的圆圈，然后你只取操作的余数。所以在某种意义上，这是五模十二的剩余运算。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/5.png" loading="lazy"></p>
+<p>现在，如果你想进行加法，当然，你也会想要考虑什么是零？当然，数字零没有写在时钟面上，但我们可以使用零的属性来找到它。如果你观察零的属性，首先，在实数情况下，我们将使用实数情况作为灵感：一加零等于一，任意数字加零等于那个数字。负三加零等于负三，最终，无论是哪个数字加零，你都会得到那个数字。所以我们可以使用相同的概念在时钟面上定义零。时钟面上的哪个数字，无论你选择什么数字，如果你将那个数字加到你选择的数字上，你会得回你原来选择的数字。那就是十二，因为数字十二代表了时钟的一圈完整的转动。无论你在时钟面的哪里，你走一整圈，最终会回到同一个地方，这就是为什么十二是时钟面上的零。事实上，我们将其称为加法单位元。之所以称为加法单位元，是因为任何数字加上它，得到的还是那个数字本身。十二是加法单位元，或者零元素。按照惯例，从现在起，我们将在时钟的顶部写上数字零，现在不是选定的数字。我们选择的元素集将从零到 n减一，在这种情况下，我们选择数字十二作为时钟面的顶部，成员将由零到十一组成。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/6.png" loading="lazy"></p>
+<p>更有趣的问题是：负数在时钟面上是如何定义的？当然，你看不到任何负数，但我会向你展示它们是如何定义的。像往常一样，我们从我们所知道的东西中获取灵感，那就是实数。如果你观察实数情况下负数的行为，一加负一等于零，半加负一半等于零，一个任意大的数字加上那个数字的负数等于零，最终，无论你选择什么数字 n 加上 n 的负数等于零。因此，从数学特征的角度来看，负数可以被理解为两个数字，如果它们加起来等于零。这就是我们用来在时钟面上定义负数的视角。我们不是简单地定义一个负数为在数字前加上负号，我们将负数定义为当它们加起来等于零的互补数对，在这种情况下，是十二。我们将它们称为加法逆元，而不是负数。逆的概念将取代负数的概念。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/7.png" loading="lazy"></p>
+<p>这里我有一个时钟面上加法逆元的表格。你会注意到，每一对数字加起来等于十二。我为你准备了一个小例子来测试合理性，三减去十一，如果你知道如何简化这个，如果你知道算术简化规则，你知道这个表达式可以简化为三加负十一，这意味着三加上数字十一的逆元，也就是一，因此，这个表达式简化为三加一等于四。我们也可以在这里直观地检验我们的理论，如果你在时钟面上的数字三的位置，而你想减去十一步，这意味着你想逆时针移动十一步，你将会准确地结束在数字四的位置，这是正确的。</p>
+<h2 id="总结当前进展一"><a href="#总结当前进展一" class="headerlink" title="总结当前进展一"></a>总结当前进展一</h2><ol>
+<li>首先，我们确定将使用的有限集是从零到 n 减 1。 n 是我们选择放在时钟面顶部的数字。</li>
+<li>加法将使用模运算来定义，以便将大的求和结果带回到域本身。</li>
+<li>加法单位元是零元素，n 是选择放在时钟顶部的单位。</li>
+<li>加法逆元是一对互补数字，加起来等于零。这个概念也取代了负数。</li>
+</ol>
+<p>那么，在加法和减法之后我们该做什么呢？自然地，我们会转向乘法。乍一看，你可能会说，有了模运算，模乘法应该很直观。像平常一样做同样的事情，比如七乘以二。这里有一些例子，七乘以二等于十四，做模运算后返回 2；五乘以六等于三十，做模运算返回六。一切似乎都在正常运行，问题是什么？我将通过展示数字三来告诉你问题。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/9.png" loading="lazy"></p>
+<p>我将通过展示三与有限集合中的每个其他元素相乘的结果来向您展示问题。三乘以一等于三，三乘以二，同样，为了得到下一个结果，你只需在前一个结果的基础上再加三步，这与乘法有关，事实上乘法可以被理解为连续加法。三乘以二等于三加三，三乘以三等于三加三加三，这是一种使用我们已经定义的东西(在这种情况下是加法)。</p>
+<p>来理解一个新概念(在这种情况下是有限域中的乘法)的方法：三乘以二，加三步，得到六；三乘以三，得到九；三乘以四，你又回到了时钟的顶部，也就是零；三乘以五得三；六 九 零 以此类推。</p>
+<p>现在，问题是什么？这个结果有几个问题：</p>
+<ol>
+<li>第一个问题是：你无法从三的倍数回到实数情况下数线上的其他任何数字。无论你在数线上的哪里，你总能决定一个乘法因子，如果你用那个乘法因子乘以你的数字，你可以到达实数线上的任何地方。这里对于这些数字 124578 并没有发生，没有办法从 3 的倍数中得到这些元素。</li>
+<li>第二个问题是：你可以清楚地观察到这里有一个循环行为。数字 3690 3690 重复出现，这创造了一个重复性悖论：例如，如果你看表达式三乘以三和三乘以七，它们都等于九，这隐含地暗示，当它们与三以某种方式相乘时，数字三和七是等价的。这是荒谬的。</li>
+<li>第三个问题是：零的问题。三乘以四等于零，而且你会看到零在好几个地方出现，乘以八和三乘以十二，这没有意义，因为如果三代表了一个真实的贡献，向前的贡献，四代表了真实的向前，四步的贡献在时钟面上，但不知何故，当它们一起被乘时，它们产生零。这不合理。</li>
+</ol>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/10.png" loading="lazy"></p>
+<p>现在，我们希望一个数字在与其他元素相乘时表现出什么样的良好行为。我们将看看数字五的好例子，并通过将它与集合中的每一个其他数字相乘做同样的事情。</p>
+<p>五乘以一等于五，五乘以二等于十，三八一六…… 你可以清楚地看到数字五的乘法行为明显不同，首先，你可以从五的倍数得到其他每一个数字，这是我们希望的，这是有意义的，并且与实数线上的实数情况相当类似；第二点是没有循环结果，你会看到数字五乘以每一个其他数字都会得到一个不同的数字，我们也在结果中看到了数字零，然而，这是完美的，这个很有道理，五乘以十二等于零，十二是什么？我们已经决定十二是零，一个数字乘以零应该等于零。</p>
+<p>现在让我们检查为什么数字三是一个坏例子，而数字五表现正常或不错？如果你看数字三的乘法，我会再次播放这个动画，3 6 9 0，你会看到，每一次循环， 然后乘法，连续的倍数，连续的加法回到时钟的同一个点，这正是点零，这就是它进入这种循环行为的原因，因为每次它回到时钟的顶部，它最终会从同一个时间点再次开始，这是因为数字三是数字十二的完整除数，这意味着每次你回到时钟的顶部，你会回到同一个点；数字五没有这个问题，因为数字五不是数字十二的除数，如果你观察同一个过程，我们说五 十 三，你可以看到每次它回到时钟上，它以某种方式错过了正指向零的确切点，因为这种轻微的不对齐，它允许五的倍数每次进入一个新周期时都能到达新的数字，第一个循环，我们达到了数字五和十，在第二个循环，通过了零点标记，你可以看到它开始到达数字三 八，这是第三个循环，一  六 十一，这个循环它到达了三个数字……</p>
+<h2 id="质数域"><a href="#质数域" class="headerlink" title="质数域"></a>质数域</h2><p>现在我们已经确定，特定数字与你选择的顶部数字共享除数是导致这个问题，这种不规则行为的原因，我们现在可以有一个解决这个问题的想法，解决这个问题的方法是确保有限集合的元素与顶部数字不共享任何除数。</p>
+<p>为了非常简单地做到这一点，我们可以简单地选择一个质数作为时钟的顶部，而不是像十二这样有很多除数的数字。因此，如果你选择一个质数作为时钟的顶部，那么每个成员元素在乘法下都会逻辑行为，这里我有一个质数域的完整乘法表 P 等于七，如果你在时钟的顶部放置一个质数，还要注意，时钟已经改变了，这个时钟面上只有七个数字，如果你选择一个质数放在时钟的顶部，我们称之为质数域，从乘法表中，你可以看到每个元素的所有倍数都被很好地定义了，它们到达了有限集中的每一个数字，没有循环行为，而且唯一产生零的乘法是如果数字与零本身相乘。</p>
+<p>乘法操作的几个重要概念：</p>
+<ol>
+<li>首先是定义乘法的单位元素，这是数字一，因为任何数字乘以数字一等于它自己，这就是为什么它被称为乘法下的单位元</li>
+<li>第二是乘法逆元的概念，这个概念将替代除法操作，如你所见，在这个例子中，二除以三可以被重写为二乘以三，提升到负一次方，三提升到负次方表示它的乘法逆元。从表中你可以看到，类似于加法情况，任何两个数字，如果你把它们相乘在一起，你得到乘法单位元一，然后它们被称为互为乘法逆元。从例子中你可以看到，二和四是乘法逆元…… 二除以三等于二乘以三的乘法逆元，从表中你可以看到是五；零除以零仍然是未定义的。</li>
+</ol>
+<p>因为我们现在有了乘法操作，讨论零是必要的。除以 0 仍然没有定义，这不是问题，因为在实数情况下零除以零也是未定义的，这并没有给我们的集合构建增加任何复杂性</p>
+<h2 id="总结当前进展二"><a href="#总结当前进展二" class="headerlink" title="总结当前进展二"></a>总结当前进展二</h2><p>而不是有限域，我现在将这些有限域称为质数域，顶部有一个质数，这个有限集的特定元素现在变成了零  一 二 三 自然整数，一直到 P 减一，定义了一种新的操作乘法，大数字的乘法仍然需要通过模运算规则，对非常大的数字应用模运算，乘法的单位元素是数字一。</p>
+<p>乘法逆元，替代了除法的概念，定义为一对互补数字。如果它们相乘在一起，乘法后产生单位元。</p>
+<h2 id="指数-x2F-对数-运算"><a href="#指数-x2F-对数-运算" class="headerlink" title="指数&#x2F;对数 运算"></a>指数&#x2F;对数 运算</h2><p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/12.png" loading="lazy"></p>
+<p>指数运算简单地可以被定义为连续的乘法，三的一次方是三，三的二次方是三乘以三，三的三次方是三乘以三乘以三，每当你得到一个大的乘积，在这种情况下，它呈指数级增长。你通过模运算运行它，就像之前一样，得到最终结果。</p>
+<p>你可以看到，如果数字三在质数域中，P 等于七，提升到每一个次方，它将产生其他每一个元素，它将到达集合内的每一个其他元素，这种元素的行为使其成为一个生成元，一个生成元，或称为原始元素，是一个元素，如果你连续地对它进行指数运算，它生成整个新集合。与生成元相关的一个重要属性是：生成元提升到 P 减一的次方总是产生一，如你从表中看到的。如果你不相信我，你也可以检查这个集合的其他生成元，你可以通过简单地对集合内的任意数字进行指数运算来找到它们，看看它是否产生相同的操作产生整个有限集。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>现在我们实际上可以声称我们自己的数字系统是完整的，它将被称为质数域，由零到 P 减一的数字组成，你选择一个质数放在时钟的顶部，加法用模运算来定义。</p>
+<ol>
+<li>加法的单位元素是数字零 或时钟顶部的数字 P</li>
+<li>加法逆元被定义为一对数字，当它们加在一起时产生零（这个概念取代了负数，也取代了减法，加减一个数字与加上那个数字的负数相同）</li>
+<li>我们定义了乘法，乘法也将遵循模运算，乘法的单位元素是数字一。</li>
+<li>乘法逆元被定义为一对互补数字，如果它们相乘在一起，产生单位元素一，这个概念乘法替代了除法。</li>
+<li>基于乘法我们进一步定义了指数运算，它来自连续的乘法，因为乘法在质数域中被良好定义，简单地通过指数运算的扩展，我们可以逻辑上得出指数运算也在质数域中被良好定义。</li>
+<li>最后，我们定义了生成元。生成元是集合内的原始元素，如果你连续对它们进行指数运算，将生成有限集内的每一个其他元素。</li>
+</ol>
+<p>所以现在我们已经结束了我们的课程，这是现代密码学背后的独特数学数字系统，它只使用自然整数，没有负数，没有分数，没有这些。我们只有自然整数，我们还只有有限集，我们不会任意容纳集合内的无限大数字。你所做的是选择一个质数 P，并从零构造到 P 减一的集合，并且这个集合内的所有操作都将被良好定义，正如我们之前展示的。</p>
+<h2 id="最后的土特产"><a href="#最后的土特产" class="headerlink" title="最后的土特产"></a>最后的土特产</h2><p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/13.png" loading="lazy"></p>
+<p>在我们离开这个视频之前，我想给你两个模运算的恒等方程。我们将使用这些定律在这个系列中构建数学场景，这些公式很直观，网上有很多证明，你可以自己找。</p>
+<h3 id="加法分配律"><a href="#加法分配律" class="headerlink" title="加法分配律"></a>加法分配律</h3><p>它指出，如果 a 加上 b 加上 c，他们的和模 m，如果你想分割一个求和，你将模运算符分布到每个项中。</p>
+<h3 id="乘法分配律"><a href="#乘法分配律" class="headerlink" title="乘法分配律"></a>乘法分配律</h3><p>类似。</p>
+<h1 id="离散对数问题"><a href="#离散对数问题" class="headerlink" title="离散对数问题"></a>离散对数问题</h1><p>在这个视频中，我首先想要展示你们学校里一些简单函数的数学行为，并利用我们的观察来定义离散对数问题。现在，因为底层的数学结构是不同的，我们现在处于有限域中，而你们学校学的是实数系统中的基本函数，所以你们也会期待它们的行为也会有所不同。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/14.png" loading="lazy"></p>
+<p>首先让我们考虑函数 27x，让我放一些 x 的数字，所以如果你还记得，在实数情况下，这只是一条通过原点的直线。如果我绘制这个，按照预期它是一条直线。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/15.png" loading="lazy"></p>
+<p>现在让我们考虑函数 27x 模 97，为了编写模式公式，在表格中输入 x 乘以 27 模 97，顺便说一下 97 是一个素数。现在，如果我绘图，首先观察到的是，函数将不再是一条连续的线，它将变成分散的点，因为在有限域中，只有整数被允许作为元素。所以如果你在有限域上绘制一个简单的，甚至是连续的函数，你会得到这些分散的点作为图形输出。但我们仍然可以观察到这个函数的一些规律，也就是说，如果你直接观察它，会发现某种循环行为，每次乘积大于 97 时，函数会以某种方式环绕并从底部开始， 并且在每个周期中，它仍然是一条直线，所以这个函数仍然有一些规律性</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/16.png" loading="lazy"></p>
+<p>现在让我们考虑一个更有趣的情况，也就是指数函数，比如说 2 的 x 次方，首先考虑实数情况。我简单地写下 2 的 x 次方，如果我绘制这个，你会期望这是一个非常典型的指数增长类型的函数.</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/17.png" loading="lazy"></p>
+<p>那么 2 的 x 次方模 97 又如何呢？现在，如果我绘制这个函数，这个函数更加有趣因为它变得非常不可预测，以至于我们甚至可以争论说，如果我增加轴的数量，它几乎变成了随机散布，所以我将为有限域 97，质数 97，做这个，x 的值可以一直到 96。因为 Excel 和 Google 表格无法计算非常大的指数函数，对于剩下的公式，我将说等于上一个值乘以 2 模 97。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/18.png" loading="lazy"></p>
+<p>你可以看到，这是你将会得到的图形，正如你所观察到的，这是一个非常不稳定，不可预测的形状，这将是我们定义离散对数问题的基础点。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/19.png" loading="lazy"></p>
+<p>现在让我们讨论离散对数问题。在我向你展示任何东西之前，让我先告诉你结论，离散对数问题的结论是 </p>
+<p><code>在有限域中解对数非常困难</code> </p>
+<p>它之所以被称为离散，是因为在有限域中，所有元素都是离散的，它之所以被称为离散，是因为在有限域中，所有元素都是离散的，并且正如你在图表中所看到的，所有点是分开的。现在，什么是对数？</p>
+<p>首先，对数是指数的逆运算。为了充分理解我们的结论，让我们首先从实数情况中汲取灵感，假设在实数情况下，我有一个指数函数 a^x，它的结果被表示为 b。什么是正向操作？正向操作是指数运算，也就是说给定 a 和 x 计算 b，这很容易做到。在连续的情况下，通常你只需要将它输入计算器，我不确定计算器是如何做到的，但如果我必须猜测，它可能是通过泰勒级数展开，这并不难。</p>
+<p>什么是逆运算？逆运算是对数，给定一个基数 a 和 b 你想要计算 x。现在，如果我要绘制一个指数函数的图形。现在，即使你没有计算器，如果我给你基数 a 和 b，你如何 或多或少 得到理想的 x 作为解决方案？因为你知道在实数情况下指数函数是单调递增的，所以你可以通过试错来做，假设首先我随机选择一个 x1 这将给我一个 y1，如果 y1 小于我的目标值 b，我将需要在 x1 的右边寻找理想的 x 解决方案。如果我的数字，比如说 y2，通过另一次试验，我插入 x2 并得到 y2，如果 y2 大于我的目标值 b，那么我将在 x2 的左边寻找那个理想的 x 解决方案。最终，你可以通过简单地缩小可能的 x 值范围来找到一个 x^*。因为这个函数有一个规则的模式，它是单调递增的，所以你可以进行这种分而治之类型的解决方案搜索例程来得到最终的 x，所以从算法上讲，可以说，这并不难。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/20.png" loading="lazy"></p>
+<p>现在，让我们讨论离散情况。假设你仍然有一个函数 a 乘以 x 的次方等于 b，正向操作是指数运算，那么在离散情况下，你如何快速地进行指数运算呢？这种方法被称为，这种方法被称为平方和乘法。</p>
+<p>你如何得到 a 的 8 次方？当然，愚蠢的方式是一遍又一遍地将 a 与自身相乘。但有一个更快的方法首先，你将 a 与自己相乘得到 a 的平方，然后你将 a 的平方与自己相乘得到 a 的四次方，然后你将 a 的四次方与 a 的四次方相乘得到 a 的八次方。所以在这个过程中，你只需要三次乘法就可以得到 8 次方。假设你想得到 9 次方 你只需将 a 的 8 次方再乘以另一个 a，所以这是一种非常高效的方式来计算非常大的指数。事实上，这个算法的计算复杂度是与指数的对数对数成正比的，那么对数呢？</p>
+<p>这是逆运算，让我实际上将这个写作离散对数。给定 a 和 b 计算 x。现在，你能使用相同的方法来缩小 x 范围来得到最终答案吗？我已经有了图表，答案是否定的，因为图表非常类似于随机分散，它的模式无法预测。如果我给你某处的 y 比如说这是我给你的 y 也就是 b，并告诉你给我对应于那个 y 值的 x，实际上没有办法知道，因为 x 值实际上可以是任何地方，所以这就是为什么对于正确的离散对数，暴力搜索非常可能是你能做的最好的事情。</p>
+<p>给定基数和最终指数化的结果，没有有效或聪明的方式来得到答案。这非常有趣，因为它使得有限域中的指数函数成为一个陷阱函数，<code>它很容易朝一个方向走，而很难朝另一个方向走</code>。为什么这是有益的呢？因为它给了你一个机会，一个数学属性，来隐藏信息。a 的 x 次方减去 a 的 x 次方不过是 a 与自身反复相乘，所以它在自身上执行了相同的乘法操作 x 次，并且即使你观察到结果 b 你也无法得到 x，所以这个操作隐藏了一部分信息，那部分信息是执行乘法的次数。</p>
+<blockquote>
+<p>现在，让我在离散情况下再次重复一遍，当你在有限域中对同一个元素一遍又一遍地应用乘法操作时，它隐藏了一部分信息，那部分信息是操作执行的次数。</p>
+</blockquote>
+<h1 id="零知识证明的介绍"><a href="#零知识证明的介绍" class="headerlink" title="零知识证明的介绍"></a>零知识证明的介绍</h1><p>在这一部分，我们来讨论零知识证明。</p>
+<p>首先，让我们明确零知识证明的目标：<code>你想向某个被称为验证者的人证明，我，在这种情况下，作为证明者，拥有满足某个标准的信息，但不向他们展示信息本身。</code></p>
+<p>我知道在维基百科上，有一个备选的定义，它被描述为你想向某人证明一个给定的声明是真实的，而不揭露任何额外信息，除了这个声明确实是真实的这一事实。</p>
+<p>在实际操作中，尤其是如果你有零知识证明的数学设置，你最常想向某人证明你拥有一个数学对象，比如一个数字，一个函数或一个编码，它满足某个标准，比如一个等式或作为一个函数的有效输入，所以实际操作中，第一个定义更有用。这就是我们接下来要使用的目标声明。</p>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/21.png" loading="lazy"></p>
+<p>让我给你举一个例子，假设有一个验证者，我将扮演证明者，在我们之间有一个锁，我想要证明我拥有这个锁的钥匙，显然，验证者可以要求我展示钥匙，并展示如何用钥匙打开锁。但在这个场景中，我要说“不，我不会向你展示钥匙”。但我还是会以某种方式说服验证者我确实拥有它，因为有时向某人展示钥匙实际上是一个非常冒险的举动。</p>
+<p>为了激发我们的解决方案，我想邀请你重温这部著名的塔伦蒂诺电影《无耻混蛋》中的一个场景，在这个特定的场景中，海尔斯特罗姆少校在和一群英国和美国间谍玩“我是谁”身份猜谜游戏，在这个场景中，他面临着同样的问题，他试图确认一个他无法直接观察到的信息片段的真实性，所以我希望你特别注意这个互动的设置，游戏的设置，以及互动本身。</p>
+<p>所以下一个问题是，海尔斯特罗姆少校是如何在不实际查看的情况下弄清楚他额头上写的是什么？</p>
+<ol>
+<li>首先，他问了很多问题。什么样的问题？它不能只是任何类型，他没有问他们，你今天过得怎么样。</li>
+<li>从现在起，我要称这些问题为挑战，因为这是标准术语。问题需要与不可观察真相的性质，特征或某种函数相关，因为你希望你的探测问题能揭示一些真相的本质，以确定其身份。</li>
+<li>挑战问题的线索是随机设计的。注意在场景中间，少校试图将提问引向特定的方向，因为他认为这样做会使游戏更加有趣。</li>
+</ol>
+<p>接下来的课程中，你会看到在零知识证明系统设计中，总会有一部分更像是艺术而不是科学。并会让你觉得系统相当随机，但这仅仅是其中的一部分。</p>
+<p>对手方：这个游戏要起作用，需要多方之间的互动，因为对手方是那些可以直接看到真相的人。如果我们回到我们的目标声明，证明者实际上可以完全访问秘密信息，因为他是拥有者。这就是为什么验证者和证明者，必须通过一系列的互动来确定证明者的声明，通过验证者向证明者提出挑战来探测那些秘密信息的有效性。所以，多方之间的互动绝对是必需的，为了这个系统正常运行。</p>
+<p>它需要一个游戏设置和提问规则，你希望人们在一套规则下进行互动，以便可以达到期望的结果，否则游戏会因为变得非常混乱而崩溃。</p>
+<p>最后也是最重要的一点，是概率性的信任。注意，在这种情况下，这不是一种演绎推理的形式。在我们的日常演绎推理中，如果你遵循一套合理的逻辑规则从一组前提出发，你总能得出一组合理的结论。在这种情况下，少校试图从他观察到的后果，即他提出的挑战问题的答案，反向推导前提，这个过程不可避免地涉及到逐渐增加的信任水平和缩小场景到某个结论的行为。</p>
+<h2 id="零知识证明"><a href="#零知识证明" class="headerlink" title="零知识证明"></a>零知识证明</h2><p>现在，有了这个场景的启发。让我们确定零知识证明的一些基本要素。</p>
+<ol>
+<li>首先，你需要一个单独的设置和互动规则。</li>
+<li>为什么需要规则？因为在验证者和证明者之间，验证者会向证明者提出挑战问题，以探测证明者拥有的那片秘密信息的本质。</li>
+<li>当然，第三点是，在设置阶段预先定义的挑战问题，将与证明者拥有的不可观察真相的特定特征，功能，函数和独特特征相关。</li>
+<li>第四点是，验证需要有终止条件，所以要么接受要么拒绝，你需要一个接受条件，其中证明者的有效答案将触发验证者接受证明者的声明，即他确实拥有符合给定标准的信息，或者如果答案不正确则拒绝。</li>
+<li>第五点是，这个系统总是会有不确定性的元素。零知识证明系统的结论永远不会是 100% 确定的，询问任何研究者都会告诉你，结论不是百分之百的，因为最终，真相从未被揭露，所以在许多情况下，证明者可以在没有有效原始输入的情况下对挑战问题给出有效答案。</li>
+</ol>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/22.png" loading="lazy"></p>
+<p>那么回到我们的例子，这种情况怎么样。所以在验证者和证明者之间：验证者有一个锁，我想要证明我有一个可以打开那个锁的钥匙。</p>
+<p>所以验证者可以设置一个秘密房间，在这个秘密房间里，他会放置锁，并且还有一个闭环金属环。然后我进入房间，在验证者看不到的情况下做一些事情，当我们稍后一起进入房间并看到我成功地将锁锁在那个环上时，验证者将接受我的声明，即我确实拥有那把锁的钥匙。</p>
+<p>现在，让我们在我们刚刚为零知识证明定义的基本要素的背景下评估这个场景。</p>
+<ol>
+<li>首先你需要一个设置，这个设置是房间。</li>
+<li>交互规则是我们在挑战中遇到的一系列挑战所制定的规则集合。</li>
+<li>挑战是什么？挑战是如果验证者挑战我将那把锁锁在那个环上，这个挑战问题直接探测了我声称拥有的功能，因为如果我有有效的钥匙，我很容易就能使用这个功能，即打开锁，将锁锁在那个环上。</li>
+<li>第四点接受条件，如果我成功通过这个挑战，验证者将接受我的声明。</li>
+<li>现在来到有趣的部分，这个结论总是有不确定性的元素。注意，在整个过程中，钥匙从未向验证者展示，只有我才能访问它，那么，我可以成功通过这个挑战但实际上没有钥匙的一些情况是什么呢？第一个情况是，如果我会撬锁，并且我带着一套撬锁工具进入房间，用那种方式打开锁；第二个情况，也许我以某种方式操纵了验证者使用的道具，验证者使用的环，我以某种方式操纵了它，并且它有一个秘密隐藏的机制在里面，可以在没有钥匙的情况下打开，这在魔术表演中实际上很常见，你有一个看似闭合的环 ，但实际上它有某种开口。<ol>
+<li>现在，第一个情况将被视为伪造的情况，我试图在没有钥匙本身的情况下模仿一个功能。</li>
+<li>第二种情况将被视为后门情况，其中实际的设置有一个我可以利用的漏洞。</li>
+<li>在未来的课程中，我们将探索这些情况如何发挥作用。</li>
+</ol>
+</li>
+</ol>
+<p>现在，你可能会有的问题是：一个零知识证明系统总是有不确定性元素的情况下，它在实际操作中是如何被使用的，你如何在实际情况中容忍这种错误率？答案是，你希望在现实世界场景中，这些错误率保持非常非常低，当然，恶意情况仍然是可能的，但它们非常非常不可能，这就是你解决这个问题的方式。有效声明的可能性与接受条件实际上如此之高，几乎等同于 100% 的确定性，这种低错误率通常来自于非常严格的系统设置，或系统设计的非常聪明的数学属性。</p>
+<p>好的，所以在这一部分，你学到了 ZKP 的基本要素，你需要一个单独的设置你需要挑战问题，挑战问题需要与你试图探测的不可观察的秘密信息的本质相关，需要在验证者和证明者之间建立互动，然后最终会有接受或拒绝的条件。你还需要记住 来自 ZKP 的结论永远不会是 100% 确定的!</p>
+<h1 id="零知识证明的数学案例分析"><a href="#零知识证明的数学案例分析" class="headerlink" title="零知识证明的数学案例分析"></a>零知识证明的数学案例分析</h1><p>我们讨论了零知识证明，在定性，情景驱动的环境中的上下文中，在这一节课程中，我们将看到如何在数学术语中实现这一点。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/23.png" loading="lazy"></p>
+<p>请回想一下我们对零知识证明的实际定义：证明者想向验证者证明他拥有一个满足某些标准的信息 x，而不向验证者展示 x。在数学术语中，这可能意味着证明者想证明他拥有 x，例如 x 的平方加上 4x 加上 7 等于 0，对于这个例子，我们将在模 997 的有限域中进行，是的，这是一个质数，这是我们选择的 p 值。证明者想在不展示 x 的情况下，或者换一种说法，在隐藏 x 的同时做到这一点。</p>
+<p>所以，如果你回想一下，像这样的系统有几个要求：</p>
+<ol>
+<li>首先，你希望有一个单独的验证设置。</li>
+<li>第二，你想确定你将采用哪种挑战问题。</li>
+<li>第三，是接受标准，一个决定你是否接受证明者声明的标准。</li>
+</ol>
+<p>花一点时间思考，你将如何解决这个问题？</p>
+<p>现在，在我向你们展示验证系统的例子之前，我想说两点：</p>
+<ol>
+<li>第一点是，我故意选择了方程 x 的平方加上 4x 加上 7 等于 0，因为在实数系统中，这个函数将没有解，解将是虚数。但你会看到，在这节课的最后，这个方程在有限域中会有整数解。</li>
+<li>第二个是，我将向你展示的验证设置并不是 TornadoCash 实际使用的设置，但它是一个简单的例子，将帮助你理解构建零知识证明系统的基本概念，这样当我们实际到达生产系统时，你会更容易理解它，因为它相当复杂。</li>
+</ol>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/24.png" loading="lazy"></p>
+<p>好的，让我们考虑一个函数，我称之为 v 输入为 i，等于 300 的 i 次方。这是一个简单的指数函数，我故意选择了基数 300，因为 300 是质数 997 的质数域的生成元。我们为什么使用这个设置？我选择这个设置是因为我想利用某些数学性质，即两个性质</p>
+<ol>
+<li>第一个性质与有限域中的生成元相关，如果有限域有一个生成元，我知道那个生成元的 p 减一次方等于 1。你从第一段中知道，当我们讨论有限域操作的性质时。</li>
+<li>第二个很简单，因为 300 是一个生成元，所以我知道如果 i 等于 p 减 1，记住 p 减 1 模 997，如果 i 等于 p 减 1 那么 vi 或 300 的 p 减一次方等于 1。</li>
+</ol>
+<p>现在你可能开始看到这里的联系了，p 减一是什么？回想一下时钟，在时钟的顶部，我们放置了 p，这等同于有限域的零，而 p 减一就是在它左边的一刻，所以这就是这个数字，就是 p 减 1。</p>
+<p>如果你回想起原始声明，我们试图证明的是证明者试图证明 x 的平方加上 4x 加上 7 等于 0，而 0 只是 p 减一右边的一刻，所以这个联系给了我们一个想法：i 等于 x 的平方加上 4x 加上 7，并且这个表达式减 1，那么如果原始声明有效，也就是说这部分，x 的平方加上 4x 加上 7 等于 0，那么 vi 等于 300 的 x 的平方加上 4x 加上 6 次方等于 1，好的，我们刚才做了什么？我们将原始的证明声明转换成了新的证明声明，根据新的验证设置函数，稍后你会看到为什么这样做是有利的。</p>
+<p>那么，为什么这样做？我们可以很简单地通过简化来看到（顺便说一下，在上面的表达式中，这个指数的平方加上 4 加上6 需要模 997，模运算无处不在，我们不会每次都写出来，但请记住，每一个操作都要应用模运算，所以指数将通过模 997 运行）如果你回想起第一节课中的模运算性质，当你用模运算附加在未尾将求和分解成单独的项时，你将模运算分布到每个单独的项中，所以，如果你简化上述表达式，那就给出了 300 的 x 的平方模 997 次方乘以 300 的 4x 模 977 次方乘以 300 的 6 次方等于 1。现在，我想引起你对这个表达式的第二项的注意，即 300 的 4x 次方（我将省略提及模运算），那么 300 的 4x 次方是什么？那只不过是 300 乘以 300 乘以 300 一遍又一遍 4x 次。现在，如果你回想起第二节课，那就是，如果你在有限域中对同一个元素反复应用相同的操作，它会隐藏一部分信息，那部分信息是操作执行的次数。在这种情况下 是 4x。而 x 是什么？x 正是我们试图隐藏的。这同样适用于第一项，因为 300 的 x 的平方是什么…… 现在你可以看到为什么这个设置是有利的，因为代替证明者向验证者发送 x 来验证，他现在可以发送 x 的编码版本：即 300 的 4x 和 300 的 x 的平方，它的数学性质可以在验证设置中被检验，代替原始声明，而且，这个替代声明实际上等同于原始声明，因为简单的数学性质，所以这实际上等同于原始声明，如果这个声明被证明是真的，那么很有可能证明者确实知道满足原始方程的 x，所以这就是优势。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/25.png" loading="lazy"></p>
+<p>更具体地说，让我们现在写下验证设置。</p>
+<ol>
+<li>首先，你需要设置这是一个简单的指数函数，300 的 i 次方，这一切都在模运算中完成。</li>
+<li>第二，你需要挑战问题。挑战问题是什么？要求证明者发送 A 等于 300 的 x 的平方次方，还要求证明者发送 B 即 300 的 4x 次方，证明者可以自己计算 a 和 b 的值 因为他知道 x 是什么，他只需要计算这两个值并将它们发送给验证者。</li>
+<li>接受标准是什么： 验证者验证 a 乘以 b 乘以 300 的 6 次方是对的吗？如果这个表达式评估为 1， 那么如果这个测试通过，那么接受证明者确实知道满足这个标准的原始 x 的声明。</li>
+</ol>
+<p>那么，构建零知识证明系统的基本概念是什么？许多人错误地认为，通过零知识，意味着证明者不必发送任何东西，或者证明者发送的东西与秘密值 x 完全无关。但事实并非如此，对于零知识证明系统，你需要至少一次互动才能工作，回想上一节课，你需要互动才能工作，而这个验证设置允许证明者不发送 x，而是发送 x 的编码版本，即 a 和 b 它们的数学性质可以在验证设置中进行检验， 如果这些编码值具有正确的数学性质，那么我们可以反向推导，或多或少地确定证明者确实知道满足原始标准的秘密，因为证明者发送了秘密值的编码版本，它使得信息模糊，使得它保持隐藏，永远不会被揭露。</p>
+<blockquote>
+<p>关键概念说明：</p>
+<p>零知识是通过不发送任何与秘密信息相关的数据来实现的，而不是。相反，证明者发送编码&#x2F;混淆&#x2F;转换的秘密信息版本。编码、混淆或转换提供了强大的隐蔽性，隐藏了秘密信息并防止其被揭示。</p>
+<p>这些编码值的数学属性然后可以在一个单独的验证设置中检查（通常是以一个替代的数学标准形式）。如果编码值的特性是正确的，那么很有可能原始前提是真实的，即证明者确实拥有符合起始标准的秘密信息。</p>
+</blockquote>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/26.png" loading="lazy"></p>
+<p>现在，让我们看看它在实际操作中是如何工作的，在这里的一个 Google 表格中，我为你概述了验证的所有步骤。我还打开了一个 python 控制台，因为 Google 表格无法处理非常大的数字的计算，它会抛出错误，所以我们将使用 python 来进行计算。</p>
+<p>在第一个框中，证明者知道一个信息 x，没有其他人可以访问这个信息，不是验证者，也不是这个字宙中的任何其他人。第二步是证明者发送 x 的编码值，即 a 和 b 我们知道如何计算它们，A 等于 300 的 x 的平方次方，现在记住这个x的平方需要通过模运算，因为 300 的一个次方很可能大于 997，所以为了将整个结果带回到有限域中的一个值，我们将通过模运算再次运行结果，这给了我们 a 等于 961；对于 b 也是一样，即 300 的 4x 次方模再次 997，并通过模运算再次运行整个结果，这给了我们 81。</p>
+<p>为了方便起见，我将这最后部分 300 的 6 次方称为 C，验证者可以自己计算这个值，因为它只是一个常数，并且通过模运算运行整个结果，这给了我们 c 等于 226，好的，所以这里来了最后的验证步骤，即验证 a 乘以 b 乘以  c 模 997 等于 1，好的，所以我们说 a 乘以 b 乘以 c模 997 等于 1。</p>
+<p>所以在这种情况下 a 和 b 的所有属性都得到了验证。所以我们可以反向推导，或多或少地确定证明者确实知道满足方程 x 的平方加上 4x 加上 7 等于 0 的 x，现在，你可能不相信我，但是，这里我们可以验证一个系统外的 模 x，所以这是 x 的平方加上 4 倍的 x 秘密值加上 7 我们将用 997 模运算，这给出了 0 这是正确的。</p>
+<p>所以这个验证系统是有效的，在整个过程中，x 从未被揭露。如果你好奇这个 x 值是什么 x 的值是 607，这在 python 中也是一样，因为我在这里导入了它。</p>
+<p>现在，在我们结束这部分课程之前，你可能会有疑问，比如说，一个恶意用户会不会简单地通过暴力破解系统，</p>
+<p>只是暴力破解 a 和 b 的值发送给验证者，而他实际上不知道 x 的值。在这种情况下，你会是对的，因为你可能会成功地通过暴力破解 a 和 b 的值，但那是因为我们为这个例子选择的 p 值非常小，因为我想在纸上向你展示这是如何工作的，所以我们要实际操作。在实际生产案例中，质数值会更大，有多大？这里我有以太坊改进提案，这是 197 号提案，这个提案是为了改进以太坊，使其能够更好地适应 ZK。所以零知识，我们将在下一段中讨论 ZK snarks 在以太坊中的应用。因为它将增加用户的隐私，因为它们的零知识属性，所选择的质数值是这个数字，这与椭圆曲线密码学有关，我将简要介绍椭圆图上的点，在有限域上，形成一个群，那不一个域，只是一群人，这是它在有限域上形成的群。这个域 Fp 它的素数被选为这个数，我甚至不知道怎么说，但你可以看到，在实践中，实际的例子中，质数值会更大。</p>
+<p>你可以在家里尝试暴力破解一些这个质数域中更简单的方程，但你很快就会意识到，这不实际，不适用于你自己的桌面计算机，也不适用于，比如说，拥有巨大计算能力的国家安全局。</p>
+<p>下节课，我们将讨论实际的生产零知识证明系统是如何设置的。</p>
+<h1 id="Circcom-中的基本算术电路"><a href="#Circcom-中的基本算术电路" class="headerlink" title="Circcom 中的基本算术电路"></a>Circcom 中的基本算术电路</h1><p>在这节课和下节课中，我们将最终向你展示实际用于 Tornado Cash 生产的完整验证设置，在整个系列中，你会两次看到这个生产设置，因为它相当复杂。在这节课中，我们还将学习如何用 circom 编写数学运算，以及实现 Tornado Cash 中用于 merkel 树哈希的哈希函数 mimc，我们将在这一节课中看到所有这些。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/27.png" loading="lazy"></p>
+<p>在我们开始之前，我想简要讨论构建零知识声明的标准化或简单方法。在之前的课程中，我给你的所有零知识问题声明都是随机给出的。那么，有没有一种非常简单，可扩展的方式来构建一个声明呢？当然有,这就是你要做的:</p>
+<p>首先，你写下一个函数，函数是一个数学过程，你放输入进去，它会吐出输出。所以我在这里有一个函数，一个具有多变量输入的函数，F(x,y) 等于 x 平方乘以 y 加上 x 乘以 y 的平方加上 17。如果你知道 x 和 y 的值，你把它们插入进去，它会给你一个值，比如说 Z，然后你可以构造的零知识目标是证明你知道 x 和 y，使得 F(x,y) 等于 Z，而不显示 x 和 y。这适用于任意数量的输入的任何函数，如果你有一个函数，下一步是将其描述给计算机，实现它。可以说，让计算机能够理解并执行你定义的数学运算，在这个系列中，我们将使用一种叫做 circom 的语言，circom 是一种非常独特和低级的语言，它通过将复杂的数学方程简化为简单的电路运算来描述数学过程，电路可以简单地理解为电气组件，所以这种语言有很多电气工程的味道，比如加法门，这是加法，还有乘法门；用于加法门，假设你给它两个输入 A 和 B 它会给你输出 A 加 B；对于乘法，如果你给它 A 和 B 它会给你 A 乘以 B。这是一种非常原始的描述数学过程的方式，如果我直接给你一个例子，你会更容易理解。所以我将把这个函数转换成一个数学电路，第一步我做的是将所有的次方写成简单的乘法，这将帮助我看到这个方程涉及的个别乘法运算，然后我逐步将其转换成电路。</p>
+<p>首先我看到有 x 乘以 x，所以我写了一个乘法门，输入是 x 和 x，它会给我一个中间输出，我们叫它 m1，m1 等于 x 的平方。同样的方式，我看到这个平方的输出将再次与 y 相乘，所以我写了另一个乘法门，并在这里放入 y，它会给我 m2，所以 m2 将是整个求和中第一个组成部分的术语。第二部分实际上非常相同，但因为我有很强的 oCD 我首先定义 y 的平方，因为这样在电路中会更对称，但你也可以用另一种方法，先定义 x 乘以 y 然后那个结果再乘以 y，所以我会在这里称它为 m3，并再次放入 x，所以我定义了求和中的第一和第二部分，现在我只需要添加常数以获得最终输出。现在，在 circom 中，求和门实际上可以有任意数量的输入，但对于乘法门，如果你要将信号相乘，我稍后会解释这个词信号，只能有两个输入。但在这种情况下，我将把三个元素 m2 m4 和 17 输入到这个求和中，它会给我一个输出，让我称之为 o，完成了。这就是定义函数如何被转换为电路的方式。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/28.png" loading="lazy"></p>
+<p>下一个自然要问的问题是，为什么要这样做？我将告诉你为什么这样做是有利的。</p>
+<p>首先，注意除了 x y 和输出 o 之外，我们还引入了所有这些中间值， m1 m2 m3 和 m4。回想一下上一个例子，为了构建证明，你只需要原始输入值，在这种情况下，它将是 x 和 y，但对于实际生产案例，生产验证系统，你不仅需要输入值，你还需要所有的中间值来构建有效的证明，为什么这是个好主意？如果你以前上过学，参加过数学测试，对于一个数学问题，如果你只写下答案，比如说你抄袭了旁边的那个家伙，你会得到那个问题的满分吗？可能不会，因为老师会告诉你，如果你想证明给我看你确实知道如何做这个问题，你需要向我展示步骤，这正是这里的逻辑。假设一个恶意用户想要在实际不知道原始输入的情况下做出有效的证明，他现在不仅需要提出所有这些正确的中间值来构建一个有效的证明，这迅速提高了伪造的难度，这是一件好事，如果你把钱存入一个由零知识证明保护的系统，你不希望那个证明很容易被伪造，这就是为什么所有这些中间值也被称为见证人的技术术语，因为它们是电路经历了诚实执行的见证，并且所有数字都对应得上。</p>
+<p>第二点是关于可扩展性。通常，最简单的事物是最深刻的。因为最简单的事物是最具普遍性的，想想以太坊虚拟机，EVM 中只有几个操作码，但它可以描述你想在以太坊上做的任何操作，无论是质押 购买 NFT 交易 兑换加密货币等等，如果你回想之前的例子，当我们想构建一个零知识证明验证设置时，我们不得不每次都检查原始证明声明，然后为那个证明声明想出一个定制的解决方案，那么有没有一种更通用的方式，有没有一种更便宜的方式，有没有一种一键解决方案来设置验证系统？是的，有人找到了，然而，为了做到这一点，你需要一种非常通用的方式来描述这些商业活动或数学运算，circom 是一个很好的候选，因为它只使用加法和乘法门，这是非常简单的，它可以推广到各种各样的活动，一旦你有了问题的电路描述，那么完成验证设置就像将一个数字插入到一个函数中一样简单，我们将使用的验证设置，剧透一下，叫做 Groth16。它对电路的设置，平台或电路的用途完全不敏感，你只需插入电路，就能为你生成一个验证系统，这迅速减少了为链上的几乎任何活动带来更多隐私所需的资源和人力，这是一个非常大的优势，现在，在我们结束这一部分之前，我想向你展示这个图表在计算术语中是如何表示的，因为当然，计算机无法理解草图。</p>
+<p>首先我想告诉你我所指的信号是什么，信号很简单，信号包括输入、所有中间值、所以见证人和输出。定义这些信号的规则我会在实际编码时告诉你，那么这个电路在计算术语中是如何表示的呢？你做的方式是写下描述每个门之间数量关系的方程，比如说，看看这个左上角的门，我看到 x 乘以 x 等于 m1，对于下一个 m1 乘以 y 等于 m2，然后 y 乘以 y 等于 m3， x 乘以 m3 等于 m4，最后 o 等于 m2 加上 m4 加上 17。所以五个门，五个方程。这样做的好处是什么？我把原来的函数写在这里，注意所有的指数都消失了，所以它有点被拉平了，这对计算机来说是一种更简单的理解方式。另外，你会看到每个方程中，最多只有一次信号之间的乘法，所以不仅是非常线性的，复杂度也非常有限，这实际上是用于生成验证系统的方程系统，这是第一步，在技术术语中，这个方程系统被称为一阶约束系统或 R1CS。它被称为约束系统，因为它描述了电路内的数量之间的关系，它们不能是任意值，它们必须遵循特定的关系，这就是为什么它被称为约束系统。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm init -y</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install --save circom snarkjs</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">touch</span> circuit.circom</span></span><br></pre></td></tr></table></figure>
+
+<p>让我们初始化一个默认的 package.json 并安装必要的包，你将要安装 circom、snarkjs。现在，这将是我第一次详细告诉你关于 snark 这个词，在你读到的大多数零知识文章中，你会看到 ZKSnark 作为一个单词出现，但它们真的不一样。snark 这个词描述了零知识证明的效率如何，snark 代表简洁的非交互式知识论证，简洁意味着证明不能太长或验证需要太长时间，因为那样它将不适合以太坊，因为它会花费太多的 gas，非交互式意味着验证者只需要向证明者提出一个挑战问题，而证明者简单地在那个挑战问题上运气好的可能性是如此之低，以至于一次有效的互动足以建立证明者的主张，论证这个词意味着一个主张，什么主张，主张代表知识，我有满足某个标准的信息，看看它是如何汇集在一起的。在早期，零知识证明不是 snarks 这种情况持续了很长时间，他们通常是笨重的，但我们已经走了很长的路。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pragma circom 2.0.0;</span><br><span class="line"></span><br><span class="line">// f(x,y) = x^2 * y + x * y^2 + 17;</span><br></pre></td></tr></table></figure>
+
+<p>首先，让我们写我们的电路。我创建了一个新文件，名为 circuit.circom，这是类似于 Solidity 的地方，首先，你需要使用 pragma 关键字声明你想使用的 circom 版本，Pragma circom 我将使用版本 2.0.0，在我们写代码之前，让我们写一些注释，我们要定义的函数是 x 平方乘以 y 加上 x 乘以 y 的平方加上 17。然后，我还将给你信号定义的规则，如何定义信号。</p>
+<p>首先，所有的输入都是信号。其次，每次你将两个信号相乘时， 你需要定义一个新的信号。第三条规则是，你不仅可以将两个信号相乘，而且一次只能乘以两个信号，如果你试图将三个信号乘在一起得到一个新的信号，它将无法编译，他会报错。最后一条规则是，所有的输出都是信号。</p>
+<p>让我们写实际的电路，为了定义一个数学子程序，在 circom 中，你使用 template 关键字。我将这个模板命名为 F。现在，我将给你一些视觉辅助 ，以了解这整个事情是如何工作的。当我还是个孩子时，我有一个装满预制电路的大玩具箱</p>
+]]></content>
+      <categories>
+        <category>Tornado Cash</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>零知识证明</tag>
+        <tag>混币</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 02 - 部署智能合约</title>
+    <url>/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-evm-smart-contracts-part-2-e6106b9983a">https://trustchain.medium.com/reversing-and-debugging-evm-smart-contracts-part-2-e6106b9983a</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/4927">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+<p>本文是关于<strong>通过逆向和调试理解 EVM 系列的第2篇</strong>，本系列包含 7 篇文章：</p>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
+<p>在第二部分（本文）中，我们将分析当你在区块链中部署一个智能合约时发生了什么，例如，在点击 remix 中的 “部署”按钮时。</p>
+<p>下面是我们要部署的合约示例:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123;      </span><br><span class="line">    uint balance;      </span><br><span class="line">    constructor() &#123;         </span><br><span class="line">        balance = 9;     </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在深入学习本教程之前，不要忘记:</p>
+<ul>
+<li>打开你的电脑并启动 remix。</li>
+<li><strong>启动优化器</strong>，runs 为 1，它可以帮助编译器产生更有效的代码。(点击 “高级配置 “和 “启用优化”)</li>
+</ul>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/1.png" loading="lazy"></p>
+<ul>
+<li>使用 solidity 版本 <strong>0.8.7</strong> 编译上述代码。(其他版本可能会产生稍微不同的代码)</li>
+<li>在 JavaScript EVM 中部署智能合约（使用最新版本：London)</li>
+</ul>
+<h1 id="开始调试"><a href="#开始调试" class="headerlink" title="开始调试"></a>开始调试</h1><p>简要提示，要调试一个交易，必须在部署智能合约后按下面的”调试”按钮。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/2.png" loading="lazy"></p>
+<p>所有的调试信息都位于屏幕的左边，你可以看到堆栈、局部变量、状态、内存、存储、反汇编等等。</p>
+<p><strong>但是在开始调试之前，你能不能回答这个问题：</strong></p>
+<p>问：智能合约部署后，我们要调试的代码在哪里？</p>
+<p>答：代码位于数据字段。代码位于交易的数据字段中，它就是在部署智能合约时要执行的代码。他的作用是在区块链上部署智能合约并执行构造函数。</p>
+<p>现在，我们可以继续了。</p>
+<p>默认情况下，调试器显示的是第 17 字节的构造函数代码，为了了解第 17 字节之前的代码，让我们点击下图中的左箭头。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/3.png" loading="lazy"></p>
+<p>因此，我们回到第 0 字节。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">000 PUSH 80 | 0x80 |</span><br><span class="line">002 PUSH 40 | 0x40 | 0x80 |</span><br><span class="line">004 MSTORE  ||</span><br></pre></td></tr></table></figure>
+
+<p>我们已经知道了前 3 条指令。</p>
+<p>它将 <strong>0x80</strong> 存储在 EVM 内存的地址 <strong>0x40</strong>，相当于内联汇编：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mstore(0x40,0x80)</span><br></pre></td></tr></table></figure>
+
+<p>这是空闲内存指针，别担心，我们稍后会讲到这部分。</p>
+<p>接下来的操作码也已经知道了（参考<a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">本系列的第一篇</a>）。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">005 CALLVALUE |msg.value|</span><br><span class="line">006 DUP1      |msg.value|msg.value|</span><br><span class="line">007 ISZERO    |0x01|msg.value|</span><br><span class="line">008 PUSH1 0f  |0x0f|0x01|msg.value|</span><br><span class="line">010 JUMPI     |msg.value|</span><br><span class="line">011 PUSH1 00  |0x00|msg.value| (if jumpi don&#x27;t jump to 0f)</span><br><span class="line">013 DUP1      |0x00|0x00|msg.value|</span><br><span class="line">014 REVERT</span><br><span class="line">015 JUMPDEST</span><br></pre></td></tr></table></figure>
+
+<p>基本上，它通过 <strong>CALLVALUE</strong> 操作码获得 <strong>msg.value</strong> 的值（发送到合约的以太币），如果返回值严格地大于 <strong>0</strong>，则回退。</p>
+<p>我们在本系列的第一篇中详细解释了发生了什么。</p>
+<p>它等同于：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (msg.value &gt; 0) &#123; revert() &#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于我们的构造函数是不支付的，所以我们不能发送正常的资金! 事情与第一部分相同，至少到第 14 个字节为止。</p>
+<h1 id="继续深入"><a href="#继续深入" class="headerlink" title="继续深入"></a>继续深入</h1><p>现在发生了什么？</p>
+<p>函数签名在哪里？我们的函数中心在哪里？当然不见了，在部署的时候，除了构造函数之外，没有任何可用的函数!</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">15 JUMPDEST |0x00|</span><br><span class="line">16 POP      ||</span><br><span class="line">17 PUSH1 09 |0x09|</span><br><span class="line">19 PUSH1 00 |0x00|0x09|</span><br><span class="line">21 SSTORE   ||</span><br></pre></td></tr></table></figure>
+
+<p>在第 16 个指令，EVM 弹出堆栈中的剩余值 (0)。</p>
+<p>之后我们把 9 和 0 推到堆栈中，并调用 <strong>SSTORE</strong>，堆栈现在是：<br><code>|0x00|0x09|</code>。</p>
+<p><strong>SSTORE</strong> 操作码将 Stack(1) 存储到 Stack(0) 槽中（顾名思义）。(所以它使用了 2 个参数，因此在执行 <strong>SSTORE</strong> 的第 21 指令后，它们被从堆栈中移除了)</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/4.png" loading="lazy"></p>
+<p>此时，EVM在第一个槽（槽号为 0）中存储数值 9，这相当于内联汇编：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sstore(0x00,0x09)</span><br></pre></td></tr></table></figure>
+
+<p>这正是我们构造函数中的代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">balance = 9</span><br></pre></td></tr></table></figure>
+
+<p>它在变量 “balance” 中存储了 9，但是 balance 位于存储中。</p>
+<p>由于 balance 是智能合约中第一个声明的变量，这意味着分配给 “balance” 是第一个存储槽（slot 0）。你可以在 “存储（Storage）” 部分看到这一点：</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/5.png" loading="lazy"></p>
+<p>**当合约部署时，在EVM中执行的代码是非常短的，我们已经到达了终点，也就是第32字节! (使用类似于STOP的REUTRN操作码) **</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">22 PUSH1 3f |0x3f|</span><br><span class="line">24 DUP1     |0x3f|0x3f|</span><br><span class="line">25 PUSH1 22 |0x22|0x3f|0x3f|</span><br><span class="line">27 PUSH1 00 |0x00|0x22|0x3f|0x3f|</span><br><span class="line">29 CODECOPY |0x3f|</span><br><span class="line">30 PUSH1 00 |0x00|0x3f|</span><br><span class="line">32 RETURN   ||</span><br></pre></td></tr></table></figure>
+
+<p>堆栈现在在第 21 字节是空的（因为 <strong>SSTORE</strong> 不在堆栈中保留两个参数）</p>
+<p>3f 被推入堆栈并重复，<code>| 0x3f |</code> 之后推入 22 和 00，<strong>在第 27 个指令</strong>堆栈现在是：<code>| 0x00 | 0x22 | 0x3f | 0x3f |</code> 。</p>
+<p>如果我们看一下文档，我们会发现 <strong>CODECOPY</strong> 是一个特殊的操作码，它可以在 EVM 内存中复制当前智能合约代码。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/6.png" loading="lazy"></p>
+<p>它需要 3 个参数：</p>
+<ul>
+<li>第一个是 Stack(0)，指令复制当前智能合约代码到 EVM 内存的 Stack(0) 位置（这里 Stack(0) &#x3D; 0），所以它将复制到内存的 0x00 槽。</li>
+<li>更确切地说，复制智能合约代码从 <strong>Stack(2)</strong> 个字节到 <strong>Stack(2)+Stack(1)</strong> 个字节。<br><strong>看一下堆栈，这是位于 0x22（&#x3D;34的十进制）和（22+3f&#x3D;61，即 97 的十进制）之间的代码</strong>。</li>
+</ul>
+<p>事实上，在执行这条指令后，如果我们在调试器中查看 EVM 的内存状态，会发现内存从 <strong>0x00 到 0x3f</strong> 被填满。</p>
+<p>6080 6040 52 34 80 15 600f 57 6000 80 fd 5b 50 6009 6000 55 603f 80 6022 6000 <strong>39</strong> 6000 f3 fe</p>
+<p>6080604052600080fdfea264697066735822122046354bbade9cef374152331df5deb8e1c8a3baf31e52541f1b80e5a5bac5b7c264736f6c63430008070033</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/7.png" loading="lazy"></p>
+<p>这是我们存储在 EVM 内存中的智能合约的代码。因此，交易数据的第 0x22 字节（十进制 34）之后的每一整块字节都是智能合约的代码!</p>
+<p>第 32 个指令，**RETURN **被调用，参数为 Stack(0) &#x3D; 0x00 和 Stack(1) &#x3D; 0x3f。</p>
+<p><strong>RETURN</strong> 停止代码的执行，并返回内存 [Stack(0):Stack(0)+Stack(1)]，这是 **[0x00:0x40]**。</p>
+<p><strong>返回的这个值是存储在区块链中的。在我们的例子中，这就是智能合约的代码！</strong></p>
+<p>总结一下这第一部分，这是为了在区块链中部署智能合约而执行的交易数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The code which deploy the smart contract (byte 0 to 33)</span><br><span class="line">6080604052348015600f57600080fd5b506009600055603f8060226000396000f3fe-----------</span><br><span class="line">The deployed smart contract (byte 34 to 97)</span><br><span class="line">6080604052600080fdfea264697066735822122018fba077a8095159cac22a23ec0b3172b5ab77a14a3cf44bc3107e4049b7dcf264736f6c63430008070033</span><br><span class="line">--------------</span><br></pre></td></tr></table></figure>
+
+<p>现在你知道当你在区块链上部署一个智能合约时，EVM 中到底发生了什么，这真是太棒了!</p>
+<h1 id="使用payable构造函数"><a href="#使用payable构造函数" class="headerlink" title="使用payable构造函数"></a>使用payable构造函数</h1><p>如果把构造函数写成可支付的 (payable) 呢？有什么不同吗？让我们来看看!</p>
+<p>这是我们的新智能合约，与之前的智能合约差别不大，我们只是在构造函数中加入了 “payable” 的修饰(不要改变设置， solidity: 0.8.7, optimizer: 1)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123;      </span><br><span class="line">    uint balance;      </span><br><span class="line">    constructor() payable &#123;         </span><br><span class="line">        balance = 9;     </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不要忘记在部署时向智能合约发送 1 个以太币，在 “value” 域中选择以太币（如下图）。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/8.png" loading="lazy"></p>
+<p>下面是交易的完整拆解（只有 20 个字节）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">00 PUSH1 80 </span><br><span class="line">02 PUSH1 40 </span><br><span class="line">04 MSTORE </span><br><span class="line">05 PUSH1 09 </span><br><span class="line">07 PUSH1 00 </span><br><span class="line">09 SSTORE </span><br><span class="line">10 PUSH1 3f </span><br><span class="line">12 DUP1 </span><br><span class="line">13 PUSH1 16 </span><br><span class="line">15 PUSH1 00 </span><br><span class="line">17 CODECOPY </span><br><span class="line">18 PUSH1 00 </span><br><span class="line">20 RETURN</span><br></pre></td></tr></table></figure>
+
+<p>我想你已经认出了这段代码，没有必要显示堆栈。</p>
+<p>我们的空闲内存指针仍然被设置，但之后并没有对 <strong>msg.value</strong> 进行任何验证，EVM直接进入构造器代码，随后复制&#x2F;返回智能合约代码，这些代码将被部署到区块链上。</p>
+<p>唯一的区别是，在第 13 行写的是 <strong>PUSH</strong> 16，而不是 push 22。</p>
+<p>这是因为该交易是 13 个字节的大小。(0x20-0x13 的十六进制 &#x3D; 32-19 &#x3D; 13 的十进制）然后 EVM 不是从 35 字节开始复制代码，而是从 22 字节开始，因为要部署的智能合约代码就在构造器的执行之后。</p>
+<p>还要注意的是，汇编代码要短得多，但 Gas 成本是差不多的：89228 （没有 payable 时) 对比 89036（少 188 个 Gas）。</p>
+<h1 id="向构造函数添加参数"><a href="#向构造函数添加参数" class="headerlink" title="向构造函数添加参数"></a>向构造函数添加参数</h1><p>由于可支付和 “不可支付” 的构造函数之间没有很大的区别，让我们继续前进！为什么不在构造函数中添加新参数呢？</p>
+<p>让我们部署这个智能合约，参数 a&#x3D;1，b&#x3D;2，msg.value&#x3D;1 ether，设置与之前一样（启用优化器， runs 设置为1，solidity 0.8.7）。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">    contract Test &#123;       </span><br><span class="line">        uint balance;      </span><br><span class="line">        constructor(uint a,uint b) payable &#123; </span><br><span class="line">            balance = 9;     </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在观察了调试标签后，字节 0 到 4 显然与期望的一样的相同。</p>
+<p>提示：每个 solidity 智能合约都由 mstore(0x40,0x80) 开始，也就是十六进制的 0x6080604052。</p>
+<p>现在的输出略有不同：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">005 PUSH1 40 |0x40|</span><br><span class="line">007 MLOAD    |0x80|</span><br><span class="line">008 PUSH1 98 |0x98|0x80|</span><br><span class="line">010 CODESIZE |0xd8|0x98|0x80|</span><br><span class="line">011 SUB      |0x40|0x80|</span><br></pre></td></tr></table></figure>
+
+<p><strong>MLOAD</strong> 从内存中加载 Stack(0) 位置的值到堆栈，在内联汇编中是 **MLOAD(0x40)**。因此 80 被推送到堆栈。(因为 80 在之前被存储在内存 0x40 处)</p>
+<p>之后 EVM 推送 98，堆栈现在是<code>| 0x98 | 0x80 |</code>。</p>
+<blockquote>
+<p>为什么推送的是 98 呢？</p>
+<p>当查看不难发现 97 是 CALLER，也就是说部署智能合约的指令长度就是 98。</p>
+</blockquote>
+<p><strong>CODESIZE</strong> 不从堆栈中获取任何参数，但在堆栈中保存代码的大小，如果我们检查堆栈，我们应该看到堆栈中的新值是 0xd8。(如果你编译了完全相同的代码，设置与我相同，因此代码的长度将是相等的)</p>
+<blockquote>
+<p>这里有一个疑问，为什么前面两次 CODECOPY 的都是直接 3F，这里却需要 <strong>CODESIZE</strong> ？</p>
+</blockquote>
+<p>它是执行的代码的大小（因此这也是交易数据的大小，因为如前所述，要执行的代码位于交易数据中），现在堆栈是:<br><code>| 0xd8 | 0x98 | 0x80 |</code>。</p>
+<p>调用 SUB 操作码，执行 Stack(0)-Stack(1)，现在的堆栈是<br><code>| 0x40 | 0x80 |</code>。事实上，d8-98&#x3D;40(十六进制)。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">012 DUP1     |0x40|0x40|0x80|</span><br><span class="line">013 PUSH1 98 |0x98|0x40|0x40|0x80|</span><br><span class="line">015 DUP4     |0x80|0x98|0x40|0x40|0x80|</span><br><span class="line">016 CODECOPY |0x40|0x80|</span><br></pre></td></tr></table></figure>
+
+<p>在一系列的 <strong>PUSH</strong> 和 <strong>DUP 之后，CODECOPY</strong> 在字节 16 处复制智能合约中执行的代码，下面是 <strong>CODECOPY</strong> 指令的参数 (destOffset,offset,size)。<br>- Stack(0) 复制代码到哪个内存位置。<br>- Stack(1) 开始复制代码时，在已执行的代码中的偏移量（从哪个位置开始复制）。<br>- Stack(2) 要复制多少字节的代码？</p>
+<p>所有在 0x98 和 0x98+0x40 之间的代码被复制到内存的 0x80 槽中。</p>
+<p>你看到内存中的差异了吗？</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/9.png" loading="lazy"></p>
+<p>我们看到，32 字节的插槽 <strong>memory[0x80:0x99]</strong> 现在包含了第一个参数。(为 1)</p>
+<p>同样，<strong>memory[0xa0:0xbf]</strong> 也包含了第二个参数。(为 2)</p>
+<p>因此，这段代码（从第 5 个指令到第 16 个指令）的目的是将构造函数的参数复制到内存中！</p>
+<p>当你部署一个智能合约时，交易中只有两个字段是必须的（除了签名），那就是字段 from 和 data。”from” 包含你的地址，data 包含智能合约代码（以及部署智能合约的代码，我们在这里分析）和参数。</p>
+<p>下面是一个例子：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    from<span class="punctuation">:</span> <span class="string">&quot;0x1234.....&quot;</span></span><br><span class="line">    data<span class="punctuation">:</span> <span class="string">&quot;[code to execute when deploying smart contract]    [smart contract code to deploy]    [constructor parameters]</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>参数位于所有智能合约代码的数据之后（并以 32 字节编码，即 16 进制的 0x20）。</p>
+<p>注意，0x40 的空闲内存指针不应该是 0x80，因为 0x80 的内存不再是空闲的。</p>
+<p>现在由于 0x80 是使用的，它包含了 2 个参数。当内存被释放时，0x40 应该指向 0xc0。</p>
+<p>这就是 17 和 23 之间的代码的目的（它把 40 加到前面的</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">017 DUP2     |0x80|0x40|0x80|      </span><br><span class="line">018 ADD      |0xc0|0x80|           add 0x40 to 0x80 (previous free memory pointer loaded at byte7)</span><br><span class="line">019 PUSH1 40 |0x40|0xc0|0x80|      push 40 in the stack</span><br><span class="line">021 DUP2     |0xc0|0x40|0xc0|0x80|</span><br><span class="line">022 SWAP1    |0x40|0xc0|0xc0|0x80|</span><br><span class="line">023 MSTORE   |0xc0|0x80|           store the result of the addition in 0x40 in memory</span><br></pre></td></tr></table></figure>
+
+<p>空闲内存指针的目的只是指向内存中的一个空闲槽，每当内存使用这个槽时，指针就会改变到另一个空闲地址。让我们继续往下看。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">024 PUSH1 1e |0x1e|0xc0|0x80|</span><br><span class="line">026 SWAP2    |0x80|0xc0|0x1e|</span><br><span class="line">027 PUSH1 29 |0x29|0x80|0xc0|0x1e|</span><br><span class="line">029 JUMP     |0x80|0xc0|0x1e| jump to 0x29 (41 in hex)</span><br></pre></td></tr></table></figure>
+
+<p>代码无条件跳转到 0x29(Dec 中的 41)</p>
+<h1 id="加载到堆栈中"><a href="#加载到堆栈中" class="headerlink" title="加载到堆栈中"></a>加载到堆栈中</h1><p>让我们把注意力集中在代码的第三部分，因为参数 1 和 2 已经加载到内存中。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">041 JUMPDEST |0x80|0xc0|0x1e|</span><br><span class="line">042 PUSH1 00 |0x00|0x80|0xc0|0x1e|</span><br><span class="line">044 DUP1     |0x00|0x00|0x80|0xc0|0x1e|</span><br><span class="line">045 PUSH1 40 |0x40|0x00|0x00|0x80|0xc0|0x1e|</span><br><span class="line">047 DUP4     |0x80|0x40|0x00|0x00|0x80|0xc0|0x1e|</span><br><span class="line">048 DUP6     |0xc0|0x80|0x40|0x00|0x00|0x80|0xc0|0x1e|</span><br><span class="line">049 SUB      |0x40|0x40|0x00|0x00|0x80|0xc0|0x1e|</span><br><span class="line">050 SLT      |0x00|0x00|0x00|0x80|0xc0|0x1e|</span><br><span class="line">051 ISZERO   |0x01|0x00|0x00|0x80|0xc0|0x1e|</span><br><span class="line">052 PUSH1 3b |0x3b|0x01|0x00|0x00|0x80|0xc0|0x1e|</span><br><span class="line">054 JUMPI    |0x00|0x00|0x80|0xc0|0x1e|</span><br><span class="line">055 PUSH1 00 </span><br><span class="line">057 DUP1 </span><br><span class="line">058 REVERT</span><br></pre></td></tr></table></figure>
+
+<p>在用调试器分析了这个汇编后（在字节 41 和 54 之间），智能合约计算 c0-80 并验证它是否等于 40。</p>
+<p>如果减去的数字不相等，EVM 就会回退，否则执行流程继续，EVM 跳转到 3b（十进制的 59）。</p>
+<p>80 和 c0 是存储在内存中的 2 个参数的开始偏移和结束偏移。(即 1 和 2)</p>
+<p><strong>由于 EVM 是按 32 个字节为一组工作的（十六进制为 20）。我们的目的只是为了验证在构造函数中确实有 2 个参数被加载到内存中（总长度为 40，十六进制）。通过将参数的结束偏移量减去内存中参数的开始偏移量</strong>。</p>
+<p>如果不是这样，那么这意味着交易中的参数少于 2 个。所以 EVM 通过不跳转到 59 来还原指令 55 和 58 之间的情况</p>
+<p>接下来在指令（我们的最后一段代码）:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">059 JUMPDEST |0x00|0x00|0x80|0xc0|0x1e|</span><br><span class="line">060 POP      |0x00|0x80|0xc0|0x1e|</span><br><span class="line">061 POP      |0x80|0xc0|0x1e|</span><br><span class="line">062 DUP1     |0x80|0x80|0xc0|0x1e|</span><br><span class="line">063 MLOAD    |0x01|0x80|0xc0|0x1e| the first argument was loaded.</span><br><span class="line">064 PUSH1 20 |0x20|0x01|0x80|0xc0|0x1e| </span><br><span class="line">066 SWAP1    |0x01|0x20|0x80|0xc0|0x1e|</span><br><span class="line">067 SWAP2    |0x80|0x20|0x01|0xc0|0x1e|</span><br><span class="line">068 ADD      |0xa0|0x01|0xc0|0x1e| add 20 to the offset in memory to load.</span><br><span class="line">069 MLOAD    |0x02|0x01|0xc0|0x1e| Our 2 arguments were loaded.</span><br><span class="line">070 SWAP1    |0x01|0x02|0xc0|0x1e|</span><br><span class="line">071 SWAP3    |0x1e|0x02|0xc0|0x01|</span><br><span class="line">072 SWAP1    |0x02|0x1e|0xc0|0x01|</span><br><span class="line">073 SWAP2    |0xc0|0x1e|0x02|0x01|</span><br><span class="line">074 POP      |0x1e|0x02|0x01|</span><br><span class="line">075 JUMP     |0x02|0x01|      Swap stack to jump top 0x1e (30 in dec)</span><br></pre></td></tr></table></figure>
+
+<p>在堆栈中弹出 2 个 0x0 后，我们在第 61 指令的堆栈中留下了<code>| 0x80 | 0xc0 | 0x1e | </code>。</p>
+<p>EVM 复制了 80，并使用 MLOAD 在 Stack(0) 处加载，加载在 80 处内存数据，这是我们之前复制到内存的构造函数中的第一个参数。(即 1 )</p>
+<p>现在由于我们加载的每一个值，都在堆栈中。</p>
+<p>接下来，在指令 64 处，我们需要加载第二个参数，因为 EVM 是按 32 个字节（20）的十六进制分组工作的，EVM 必须在 80+20&#x3D;a0 处加载内存，以获得第二个参数。</p>
+<p>这就是为什么 EVM 在堆栈中推入 20，并在堆栈中交换一些数值，以使 80 成为第一个。</p>
+<p>EVM 在指令 68 处加上这两个数字，等于 a0，并将它们加载到堆栈中。</p>
+<p>总结一下，这段代码加载了存储在内存中的 2 个参数。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mload(0x80) </span><br><span class="line">mload(0xa0)</span><br></pre></td></tr></table></figure>
+
+<p>之后，EVM 跳转到指令 30，堆栈中有 1 和 2，EVM 继续执行，将余额设置为 9（在第 30 和 40 指令之间执行构造函数）并将合约代码复制到区块链中。(在第 76 和 89 指令之间)</p>
+<p>请注意，2 个参数在第 31 和 32 指令之间被构造函数弹出了，因为我们在代码中没有使用它们 :</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">030 JUMPDEST |0x02|0x01|</span><br><span class="line">031 POP      |0x01|</span><br><span class="line">032 POP      ||</span><br><span class="line">033 PUSH1 09 |0x09|</span><br><span class="line">035 PUSH1 00 |0x00|0x09|</span><br><span class="line">037 SSTORE   ||</span><br><span class="line">038 PUSH1 4c (76 in dec)</span><br><span class="line">040 JUMP</span><br><span class="line"></span><br><span class="line">076 JUMPDEST</span><br><span class="line">077 PUSH1 3f</span><br><span class="line">079 DUP1</span><br><span class="line">080 PUSH1 59</span><br><span class="line">082 PUSH1 00</span><br><span class="line">084 CODECOPY</span><br><span class="line">085 PUSH1 00</span><br><span class="line">087 RETURN</span><br></pre></td></tr></table></figure>
+
+<p>…. 我们完成了! 智能合约结束了它的执行。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>最后总结一下合约部署情况：</p>
+<ol>
+<li>它像每个智能合约一样存储了空闲内存指针。</li>
+<li>它复制了由交易数据提供的 2 个参数，并将其存储到内存中。</li>
+<li>它验证了我们在构造函数中至少输入了 2 个参数。(不能少)</li>
+<li>它将内存中的 2 个参数复制到堆栈中。</li>
+<li>它通过设置余额为 9 来执行构造函数。</li>
+<li>它将代码复制到内存中并停止执行。</li>
+</ol>
+<p>今天的工作已经很多了，但别担心，这个系列还没有结束。</p>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 05 - EVM如何处理 if/else/for/functions</title>
+    <url>/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-evm-the-execution-flow-part-5-2ffc97ef0b77">https://trustchain.medium.com/reversing-and-debugging-evm-the-execution-flow-part-5-2ffc97ef0b77</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/4987">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+<hr>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
+<h1 id="汇编中的-IF-x2F-ELSE"><a href="#汇编中的-IF-x2F-ELSE" class="headerlink" title="汇编中的 IF&#x2F;ELSE"></a>汇编中的 IF&#x2F;ELSE</h1><p>这是我们第一个关于逆向 if&#x2F;else 语句的例子，在没有优化器的情况下编译它，并以<code>x=true</code>调用函数<code>flow()</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    uint value = 0;</span><br><span class="line">    function flow(bool x) external &#123;</span><br><span class="line">        if (x) &#123;</span><br><span class="line">            value = 4;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            value = 9;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是该函数的完整反汇编代码:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 04 - 结束/中止执行的5种指令</title>
+    <url>/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-evm-the-end-of-time-part-4-3eafe5b0511a">https://trustchain.medium.com/reversing-and-debugging-evm-the-end-of-time-part-4-3eafe5b0511a</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/4965">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+<hr>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
+<h1 id="STOP（停止）"><a href="#STOP（停止）" class="headerlink" title="STOP（停止）"></a>STOP（停止）</h1><p>我们将使用 EVM 中最简单的操作码来开始。</p>
+<p>这是唯一一个消耗 0 Gas 的操作码，顾名思义，它结束智能合约的执行，不返回任何数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    function test() external &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可以拆解这个非常简单的智能合约来弄清楚发生了什么。(函数的执行从第 45 指令开始)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">045 JUMPDEST</span><br><span class="line">046 STOP</span><br></pre></td></tr></table></figure>
+
+<p>内存中没有任何东西。没有数据被存储，堆栈只包含函数签名，因此没有数据被返回。</p>
+<p>就这样简单。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/1.png" loading="lazy"></p>
+<blockquote>
+<p>停止执行合同</p>
+</blockquote>
+<h1 id="RETURN（返回）"><a href="#RETURN（返回）" class="headerlink" title="RETURN（返回）"></a>RETURN（返回）</h1><p>RETURN 像 STOP 一样结束智能合约的执行，但与 STOP 不同，它也可能返回一些数据。我们将编译这个 solidity 代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    function test() external returns(uint) &#123;</span><br><span class="line">        return(8);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>并对该函数进行反汇编：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">045 JUMPDEST		| 函数签名 |</span><br><span class="line">046 PUSH1 0x08		| 0x08 | 函数签名 |</span><br><span class="line">048 PUSH1 0x40		| 0x40 | 0x08 | 函数签名 |</span><br><span class="line">050 MLOAD			| 0x80 | 0x08 | 函数签名 |</span><br><span class="line">051 SWAP1			| 0x08 | 0x80 | 函数签名 |</span><br><span class="line">052 DUP2			| 0x80 | 0x08 | 0x80 | 函数签名 |</span><br><span class="line">053 MSTORE			| 0x80 | 函数签名 |</span><br><span class="line">054 PUSH1 0x20		| 0x20 | 0x80 | 函数签名 |</span><br><span class="line">056 ADD				| 0xa0 | 函数签名 |</span><br><span class="line">057 PUSH1 0x40		| 0x40 | 0xa0 | 函数签名 |</span><br><span class="line">059 MLOAD			| 0x80 | 0xa0 | 函数签名 |</span><br><span class="line">060 DUP1			| 0x80 | 0x80 | 0xa0 | 函数签名 |</span><br><span class="line">061 SWAP2			| 0xa0 | 0x80 | 0x80 | 函数签名 |</span><br><span class="line">062 SUB				| 0x20 | 0x80 | 函数签名 |</span><br><span class="line">063 SWAP1			| 0x80 | 0x20 | 函数签名 |</span><br><span class="line">064 RETURN			| 函数签名 |</span><br></pre></td></tr></table></figure>
+
+<p>在指令 45 和 50 之间，EVM **mload(0x40)**，它返回 80。</p>
+<blockquote>
+<p>备注：45 、50 表示第几个字节数上的指令，下面都使用这种简写方式。</p>
+</blockquote>
+<p>在指令 51 和 53 之间，EVM **mstore(0x80,0x08)**，80 是空闲内存地址，08 是 test 函数的返回值。</p>
+<p>在指令 54 到 56 之间，EVM 在之前的结果（80）上加上 20，等于 a0（20 &#x3D; 十进制的 32，因为这是一个内存插槽的大小，这里只有一个返回值）。</p>
+<p>在指令 57 和 62 之间，它在 40 处重新加载内存（**mload(0x40)**），并将结果与 0xa0（第 56 行的结果）相减，即0x20。</p>
+<p>这里没有非常有趣的东西。在指令 64 时，内存 0x80 槽中有 0x08，栈中有 80 和 20。这 3 个值是什么意思？</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/3.png" loading="lazy"></p>
+<p>根据文档的内容。当被调用时：</p>
+<p><strong>Stack(0) &#x3D; 80</strong> 应包含返回数据在内存中的偏移量</p>
+<p><strong>Stack(1) &#x3D; 20</strong> 应该包含返回数据的偏移后的大小。</p>
+<p>这正是这个智能合约的情况，0x80 和 0xa0 之间的内存（&#x3D; 80+20 的十六进制）包含函数测试的返回值（8）。</p>
+<p>**所以智能合约返回内存 [Stack(0):Stack(0)+Stack(1)]**。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/2.png" loading="lazy"></p>
+<blockquote>
+<p>返回内存[偏移量:偏移量+长度]</p>
+</blockquote>
+<h1 id="REVERT（回退）"><a href="#REVERT（回退）" class="headerlink" title="REVERT（回退）"></a>REVERT（回退）</h1><p>现在，我们来修改智能合约。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    function test() external returns(uint) &#123;</span><br><span class="line">        revert(&quot;eight&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你发现区别了吗？我没有使用 **return()**，而是使用了 **revert()**，参数是一个字符串（我不能在 “<strong>revert</strong>“ 中使用数字，solidity 编译器不允许我编译）。</p>
+<p>如果你调用 test()，你应该看到一个错误，但调试仍然是可能的!</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/4.png" loading="lazy"></p>
+<p>下面是 test 函数的反汇编:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">069 JUMPDEST          ||</span><br><span class="line">070 PUSH1 40          | 0x40 |</span><br><span class="line">072 MLOAD             | 0x80 |</span><br><span class="line">------------------------------</span><br><span class="line">读取出空闲指针 0x80</span><br><span class="line">------------------------------</span><br><span class="line">073 PUSH3 461bcd      | 0x461bcd | 0x80 |</span><br><span class="line">077 PUSH1 e5          | 0xe5 | 0x461bcd | 0x80 |</span><br><span class="line">079 SHL               | 0x08c379a000...000 | 0x80 |  binary shift 197 times (e5 in hex), YES a binary shift can modify hex numbers...</span><br><span class="line">080 DUP2              | 0x80 | 0x08c379a000...000 | 0x80 |</span><br><span class="line">081 MSTORE            | 0x80 |</span><br><span class="line">------------------------------</span><br><span class="line">存入 0x08c379a</span><br><span class="line">------------------------------</span><br><span class="line">082 PUSH1 20          | 0x20 | 0x80 |</span><br><span class="line">084 PUSH1 04          | 0x04 | 0x20 | 0x80 |</span><br><span class="line">086 DUP3              | 0x80 | 0x04 | 0x20 | 0x80 |</span><br><span class="line">087 ADD               | 0x84 | 0x20 | 0x80 |</span><br><span class="line">088 MSTORE            | 0x80 |</span><br><span class="line">------------------------------</span><br><span class="line">因为 80:84 前面已经存了东西了</span><br><span class="line">[0x84:0xa4] 存入 0x20</span><br><span class="line">相当于在 0xa0-0xa4 为 00000020</span><br><span class="line">------------------------------</span><br><span class="line">089 PUSH1 05          | 0x05 | 0x80 |</span><br><span class="line">091 PUSH1 24          | 0x24 | 0x05| 0x80|</span><br><span class="line">093 DUP3              | 0x80 | 0x24| 0x05 | 0x80 |</span><br><span class="line">094 ADD               | 0xa4 | 0x05| 0x80 |</span><br><span class="line">095 MSTORE            | 0x80 |</span><br><span class="line">------------------------------</span><br><span class="line">与上文同理，存入 0x05</span><br><span class="line">------------------------------</span><br><span class="line">096 PUSH5 195a59da1d  | 0x195a59da1d | 0x80 |</span><br><span class="line">102 PUSH1 da          | 0xda | 0x195a59da1d | 0x80 |</span><br><span class="line">104 SHL               | 0x6569676874 | 0x80 |</span><br><span class="line">------------------------------</span><br><span class="line">把推入的数据转换为 eight 的 ascii 码的十六进制</span><br><span class="line">------------------------------</span><br><span class="line">105 PUSH1 44          | 0x44 | 0x6569676874 | 0x80 |</span><br><span class="line">107 DUP3              | 0x80 | 0x44| 0x6569676874 | 0x80 |</span><br><span class="line">108 ADD               | 0xc4 | 0x6569676874 | 0x80 |</span><br><span class="line">109 MSTORE            | 0x80 |</span><br><span class="line">------------------------------</span><br><span class="line">同上面存数据的原理</span><br><span class="line">------------------------------</span><br><span class="line">110 PUSH1 00          | 0x00 | 0x80 |</span><br><span class="line">112 SWAP1             | 0x80 | 0x00 |</span><br><span class="line">113 PUSH1 64          | 0x64 | 0x80 | 0x00 |</span><br><span class="line">115 ADD               | 0xe4 | 0x00 |</span><br><span class="line">116 PUSH1 40          | 0x40 | 0xe4 | 0x00 |</span><br><span class="line">118 MLOAD             | 0x80 | 0xe4 | 0x00 |</span><br><span class="line">119 DUP1              | 0x80 | 0x80 | 0xe4 | 0x00 |</span><br><span class="line">120 SWAP2             | 0xe4 | 0x80 | 0x80 | 0x00 |</span><br><span class="line">121 SUB               | 0x64 | 0x80 | 0x00 |</span><br><span class="line">122 SWAP1             | 0x80 | 0x64 | 0x00 |</span><br><span class="line">123 REVERT            | 0x00 |</span><br></pre></td></tr></table></figure>
+
+<p>和 RETURN 差不多，EVM 在内存中存储返回值，在堆栈中存储 2 个偏移。代码较长，但并不像看起来那么复杂。</p>
+<p>在第 69 和 72 指令之间，空闲内存指针被检索出来，（**mload(0x40)**，返回 0x80，所以我们下次可以在 0x80 处mstore）。</p>
+<p>之后在 73 和 81 指令之间，EVM 在内存中 **mstore(0x80, 0x08c379a000000000000000000000000000000000000000000000000000000000)**。</p>
+<p>不要忘记，<strong>0x08c379a000…是通过二进制</strong> 0x461bcd 移 e5 次得到的</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/5.png" loading="lazy"></p>
+<p>因此，内存 [0x80:0x84] 等于 <strong>0x08c379a</strong> 。</p>
+<p>在 82 和 88 指令之间，它也是这样做的。<strong>EVM 将 4 加到 80&#x3D;84，然后 mstore(0x84</strong> &#x2F;&#x2F;80+4 <strong>的结果,0x20)</strong> 在内存中，它添加了 0x04，因为它是内存中最后一个数据的大小，在 0x80 处，这个数据因此被存储在 0x08c379a0…. 后。</p>
+<p>内存 [0x84:0xa4] 现在等于 0x20。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/7.png" loading="lazy"></p>
+<p>在字节 89 和 95 指令之间，EVM 通过使用与之前相同的方式将 0x05 存储在内存中 <strong>mstore(0xa4,0x05)</strong></p>
+<p>因此：内存 [0xa4:0xc4] &#x3D; 0x05。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/8.png" loading="lazy"></p>
+<p>在 96 和 104 指令之间，<strong>0x195a59da1d</strong> 被推到堆栈中（并向左移位），所以 <strong>0x6569676874000….0000</strong> 在堆栈中。</p>
+<p>如果我们把 6569676874 从十六进制转换为 ascii（文本），我们就可以找到 “eight” 的字符串，这就是返回值。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/9.png" loading="lazy"></p>
+<p>在指令 105 和 109 之间：</p>
+<ol>
+<li>EVM 将 44 加到 80（空闲内存指针）&#x3D; c4（在此内存插之前的槽被占用）</li>
+<li>在内存执行 mstore(0xc4,0x6569676874000.000)</li>
+</ol>
+<p>因此，结果是:</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/10.png" loading="lazy"></p>
+<p>最后在指令 123，EVM 以 80 作为起始偏移量，64 作为大小。(这与 RETURN 操作码的情况完全相同）。</p>
+<p>这意味着返回数据位于 0x80 和 0xe4 之间。</p>
+<p>不同的是，EVM 返回了更多关于回退的信息，不仅仅是我们可能猜到的文本 “eight”，还有另外 3 个参数:</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/11.png" loading="lazy"></p>
+<p>那么这 3 个未知的值是什么？</p>
+<ul>
+<li>0x08c379a0 是 Error(string) 函数的签名。每次有人在他的智能合约中使用带参数的 revert，当有一个错误时，其作为错误函数被返回。</li>
+<li>20</li>
+<li>5</li>
+<li>0x5569676874 是 eight 字符串</li>
+</ul>
+<p>基本上，这只是意味着 revert 向区块链返回函数 Error(20,5, “eight”)。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/6.png" loading="lazy"></p>
+<blockquote>
+<p>恢复（内存[偏移量：偏移量+长度]），拜占庭硬分叉，EIP-140：恢复并返回数据</p>
+</blockquote>
+<h1 id="INVALID-无效操作码"><a href="#INVALID-无效操作码" class="headerlink" title="INVALID 无效操作码"></a>INVALID 无效操作码</h1><p>在深入研究这个操作码之前，让我们先回答一个问题。</p>
+<p>一个智能合约的大小是多少？</p>
+<p>它可以在 <strong>1 字节和 24.576Kb 之间</strong>。</p>
+<p>智能合约只由操作码组成（比如我们已经知道的 <strong>PUSH, POP, DUP</strong>, <strong>SSTORE</strong>），这些操作码被直接翻译成二进制。</p>
+<p>每条没有参数的指令需要 1 个字节的内存。例如:</p>
+<ul>
+<li><strong>REVERT</strong> 是0 xFD</li>
+<li>**SELFDESTRUCT **是 0xFF。</li>
+</ul>
+<p>一些有参数的指令可以占用 2 个或更多的字节</p>
+<ul>
+<li><strong>PUSH1 0x80</strong> 是 6080（PUSH1 单独是 2 个第一字节：0x60 和 0x80 是指令的参数）。</li>
+<li><strong>DUP1 0x80</strong> 是 8080</li>
+</ul>
+<p>而合约的字节码仅仅是所有指令字节码的连接。</p>
+<p>但是一个问题出现了。有 16*16&#x3D;256 个不同的操作码（00 到 FF）的组合，但只有一部分被分配。(大约有 145 个没有被分配。)</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/12.png" loading="lazy"></p>
+<p>已分配的操作码</p>
+<p>这些未分配的操作码被称为：INVALID 操作码。</p>
+<p>通常情况下，如果你用 solidity 将你的智能合约编译成 EVM 的字节码，除非在编译过程中出现错误，否则不应该有可访问的无效操作码。</p>
+<p>但是如果 EVM（通过任何方式）落入一个无效的操作码，它就会自动回退！这就是 EVM。</p>
+<p>但实际上，有一种可能性是，一些无效的操作码存在于智能合约中，特别是在最后，但这段代码是不可触及的，这意味着无论向智能合约发送什么交易，EVM 都不会读取最后的代码，之前总会有一个 JUMP。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/13.png" loading="lazy"></p>
+<p>在第 54 指令的 JUMP 之后，截图中没有代码可以执行。</p>
+<p>但为什么在第 54 指令后有一些代码？我们能不能把第 54 字节后的所有代码删除？</p>
+<p><strong>首先</strong>，这是编译后的智能合约的元数据的哈希值，但是哪个元数据？</p>
+<p>当 Solidity 编译智能合约时，它会自动生成一个 JSON 文件，包含关于智能合约的所有数据。<br>如果你进入 remix 的编译标签，点击编译细节和 “METADATA”（通常是列表中的第 2 个），你应该看到所有的元数据，其中包含：</p>
+<ul>
+<li>编译器版本（在我们的例子中是 0.8.7）。</li>
+<li>包含 Abi 的 “输出（output）”。</li>
+<li>编译设置（版本、优化器…)</li>
+<li>智能合约的路径</li>
+</ul>
+<p>这意味着，两个完全相同的智能合约，用相同的版本编译，可以有不同的字节码! (区别只存在于最后)</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/14.png" loading="lazy"></p>
+<p>为什么 solidity 编译后要这样做呢？</p>
+<p>根据 solidity 文档，它是用来访问 Swarm 中及 ipfs 中的合约的元数据，你可以在<a href="https://learnblockchain.cn/docs/solidity/metadata.html">这里</a>了解更多。</p>
+<p>第二个问题：你可以删除这块数据以节省 Gas 吗？</p>
+<p>是的，你可以在 <strong>remix</strong> 中进行配置。你只需要制作一个交易，并在手动删除智能合约的最后这 52 个字节。</p>
+<p>在合约部署时，每一个字节都要花费 200 个 Gas，因为元数据的 IPFS 哈希值是 52 个字节的长度，你可以通过禁用这个选项来节省 10400 个 Gas，这并不小（相比之下，一个简单的转移要花费 21000 个 Gas）。</p>
+<blockquote>
+<p>优化器工作。</p>
+</blockquote>
+<h1 id="SELFDESTRUCT"><a href="#SELFDESTRUCT" class="headerlink" title="SELFDESTRUCT"></a>SELFDESTRUCT</h1><p>你知道吗，可以通过调用一个操作码从区块链上删除一个智能合约？</p>
+<p>以下是智能合约代码，我们将进行编译和测试。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    function test() external &#123;</span><br><span class="line">        selfdestruct(payable(0x0000000000000000000000000000000000000000));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在对 test() 函数进行反汇编后，我们得到:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">53  JUMPDEST </span><br><span class="line">54  PUSH1 0x00 </span><br><span class="line">56  PUSH20 0xffffffffffffffffffffffffffffffffffffffff </span><br><span class="line">78  AND </span><br><span class="line">79  SELFDESTRUCT</span><br></pre></td></tr></table></figure>
+
+<p>(在第 79 个指令之后，有前一节所讲的元数据的哈希值)<br>(在这个例子中不需要显示堆栈)</p>
+<p>0x0 和 <strong>0xffffffffffffffffffffffffffffffffffffffff</strong> 进行与运算，结果是 0x0，在指令 53 和 78 之间的堆栈中出现 0x0。</p>
+<p>Stack(0) 在第 78 指令后现在含有 0x00。在第 79 指令，<strong>SELFDESTRUCT</strong> 指令被调用，参数为 Stack(0)（0地址）。</p>
+<p>但什么是 <strong>SELDESTRUCT</strong>，为什么 <strong>SELFDESTRUCT</strong> 需要一个参数？</p>
+<p>SELDESTRUCT 从区块链上删除智能合约。</p>
+<p><strong>如果销毁的智能合约包含一些 ETH，这些资金不能消失。因此，存储在智能合约中的所有资金将被发送到新的地址。这就是原因。</strong></p>
+<p>但是，一个问题出现了：如果新地址是一个智能合约，没有 receive 和 fallback 函数（或者 receive 功能回退了怎么办？），资金会去哪里？</p>
+<p>答案很简单，在此案例中，以太坊会做一个例外：即使函数回退，智能合约仍然会得到资金！这意味着，在此案例中，智能合约有可能获得资金。</p>
+<p>这意味着可以向智能合约发送 ETH 并强迫它接受资金。</p>
+<p>如果一个智能合约的逻辑过于依赖 ETH 的余额，那么就会导致一个未定义的行为。这就是所谓的自毁安全漏洞。</p>
+<p><strong>最后一个问题，为什么使用这个操作码很有意思</strong>？</p>
+<p>如果你完成了一个智能合约，并且你不再需要它了。调用 <strong>selfdestruct(address)</strong> 比让合约活着并手动转移资金要便宜。(例如使用转移、发送或调用)</p>
+<p>这是因为 <strong>selfdestruct(address)</strong> 释放了区块链的空间，所以 Gas 成本比简单的转移要便宜。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>这一节相当简单，我想向你展示智能合约执行的所有可能的停止方式，以下是你学到的内容。</p>
+<ul>
+<li>5 条停止合约的指令。</li>
+<li>关于自毁的一些安全性。</li>
+<li>合约的元数据哈希值是什么？</li>
+<li>REVERT 和 RETURN的返回值</li>
+</ul>
+<p>下次见 !</p>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 03 - 存储布局如何工作？</title>
+    <url>/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-ethereum-evm-smart-contracts-part-3-ebe032a08f97">https://trustchain.medium.com/reversing-and-debugging-ethereum-evm-smart-contracts-part-3-ebe032a08f97</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/4943">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+<hr>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
+<p>本篇我们将看看不同类型的变量是如何在 EVM 内存和存储中存储和处理的。</p>
+<p>每次，当我们在分析一段代码时，我建议你同时用 <strong>remix</strong> 来调试它。你会对正在发生的事情有一个更好的理解。如果你不知道怎么做，请查看本系列的<a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001">第1篇：理解汇编</a></p>
+<h1 id="简单的例子"><a href="#简单的例子" class="headerlink" title="简单的例子"></a>简单的例子</h1><p>我们将首先使用一个非常简单的例子。</p>
+<p>不要忘记编译下面的合约，我们的设置是：solidity <strong>0.8.7</strong> 版本编译器、启用优化器，run 为 200 。</p>
+<p>部署它可以并调用函数 “modify()”：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT </span><br><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123;     </span><br><span class="line">    uint balance;     </span><br><span class="line">    uint balance2;     </span><br><span class="line">    uint balance3;   </span><br><span class="line">   </span><br><span class="line">    function modify() external &#123;         </span><br><span class="line">        balance = 1;         </span><br><span class="line">        balance2 = 2;         </span><br><span class="line">        balance3 = 3;     </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们用 remix 调试 “<strong>modify</strong>“ 函数时，会被 remix 直接 “路由” 到函数 **modify()**，因此在 <strong>modify()</strong> 之前执行的代码（如函数选择器或 payable 验证）已经完成，对我们的分析没有帮助：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">045 JUMPDEST |0x64cf33b8| (this is the function signature, we will discard it)</span><br><span class="line">046 PUSH1 42 |0x42|</span><br><span class="line">048 PUSH1 01 |0x01|0x42|</span><br><span class="line">050 PUSH1 00 |0x00|0x01|0x42|</span><br><span class="line">052 DUP2     |0x01|0x00|0x01|0x42|</span><br><span class="line">053 SWAP1    |0x00|0x01|0x01|0x42|</span><br><span class="line">054 SSTORE   |0x01|0x42|</span><br><span class="line">055 PUSH1 02 |0x02|0x01|0x42|</span><br><span class="line">057 SWAP1    |0x01|0x02|0x42|</span><br><span class="line">058 DUP2     |0x02|0x01|0x02|0x42|</span><br><span class="line">059 SWAP1    |0x01|0x02|0x02|0x42|</span><br><span class="line">060 SSTORE   |0x02|0x42|</span><br><span class="line">061 PUSH1 03 |0x03|0x02|0x42|</span><br><span class="line">063 SWAP1    |0x02|0x03|0x42|</span><br><span class="line">064 SSTORE   |0x42|</span><br><span class="line">065 JUMP     ||</span><br><span class="line">066 JUMPDEST ||</span><br><span class="line">067 STOP     ||</span><br></pre></td></tr></table></figure>
+
+<p>在我们调用函数 modify 后，结果是相当明显的。</p>
+<p>在第 48 指令，EVM 在堆栈中 <strong>PUSH 42</strong>（十进制的 <strong>66</strong>），这就是合约末尾代码中的 “位置”。<strong>（066 jumpdest 067 stop）</strong><br>当 modify() 的执行将结束时，EVM 将 JUMP 到这个字节。</p>
+<blockquote>
+<p>备注：第 48 指令 表示第 48 个字节数上的指令（从 0 开始），下面都使用这种简写方式。</p>
+</blockquote>
+<p>在指令 48 和 54 之间，<strong>EVM 在存储槽 0</strong> 保存 1<br>在指令 55 和 60 之间，<strong>EVM 在存储槽 1 保存</strong> 2。<br>在指令 61 和 64 之间，<strong>EVM 在存储槽 2 保存</strong> 3。</p>
+<p>在 65 指令，函数 <strong>JUMP</strong> 到 66（0x42），在函数 modify() 的开头保存的字节，并通过使用 <strong>STOP</strong> 指令结束智能合约的执行。</p>
+<p>你可以通过运行调试器和检查堆栈中的汇编来验证。这段代码相当于：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sstore(0x0,0x1) </span><br><span class="line">sstore(0x1,0x2) </span><br><span class="line">sstore(0x2,0x3)</span><br></pre></td></tr></table></figure>
+
+<p>这里，即使我们的值比 32 字节少很多，它们也被存储在单独的槽里，这可能会花费一些 Gas。(如果以前的值是 0，则每个槽要花费 20000 个 Gas)</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/1.png" loading="lazy"></p>
+<blockquote>
+<p>修改函数的Gas成本</p>
+</blockquote>
+<p>但是，如果你第二次调用该函数，由于存储中的值是非零的，Gas 成本会便宜很多。(每 SSTORE 使用 2200 gas)</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/2.png" loading="lazy"></p>
+<p>提示：每条在 EVM 上指令都要花费 Gas，一个交易的 Gas 成本是所有指令的 Gas 总和（+21000 Gas 的基本成本），你可以在调试器标签中的 “步骤详情（step details）” 部分看到 Gas 的使用。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/3.png" loading="lazy"></p>
+<blockquote>
+<p>这里，SWAP1 指令使用了 3 个 Gas</p>
+</blockquote>
+<p>如果你不理解这第一部分，请随时阅读本系列的第一篇或第二篇文章，在那里更详细地解释汇编代码：</p>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+</ul>
+<h1 id="使用-uint-8-而不是-uint-256"><a href="#使用-uint-8-而不是-uint-256" class="headerlink" title="使用 uint 8 而不是 uint 256"></a>使用 uint 8 而不是 uint 256</h1><p>到现在为止，我们还没学到什么，但是如果我们把 <strong>uint</strong> 代替为 <strong>uint 8</strong> 呢？有什么区别吗？让我们看看结果吧!</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT </span><br><span class="line">pragma solidity ^0.8.0;  contract Test &#123;     </span><br><span class="line">    uint8 balance;     </span><br><span class="line">    uint8 balance2;</span><br><span class="line">    uint8 balance3; </span><br><span class="line">    </span><br><span class="line">    function modify() external &#123;</span><br><span class="line">         balance = 1; </span><br><span class="line">         balance2 = 2; </span><br><span class="line">         balance3 = 3;    </span><br><span class="line">    &#125; </span><br><span class="line">    function modify2() external &#123;   </span><br><span class="line">         balance2 = 5; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可能已经知道，uint 8 只使用 <strong>1 个字节</strong>。所以 3 个 uint 8 应该只用 <strong>3 个字节</strong>，这比一个槽要少得多。(<strong>32 字节</strong>)</p>
+<p>因此，这三个变量加起来应该只使用一个槽，对吗？</p>
+<p>是的，你是对的！只有一个<strong>存储被</strong>执行，而且代码要短得多。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">055 JUMPDEST     |function signature (discarded)|</span><br><span class="line">056 PUSH1 00     |0x00|</span><br><span class="line">058 DUP1         |0x00|0x00|</span><br><span class="line">059 SLOAD        |0x00|0x00| (the slot 0 in storage contains 0x030201)</span><br><span class="line">060 PUSH3 ffffff |0xffffff|0x00|0x00|</span><br><span class="line">064 NOT          |0xffffff...fffff000000|0x00|0x00| (the NOT inverse all 32 bytes of Stack(0)</span><br><span class="line">065 AND          |0x00|0x00|</span><br><span class="line">066 PUSH3 030201 |0x030201|0x00|0x00|</span><br><span class="line">070 OR           |0x030201|0x00|</span><br><span class="line">071 SWAP1        |0x00|0x030201|</span><br><span class="line">072 SSTORE       ||</span><br><span class="line">073 STOP         ||</span><br></pre></td></tr></table></figure>
+
+<p>让我们看看在这个函数中到底发生了什么。像往常一样，不要忘记在阅读的同时使用调试器，你会对情况有更好的理解。</p>
+<p>在第 59 指令，<strong>SLOAD</strong> 在 Stack(0) 槽中加载 Storage 值，由于 Stack(0)&#x3D;0 （备注：存储槽没有写入过，默认都是 0），所以堆栈没有变化。</p>
+<p>接下来的 3 个操作（指令 50-55）有点神秘。</p>
+<p>EVM推送 “<strong>ffffff</strong>“ 和 NOT（取反）这个，结果是 <strong>0xfffffffffffffffffffffffffffffffffffffffffffffffff000000</strong>， NOT 指令反转了 <strong>Stack(0)</strong> 的所有字节。</p>
+<p>在这之后，它**与之前的 **SLOAD 进行 AND 运算（与运算），也就是 0x00。</p>
+<p>我们知道，<strong>0 AND x &#x3D; 0</strong>（对每一个 x），结果是 0x00，堆栈保持与指令 50 之前一样。</p>
+<p>在这 6 条指令之后，没有任何变化，这非常奇怪……我们将在后面几行看到原因。</p>
+<p>就在这之后的第 56 字节：0x030201 被推到了堆栈中，这显然是我们的 <code>balance=1</code>，<code>balance2=2</code>，<code>balance3=3</code> 的值。</p>
+<p>在第 60 指令，因为 <strong>Stack(1)</strong> 是 0，OR（或）操作码在这里没有任何作用，因为 0 OR x &#x3D; x (对于所有的 x)，Stack 保持不变，只有 Stack(1) 的 0x00 被删除。</p>
+<p>之后，<strong>SSTORE</strong> 用来将 <strong>030201</strong> 存储在 <strong>0</strong> 槽中。这就是我们所要做的。</p>
+<p>你可以注意到，03 02 01 在存储空间和堆栈中一共只占用了 1 个槽，就像我们所期望的那样。</p>
+<p>因此，我们可以证明，这 3 个变量占用了相同的存储槽，因此使用的 Gas 更少了</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/4.png" loading="lazy"></p>
+<blockquote>
+<p>只有 43286 个 Gas 被使用，而之前是 87504。</p>
+</blockquote>
+<p>第二个智能合约函数 modify()，只使用了 43286 个 Gas 而不是 87504 个。如果你是一个智能合约的开发者，你已经证明了，使用更少的变量（当它是可能的）可以节省大量的 Gas……</p>
+<p>现在让我们调用函数 <strong>modify2</strong>（在 <strong>modify()</strong> 之后），这里是整个函数的反汇编。</p>
+<p>提示一下：modify2 只把 balance2（插槽 1）设置为 5。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">156 JUMPDEST		| 0x45 | 0x901659a0 |</span><br><span class="line">157 PUSH1 0x05		| 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">159 PUSH1 0x00		| 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">161 PUSH1 0x01		| 0x01 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">163 PUSH2 0x0100	| 0x0100 | 0x01 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">166 EXP				| 0x0100 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">167 DUP2			| 0x00 | 0x0100 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">168 SLOAD			| 0x030201 | 0x0100 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">169 DUP2			| 0x0100 | 0x030201 | 0x0100 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">170 PUSH1 0xff		| 0xff | 0x0100 | 0x030201 | 0x0100 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">172 MUL				| 0xff00 | 0x030201 | 0x0100 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">173 NOT				| 0xff00ff | 0x030201 | 0x0100 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">174 AND				| 0x030001 | 0x0100 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">175 SWAP1			| 0x0100 | 0x030001 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">176 DUP4			| 0x05 | 0x0100 | 0x030001 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">177 PUSH1 0xff		| 0xff | 0x05 | 0x0100 | 0x030001 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">179 AND				| 0x05 | 0x0100 | 0x030001 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">180 MUL				| 0x0500 | 0x030001 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">181 OR				| 0x030501 | 0x00 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">182 SWAP1			| 0x00 | 0x030501 | 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">183 SSTORE			| 0x05 | 0x45 | 0x901659a0 |</span><br><span class="line">184 POP				| 0x45 | 0x901659a0 |</span><br><span class="line">185 JUMP			| 0x901659a0 |</span><br><span class="line">069 JUMPDEST</span><br><span class="line">070 STOP</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>EXP 指令的作用是<code>a ** b</code>来计算<code>a</code>的<code>b</code>次方</p>
+<p>MUL 的作用是相乘</p>
+<p>注：原文链接中的指令集是删减了很多的，所以我这里自己更改为正常情况下的指令集</p>
+</blockquote>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/5.png" loading="lazy"></p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/6.png" loading="lazy"></p>
+<ol>
+<li>首先（指令 168），EVM 加载存储的槽 0，即 <strong>0x030201</strong>。</li>
+<li>其次(指令 170 - 173)，EVM 对 <strong>ff00</strong> 取反(NOT)，在 32 个字节的结果是<strong>0xfffffffffffffffffffffffffffffffffffffffffffffffffff00ff</strong> 。</li>
+<li>在指令 174，2 个结果进行与运算，即<strong>0x00000000000000000000000000000000000000000000000000030001(或0x030001)。</strong><br>这和存储槽 0 是一样的，但是没有 02（合约中的 “balance2” 的部分），这是正常的！为什么？<br>这是因为在 <strong>modify2()</strong> 中，EVM 修改了 <strong>balance2</strong>。首先它需要擦除之前的结果，而不擦除 <strong>balance</strong> 和 <strong>balance3</strong>（因为它们在同一个槽中），所以它通过使用 <strong>0xfff…ff00ff</strong> 掩码来 “清洗” 结果。</li>
+<li>之后，<strong>0500</strong> 被推入堆栈（指令 176 DUP4），最后的 2 个结果进行 OR 操作（指令 181），最后的结果是：<strong>0x030501</strong>，”OR” 的目的是在 03 和 01 的边上加上 05。因此余额 2 被成功地修改，而没有改变余额 1 和余额 3。</li>
+</ol>
+<p>这个 <strong>0xfffffffffffffffffffffffffffffffffffffffffffffffffff00ff</strong> 被称为 “掩码”。</p>
+<p>如果我们想代替 <strong>balance2</strong> 修改 <strong>balance3</strong> 为 5，我们应该使用掩码 <strong>0xfffffffffffffffffffffffffffffffffffffffffffffffff00ffff</strong>（擦除 balance3 在 0x00 槽中的字节），在第四步，我们应该 **PUSH 050000.**（05 应该在这里，因为这里放置了 <strong>balance3</strong> 的存储。）</p>
+<p>这就是为什么你在需要的时候应该使用较小的类型：它需要更少的 Gas。</p>
+<p>但是，不要滥用较小的类型，因为它增加了 EVM 执行的操作的数量（通过使用带有掩码的操作），所以它使用更多的 Gas。</p>
+<blockquote>
+<p> 优化器比较方向：存储使用的 gas 少，但是修改变量时值使用多</p>
+</blockquote>
+<h1 id="使用不同类型的数据"><a href="#使用不同类型的数据" class="headerlink" title="使用不同类型的数据"></a>使用不同类型的数据</h1><p>让我们看看节省 Gas 的技巧是否只适用于 <strong>uint</strong> 类型或其他 solidity 内置类型。</p>
+<p>下面是新的智能合约，用相同的设置（编译器 0.8.7 和优化器为 200）编译它：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT </span><br><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123;     </span><br><span class="line">    uint8 balance;     </span><br><span class="line">    bytes4 data;     </span><br><span class="line">    address addr;      </span><br><span class="line">    function modify() external &#123;         </span><br><span class="line">        balance = 17;        </span><br><span class="line">        data = 0xaaaaaaaa;       </span><br><span class="line">        addr = 0x358AA13c52544ECCEF6B0ADD0f801012ADAD5eE3;     </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个智能合约包含一个 <strong>uint8</strong>，占 <strong>1 个字节</strong>，一个 <strong>byte4</strong>，占 <strong>4 个字节</strong>，一个地址，占 <strong>20 个字节</strong>。我们创建的 <code>modify</code>函数总共 “修改” 了 <strong>25 个字节</strong>，这比一个 EVM 插槽（32 个字节）还要少。</p>
+<p>理论上，这 3 个变量应该用一个存储槽就可以。</p>
+<p>是这样吗？</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">054 PUSH1 0x11			| 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">056 PUSH1 0x00			| 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">058 DUP1				| 0x00 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">059 PUSH2 0x0100		| 0x0100 | 0x00 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">062 EXP					| 0x0001 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">063 DUP2				| 0x00 | 0x0001 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">064 SLOAD				| 0x0...0 | 0x0001 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">065 DUP2				| 0x 0001 | 0x0...0 | 0x0001 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">066 PUSH1 0xff			| 0xff | 0x 0001 | 0x0...0 | 0x0001 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">068 MUL					| 0xff | 0x0...0 | 0x0001 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">069 NOT					| 0xff...f00 | 0x0...0 | 0x0001 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">070 AND					| 0x0...0 | 0x0001 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">071 SWAP1				| 0x0001 | 0x0...0 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">072 DUP4				| 0x11 | 0x0001 | 0x0...0 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">073 PUSH1 0xff			| 0Xff | 0x11 | 0x0001 | 0x0...0 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">075 AND					| 0x11 | 0x0001 | 0x0...0 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">076 MUL					| 0x11 | 0x0...0 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">077 OR					| 0x11 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">078 SWAP1				| 0x00 | 0x11 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">079 SSTORE				| 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">080 POP					| 0x33 | 0x64cf33b8 | // 17 已经存入</span><br><span class="line">081 PUSH4 0xaaaaaaaa	| 0xaaaaaaaa | 0x33 | 0x64cf33b8 |</span><br><span class="line">086 PUSH1 0xe0			| 0xe0 | 0xaaaaaaaa | 0x33 | 0x64cf33b8 |</span><br><span class="line">088 SHL					| 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">089 PUSH1 0x00			| 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">091 PUSH1 0x01			| 0x01 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">093 PUSH2 0x0100		| 0x0100 | 0x01 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">096 EXP					| 0x0100 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">097 DUP2				| 0x00 | 0x0100 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">098 SLOAD				| 0x11 | 0x0100 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 | // 取出 17</span><br><span class="line">099 DUP2				| 0x0100 | 0x11 | 0x0100 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">100 PUSH4 0xffffffff	| 0xffffffff | 0x0100 | 0x11 | 0x0100 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">105 MUL					| 0xffffffff00 | 0x11 | 0x0100 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">106 NOT					| 0xff...f00000000ff | 0x11 | 0x0100 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">107 AND					| 0x00...0000000011 | 0x0100 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">108 SWAP1				| 0x0100 | 0x00...0000000011 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">109 DUP4				| 0xaaaaaaaa...a00 | 0x0100 | 0x00...0000000011 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">110 PUSH1 0xe0			| 0Xe0 | 0xaaaaaaaa...a00 | 0x0100 | 0x00...0000000011 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">112 SHR					| 0xaaaaaaaa | 0x0100 | 0x00...0000000011 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">113 MUL					| 0xaaaaaaaa00 | 0x00...0000000011 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">114 OR					| 0xaaaaaaaa11 | 0x00 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">115 SWAP1				| 0x00 | 0xaaaaaaaa11 | 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 |</span><br><span class="line">116 SSTORE				| 0xaaaaaaaa...a00 | 0x33 | 0x64cf33b8 | // data 和 17 都存进去了</span><br><span class="line">117 POP					| 0x33 | 0x64cf33b8 |</span><br><span class="line">118 PUSH20 0x358aa13c52544eccef6b0add0f801012adad5ee3</span><br><span class="line">139 PUSH1 0x00			| 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">141 PUSH1 0x05			| 0x05 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">143 PUSH2 0x0100		| 0x0100 | 0x05 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">146 EXP					| 0x010000000000 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">147 DUP2				| 0x00 | 0x010000000000 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">148 SLOAD				| 0xaaaaaaaa11 | 0x010000000000 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">149 DUP2				| 0x010000000000 | 0xaaaaaaaa11 | 0x010000000000 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">150 PUSH20 0xffffffffffffffffffffffffffffffffffffffff</span><br><span class="line">171 MUL					| 0x00..0ffffffffffffffffffffffffffffffffffffffff0000000000 | 0xaaaaaaaa11 | 0x010000000000 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">172 NOT					| 0xff..f00..00ffffffffff | 0xaaaaaaaa11 | 0x010000000000 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">173 AND					| 0xaaaaaaaa11 | 0x010000000000 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">174 SWAP1				| 0x010000000000 | 0xaaaaaaaa11 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">175 DUP4				| 0x35...e3 | 0x010000000000 | 0xaaaaaaaa11 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">176 PUSH20 0xffffffffffffffffffffffffffffffffffffffff</span><br><span class="line">197 AND					| 0x35...e3 | 0x010000000000 | 0xaaaaaaaa11 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">198 MUL					| 0x35...e30000000000 | 0xaaaaaaaa11 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">199 OR					| 0x35...e3aaaaaaaa11 | 0x00 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">200 SWAP1				| 0x00 | 0x35...e3aaaaaaaa11 | 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">201 SSTORE				| 0x35...e3 | 0x33 | 0x64cf33b8 |</span><br><span class="line">202 POP					| 0x33 | 0x64cf33b8 |</span><br><span class="line">203 JUMP				| 0x64cf33b8 |</span><br><span class="line">051 JUMPDEST			| 0x64cf33b8 |</span><br><span class="line">052 STOP				| 0x64cf33b8 |</span><br></pre></td></tr></table></figure>
+
+<p>你可能猜到了，答案是肯定的!</p>
+<p>该函数的结构与上一个例子（使用 uint8）几乎相同。只是在开始创建掩码时有一些不同。</p>
+<p>因为有 25 个字节，所以掩码应该是 <strong>0xfffffffffff00000…49zeros00000</strong> 在指令 58&#x2F;59 的 <strong>AND</strong> 之前。</p>
+<p>之后，在第 60 指令，包含智能合约中存在的值的25个字节被推送（<strong>addr &#x3D; 0x358aa13c52544eccef6b0add0f801012adad5ee3</strong>，<strong>data &#x3D; 0xaaaaaaaa</strong>，<strong>balance &#x3D; 0x11</strong>），并与指令 <strong>86</strong> 的掩码进行 “<strong>OR</strong>“。</p>
+<p>最后，它们被 “存储” 在 0 槽中。</p>
+<blockquote>
+<p>我在 remix 中部署时发现，并不是这样的。而是通过凭借的方式，也就是一步一步处理，而不是直接 25 个 f 这种方式，但是也差不多。</p>
+</blockquote>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/7.png" loading="lazy"></p>
+<p>使用了 43298 个 Gas（只执行了 1 个 SSTORE）。</p>
+<p><strong>除此之外，Gas 成本与存储 uint8 的成本差不多低。(43286 vs 43298)</strong></p>
+<h1 id="变量的位置是否有关系？"><a href="#变量的位置是否有关系？" class="headerlink" title="变量的位置是否有关系？"></a>变量的位置是否有关系？</h1><p>要了解 EVM，最好的方法是通过修改不同的参数，进行尽可能多的测试。这正是我们在这里所做的。</p>
+<p>在这个例子中，我们将互换 <strong>addr</strong> 和 <strong>data</strong> 变量。</p>
+<p>它们应该在存储空间中占据相同的位置，但位置应该是颠倒的，对吗？</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT </span><br><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123;     </span><br><span class="line">    uint8 balance;</span><br><span class="line">    address addr;</span><br><span class="line">    bytes4 data;      </span><br><span class="line">    function modify() external &#123;      </span><br><span class="line">        balance = 17;    </span><br><span class="line">        data = 0xaaaaaaaa;     </span><br><span class="line">        addr = 0x358AA13c52544ECCEF6B0ADD0f801012ADAD5eE3;   </span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/8.png" loading="lazy"></p>
+<p>这与上次的情况：“<strong>358aa13c52544eccef6b0add0f801012adad5ee3aaaaaaaa11</strong>” 不同。</p>
+<p>我们可以看到，<strong>addr</strong> 和 <strong>data</strong> 变量被互换了。</p>
+<p>我们的假设是对的，两个变量的位置被颠倒了。<strong>balance &#x3D; 17</strong> (十六进制11)仍然是在第一个位置，因为 EVM 使用的是小端（litter-endian）架构（第一个在最后）。</p>
+<h1 id="如何存储结构体？"><a href="#如何存储结构体？" class="headerlink" title="如何存储结构体？"></a>如何存储结构体？</h1><p>如果我们用结构体做同样的事情，会发生什么？</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT </span><br><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line"></span><br><span class="line">contract Test &#123;     </span><br><span class="line">    struct Values &#123;  </span><br><span class="line">        uint8 balance;   </span><br><span class="line">        address addr;  </span><br><span class="line">        bytes4 data;    </span><br><span class="line">    &#125;      </span><br><span class="line">    Values value;      </span><br><span class="line">    function modify() external &#123; </span><br><span class="line">        value.balance = 17;  </span><br><span class="line">        value.addr = 0x358AA13c52544ECCEF6B0ADD0f801012ADAD5eE3;    </span><br><span class="line">        value.data = 0xaaaaaaaa;   </span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是函数的额完整汇编代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">054 PUSH1 0x11			| 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">056 PUSH1 0x00			| 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">058 DUP1				| 0x00 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">059 ADD					| 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">060 PUSH1				| 0x00 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">062 PUSH2 0x0100		| 0x0100 | 0x00 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">065 EXP					| 0x0001 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">066 DUP2				| 0x00 | 0x0001 | 0x00 | 0x11 | 0x33 | 0x64cf33b8 |</span><br><span class="line">067 SLOAD 0x - LINE 12</span><br><span class="line">068 DUP2 0x - LINE 12</span><br><span class="line">069 PUSH1 0xff - LINE 12</span><br><span class="line">071 MUL 0x - LINE 12</span><br><span class="line">072 NOT 0x - LINE 12</span><br><span class="line">073 AND 0x - LINE 12</span><br><span class="line">074 SWAP1 0x - LINE 12</span><br><span class="line">075 DUP4 0x - LINE 12</span><br><span class="line">076 PUSH1 0xff - LINE 12</span><br><span class="line">078 AND 0x - LINE 12</span><br><span class="line">079 MUL 0x - LINE 12</span><br><span class="line">080 OR 0x - LINE 12</span><br><span class="line">081 SWAP1 0x - LINE 12</span><br><span class="line">082 SSTORE 0x - LINE 12</span><br><span class="line">083 POP 0x - LINE 12</span><br><span class="line">084 PUSH20 0x358aa13c52544eccef6b0add0f801012adad5ee3 -</span><br><span class="line">105 PUSH1 0x00 -</span><br><span class="line">107 DUP1 0x -</span><br><span class="line">108 ADD 0x -</span><br><span class="line">109 PUSH1 0x01 -</span><br><span class="line">111 PUSH2 0x0100 -</span><br><span class="line">114 EXP 0x -</span><br><span class="line">115 DUP2 0x -</span><br><span class="line">116 SLOAD 0x -</span><br><span class="line">117 DUP2 0x -</span><br><span class="line">118 PUSH20 0xffffffffffffffffffffffffffffffffffffffff -</span><br><span class="line">139 MUL 0x -</span><br><span class="line">140 NOT 0x -</span><br><span class="line">141 AND 0x -</span><br><span class="line">142 SWAP1 0x -</span><br><span class="line">143 DUP4 0x -</span><br><span class="line">144 PUSH20 0xffffffffffffffffffffffffffffffffffffffff -</span><br><span class="line">165 AND 0x -</span><br><span class="line">166 MUL 0x -</span><br><span class="line">167 OR 0x -</span><br><span class="line">168 SWAP1 0x -</span><br><span class="line">169 SSTORE 0x -</span><br><span class="line">170 POP 0x -</span><br><span class="line">171 PUSH4 0xaaaaaaaa -</span><br><span class="line">176 PUSH1 0xe0 -</span><br><span class="line">178 SHL 0x -</span><br><span class="line">179 PUSH1 0x00 -</span><br><span class="line">181 DUP1 0x -</span><br><span class="line">182 ADD 0x -</span><br><span class="line">183 PUSH1 0x15 -</span><br><span class="line">185 PUSH2 0x0100 -</span><br><span class="line">188 EXP 0x -</span><br><span class="line">189 DUP2 0x -</span><br><span class="line">190 SLOAD 0x -</span><br><span class="line">191 DUP2 0x -</span><br><span class="line">192 PUSH4 0xffffffff -</span><br><span class="line">197 MUL 0x -</span><br><span class="line">198 NOT 0x -</span><br><span class="line">199 AND 0x -</span><br><span class="line">200 SWAP1 0x -</span><br><span class="line">201 DUP4 0x -</span><br><span class="line">202 PUSH1 0xe0 -</span><br><span class="line">204 SHR 0x -</span><br><span class="line">205 MUL 0x -</span><br><span class="line">206 OR 0x -</span><br><span class="line">207 SWAP1 0x -</span><br><span class="line">208 SSTORE 0x -</span><br><span class="line">209 POP 0x -</span><br><span class="line">210 JUMP 0x -</span><br></pre></td></tr></table></figure>
+
+<p>使用结构体的代码是基本一样。</p>
+<p><strong>警告</strong>：这意味着有时要区分 3 个不同的变量还是一个结构体可能很困难。</p>
+<p>Gas费也和以前一样：</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/9.png" loading="lazy"></p>
+<p>好了，这对我们来说太容易了，直到现在，操作码之间没有什么区别。但我们还没有结束! 我们需要更多的挑战。</p>
+<h1 id="那么数组呢？"><a href="#那么数组呢？" class="headerlink" title="那么数组呢？"></a>那么数组呢？</h1><p>数组是如何在 EVM 中存储的？像结构体或变量一样？</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT </span><br><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123; </span><br><span class="line">    uint[] values;</span><br><span class="line">    // uint value2 in comment </span><br><span class="line">    function modify() external &#123;   </span><br><span class="line">        values.push(7);   </span><br><span class="line">        values.push(8);  </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不是的 !</p>
+<p>这一次，不幸的是，它更长、更复杂。我们将需要更多关于 EVM 中存储的理论。</p>
+<p>“<strong>values</strong>“ 变量是一个动态数组，最多可以存储无限多的值。但是有一个问题，如果我们在数组之后创建一个 <strong>value2</strong> 变量（就像注释中的那样），怎么办？它应该被存储在哪个存储槽中？</p>
+<p><strong>value2</strong> 需要在 “<strong>value</strong>“ 之后，并且在槽 1 中，但是由于 “<strong>value</strong>“ 数组是动态的，可以改变大小，所以很难指定一个插槽。嗯…</p>
+<p>在现实中，这仍然是正确的，<strong>value2</strong> 将被存储在槽 1 中（因此接下来的变量将被存储在槽2,3中，以此类推…）。</p>
+<p>但是槽 0 呢？槽 0 包含什么？</p>
+<p>事实上，槽 0 存储的是数组的长度，在此案例中，在智能合约执行函数 <strong>modify()</strong> 后，它将存储 2，因为有 2 个值被推入数组。</p>
+<p><strong>但是，这些值被存储在哪里</strong>？</p>
+<p>由于数组的长度被存储在槽 0 中，这些值应该被存储在其他地方。</p>
+<p>它是在槽 <strong>Keccak256(0)+n</strong> 中。</p>
+<p>第一个值存储在槽 Keccak256(0)+0 中<br>下一个：<strong>Keccak256(0)+1</strong><br>第三个：<strong>Keccak256(0)+2</strong><br>第 n 个：<strong>Keccak256(0)+(n-1)</strong></p>
+<p>由于 <strong>Keccak256(0)</strong> 是一个非常大的数字，EVM 不可能用完插槽。因此，我们解决了这个问题。</p>
+<p>为什么在 <strong>keccak256(0)</strong> 中使用 <strong>0</strong>？因为声明的数组是在 0 槽里。如果它是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">uint value2 //value 2 is in slot 0</span><br><span class="line">uint[] values; //the array is in slot 1</span><br></pre></td></tr></table></figure>
+
+<p>因为数组在槽 1 中，这个数组中的第i个值被存储在 **Keccak256(1)+(n-1)**，数组的长度被存储在槽 1 中。</p>
+<p>现在我们应该看看它在汇编中是如何工作的。<br>首先，这是函数 modify() 在汇编中的第一部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">048 PUSH1 00 | 0x00 |</span><br><span class="line">050 DUP1     | 0x00 | 0x00 |</span><br><span class="line">051 SLOAD    | 0x00 | 0x00 |</span><br><span class="line">052 PUSH1 01 | 0x01 | 0x00 | 0x00 |</span><br><span class="line">054 DUP2     | 0x00 | 0x01 | 0x00 | 0x00 |</span><br><span class="line">055 DUP2     | 0x01 | 0x00 | 0x01 | 0x00 | 0x00 |</span><br><span class="line">056 ADD      | 0x01 | 0x01 | 0x00 | 0x00 |</span><br><span class="line">057 DUP4     | 0x00 | 0x01 | 0x01 | 0x00 | 0x00 |</span><br><span class="line">058 SSTORE   | 0x01 | 0x00 | 0x00 |</span><br><span class="line">059 DUP3     | 0x00 | 0x01 | 0x00 | 0x00 |</span><br><span class="line">060 DUP1     | 0x00 | 0x00 | 0x01 | 0x00 | 0x00 |</span><br><span class="line">061 MSTORE   | 0x01 | 0x00 | 0x00 |</span><br></pre></td></tr></table></figure>
+
+<p>在指令 <strong>51</strong>，EVM从存储槽 0 加载，结果是 0，因为数组的长度是 0。</p>
+<p>在第 <strong>56</strong> 指令，EVM在 0 号存储槽加载的值上加 1，并在第 58 指令将其 <strong>SSTORE</strong> 到同一存储槽。因此，现在数组的长度是 1。</p>
+<p><strong>在第 61</strong> 指令，EVM 在地址 0 处 MSTORE 0，我们将在后面看到原因。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">062 PUSH1 07 | 0x07 | 0x01 | 0x00 | 0x00 |</span><br><span class="line">064 PUSH32 290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563 | hash | 0x07 | 0x01 | 0x00 | 0x00 |</span><br><span class="line">097 SWAP3    | 0x00 | 0x07 | 0x01 | hash | 0x00 |</span><br><span class="line">098 DUP4     | hash | 0x00 | 0x07 | 0x01 | hash | 0x00 |</span><br><span class="line">099 ADD      | hash | 0x07 | 0x01 | hash | 0x00 |</span><br><span class="line">100 SSTORE   | 0x01 | hash | 0x00 |</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Remix 中显示的 KECCAK256 指令，其实就是 SHA3 指令</p>
+</blockquote>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/10.png" loading="lazy"></p>
+<p>0x07 被推到堆栈中，0 的哈希值也是如此，它是 <strong>keccak256(0x00)</strong>(它等于290decd…e563)</p>
+<p><strong>由于数组的当前索引是 0</strong>，EVM 将 0 添加到哈希值上（在指令 99），即堆栈中的第四个值。(这一点很重要，因为当 EVM 将另一个值添加到数组中时，索引将与 0 不同，因此结果也将不同）。</p>
+<p>然后存储（SSTORE） 0x07 到结果槽，(<strong>槽 keccak256(0x00)+0 &#x3D; 7</strong>)</p>
+<p>这就成功存储了数组的第一个元素。</p>
+<p>在第 2 次 SSTORE 之后，重复同样的代码，存储值为 8，但有细微差别：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">101 DUP3     | 0x00 | 0x01| hash | 0x00|</span><br><span class="line">102 SLOAD    | 0x01 | 0x01| hash | 0x00|</span><br><span class="line">103 SWAP1    | 0x01 | 0x01| hash | 0x00|</span><br><span class="line">104 DUP2     | 0x01 | 0x01| 0x01 | hash | 0x00 |</span><br><span class="line">105 ADD      | 0x02 | 0x01| hash | 0x00|</span><br><span class="line">106 SWAP1    | 0x01 | 0x02| hash | 0x00|</span><br><span class="line">107 SWAP3    | 0x00 | 0x02| hash | 0x01|</span><br><span class="line">108 SSTORE   | hash | 0x01|</span><br><span class="line">109 PUSH1 08 | 0x08 | hash| 0x01 |</span><br><span class="line">111 SWAP2    | 0x01 | hash | 0x02 |</span><br><span class="line">112 ADD      | hash+1 | 0x02 |</span><br><span class="line">113 SSTORE   | |</span><br></pre></td></tr></table></figure>
+
+<p>在第 102 指令，**SLOAD **在槽 0 处返回 1，这是数组的长度。</p>
+<p>在第 105 指令，**ADD **在结果上加 1，所以 1+1&#x3D;2。</p>
+<p>在第 108 指令，EVM <strong>SSTORE</strong> 结果（是 2）在槽 0，这就是数组的新长度。</p>
+<p>在第 112 指令，EVM 将 1 添加到 Hash 中，这是分配给 <strong>values[1]</strong> 的槽。</p>
+<p>在第 113 指令，EVM <strong>存储</strong>值 8，在 <strong>keccak256(0)+1</strong> 而不是上次的 **keccak256(0)**。</p>
+<p>如果我们分析一下这种操作的 Gas 成本，我们会发现，这比非数组的情况下要高。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/11.png" loading="lazy"></p>
+<blockquote>
+<p>87746 Gas</p>
+</blockquote>
+<p>有 1 个 <strong>SSTORE</strong> 来存储一个数组的长度。(+ 20000 gas)<br>有 2 个 <strong>SSTORE</strong> 来存储7和8的值。(+40000 gas)<br>有 1 个 **SSTORE **到一个非零值槽，将数组的长度从 1 更新到 2。</p>
+<p>我们就快完成了……</p>
+<h1 id="如何存储映射？"><a href="#如何存储映射？" class="headerlink" title="如何存储映射？"></a>如何存储映射？</h1><p>现在我们来谈谈映射，像数组一样，如何存储映射的所有值并不明显。(ERC20代币中的变量<strong>balances</strong>就是一个好例子)</p>
+<p>我们知道，映射是一组<strong>键值对</strong>。</p>
+<p>对比数组，在映射中存储值的方式非常相似，存储槽等于<strong>SHA3(mapping_slot.key)</strong></p>
+<p>(其中**.**是连接运算符）在这最后一部分，我们将验证这个公式。</p>
+<p>让我们来编译这个最后的合约，<strong>编译选项 没有优化（但仍然是solidity 0.8.7）</strong>，并调用**modify()**函数!</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT </span><br><span class="line">pragma solidity ^0.8.0;  </span><br><span class="line">contract Test &#123;     </span><br><span class="line">    mapping(address =&gt; uint) balances;      </span><br><span class="line">    function modify() external &#123;                  balances[0xbc5D291D2165f130375B94c62211f594dB48fEF2] = 15;     balances[0x9a8af21Ac492D5055eA7e1e49bD91BC9b5549334] = 55; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是函数的第一部分的完整反汇编：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">054 PUSH1 0f | 0x0f |</span><br><span class="line">056 PUSH1 00 | 0x00 | 0x0f |</span><br><span class="line">058 DUP1     | 0x00 | 0x00 | 0x0f |</span><br><span class="line">059 PUSH20 bc5d291d2165f130375b94c62211f594db48fef2</span><br><span class="line">             | address1 | 0x00 | 0x00 | 0x0f |</span><br><span class="line">080 PUSH20 ffffffffffffffffffffffffffffffffffffffff</span><br><span class="line">             | 0xff..ff | address1 | 0x00 | 0x00 | 0x0f |</span><br><span class="line">101 AND      | address1 | 0x00 | 0x00 | 0x0f |</span><br><span class="line">102 PUSH20 ffffffffffffffffffffffffffffffffffffffff </span><br><span class="line">             | 0xff..ff | address1 | 0x00 | 0x00 | 0x0f |</span><br><span class="line">123 AND      | address1 | 0x00 | 0x00 | 0x0f |</span><br><span class="line">124 DUP2     | 0x00 | address1 | 0x00 | 0x00 | 0x0f |</span><br><span class="line">125 MSTORE   | 0x00 | 0x00 | 0x0f |</span><br><span class="line">126 PUSH1 20 | 0x20 | 0x00 | 0x00 | 0x0f |</span><br><span class="line">128 ADD      | 0x20 | 0x00 | 0x0f |</span><br><span class="line">129 SWAP1    | 0x00 | 0x20 | 0x0f |</span><br><span class="line">130 DUP2     | 0x20 | 0x00 | 0x20 | 0x0f |</span><br><span class="line">131 MSTORE   | 0x20 | 0x0f |</span><br><span class="line">132 PUSH1 20 | 0x20 | 0x20 | 0x0f |</span><br><span class="line">134 ADD      | 0x40 | 0x0f |</span><br><span class="line">135 PUSH1 00 | 0x00 | 0x40 | 0x0f |</span><br><span class="line">137 SHA3     | keccak256(address1) | 0x0f |</span><br><span class="line">138 DUP2     | 0x0f | keccak256(address1) | 0x0f |</span><br><span class="line">139 SWAP1    | keccak256(address1) | 0x0f| 0x0f |</span><br><span class="line">140 SSTORE   | 0x0f|</span><br></pre></td></tr></table></figure>
+
+<p>在第 54-59 指令 0f（十进制的15），0，0 和 bc5d…f2 被推送到堆栈。</p>
+<ul>
+<li>0f 是 <strong>modify()</strong> 函数中第一个地址的余额。</li>
+<li>bc5d…f2 就像是 balance&#x3D;15 的地址。</li>
+</ul>
+<p>在第 80 和 102 指令之间，这段代码没有任何作用，它只是通过使用掩码： <strong>0x00000000000000000000000ffffffffffffffffffffffffffffffffffffffff</strong> 保证堆栈中的地址 0xbc5d… 之后只有 0000</p>
+<p>例如，地址可能是 <strong>0xd0000….bc5d…fd，EVM 和 0x000…000ffff</strong> 的掩码进行与运算，从而去除开头的 <strong>d</strong>。</p>
+<p>在第 125 指令，它用 <strong>MSTORE</strong> 把结果保存到内存（保存在地址为 0x00 的 “清洁” 内存中）。</p>
+<p>在第 128 指令，它将 20 加到 <strong>0x00</strong>，并在第 131 指令将 0 存储到内存。(因此0被存储在内存的 0x20 处)</p>
+<p>在第 137 指令，调用 <strong>SHA3</strong> 指令，使用堆栈中的参数：0（offset）和40（size）。</p>
+<p>这条指令返回 <strong>keccak256(memory[offset:offset+length])。</strong><br>这里 <strong>offset &#x3D; Stack(0) &#x3D; 0, length &#x3D; Stack(1) &#x3D; 40</strong> (因为堆栈里有最后两个值)</p>
+<p>这是地址 <strong>0xbc5d…f2</strong> 与 0 相连接的 <strong>SHA3</strong>（或 <strong>KECCAK256</strong>）。</p>
+<p>之后，通过使用 <strong>SSTORE</strong>，15 被存储在 <strong>SHA3</strong> 操作的结果槽中。</p>
+<p>如果我们把它与开头的公式进行比较: <strong>SHA3(mapping_slot.key)</strong></p>
+<ul>
+<li>余额变量的 <strong>mapping_slot</strong> 当然等于 0（存储在 0x20 到 0x40 的内存中，而不是在开头位置，因为 EVM 使用小端结构）</li>
+<li><strong>key</strong> 等于 <strong>地址0xbc5d291d2165f130375b94c62211f594db48fef2</strong>（存储在 0x00 到 0x20 的内存中）。</li>
+</ul>
+<p>对于那些想知道 <strong>memory[0x00:0x40]</strong> 的目的是什么的人来说，**的答案是：目标是（仅仅）存储使用 **keccak256 进行 Hash 的操作数。</p>
+<p>由于 EVM 对 0x00 和 0x40 之间的所有东西进行散列，我们的说法是正确的。</p>
+<p>下面是这样一个操作的 Gas 成本：</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/11.png" loading="lazy"></p>
+<blockquote>
+<p>使用 65594 Gas</p>
+</blockquote>
+<p>成本比存储在数组中要低（至少在开始时），因为 mapping_slot（槽0）不包含任何东西，也没有被修改，所以少了一个 <strong>SSTORE</strong> 操作。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>如果你读完了这篇文章，恭喜你! 这并不容易，但它是值得的。你现在对 EVM 的了解比 99.9% 的开发者还要多。</p>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 06 - 完整的智能合约布局</title>
+    <url>/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-part-6-full-smart-contract-layout-f236c3121bd1">https://trustchain.medium.com/reversing-and-debugging-part-6-full-smart-contract-layout-f236c3121bd1</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/5019">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+<hr>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过逆向和调试深入 EVM 07 - 与其他智能合约的交互</title>
+    <url>/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/</url>
+    <content><![CDATA[<blockquote>
+<ul>
+<li>原文链接： <a href="https://trustchain.medium.com/reversing-and-debugging-the-evm-part-7-2a20a44a555e">https://trustchain.medium.com/reversing-and-debugging-the-evm-part-7-2a20a44a555e</a></li>
+<li>译文出自：<a href="https://github.com/lbc-team/Pioneer">登链翻译计划</a></li>
+<li>译者：<a href="https://learnblockchain.cn/people/412">翻译小组</a> 校对：<a href="https://learnblockchain.cn/people/15">Tiny 熊</a></li>
+<li>本文永久链接：<a href="https://learnblockchain.cn/article/5054">learnblockchain.cn&#x2F;article…</a></li>
+</ul>
+</blockquote>
+<hr>
+<ul>
+<li><a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第1篇：理解汇编</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/02/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240202%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2002/">第2篇：部署智能合约</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/03/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240203%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2003/">第3篇：存储布局是如何工作的？</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/04/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240204%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2004/">第4篇：结束&#x2F;中止执行的5个指令</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/05/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240205%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2005/">第5篇：执行流 if&#x2F;else&#x2F;for&#x2F;函数</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/06/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240206%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2006/">第6篇：完整的智能合约布局</a></li>
+<li><a href="https://liuzhujunya.top/2024/02/07/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240207%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2007/">第7篇：外部调用和合约部署</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>区块链-通过逆向和调试深入EVM</category>
+      </categories>
+      <tags>
+        <tag>区块链</tag>
+        <tag>静态代码分析</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>杂项技术 —— git</title>
+    <url>/2024/03/05/%E6%9D%82%E9%A1%B9%E6%8A%80%E6%9C%AF/20240305%20%E6%9D%82%E9%A1%B9%E6%8A%80%E6%9C%AF%E2%80%94%E2%80%94git/</url>
+    <content><![CDATA[<h1 id="配置-GitHub-交互的-ssh-密钥"><a href="#配置-GitHub-交互的-ssh-密钥" class="headerlink" title="配置 GitHub 交互的 ssh 密钥"></a>配置 GitHub 交互的 ssh 密钥</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa			# 生成密钥</span><br><span class="line">cat ~/.ssh/id_rsa.pub		# 查看密钥信息</span><br><span class="line">ssh -T git@github.com		# 验证链接结果</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>杂项技术</category>
+      </categories>
+      <tags>
+        <tag>杂项</tag>
+      </tags>
+  </entry>
+</search>
