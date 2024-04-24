@@ -690,14 +690,37 @@
 <p>首先，注意除了 x y 和输出 o 之外，我们还引入了所有这些中间值， m1 m2 m3 和 m4。回想一下上一个例子，为了构建证明，你只需要原始输入值，在这种情况下，它将是 x 和 y，但对于实际生产案例，生产验证系统，你不仅需要输入值，你还需要所有的中间值来构建有效的证明，为什么这是个好主意？如果你以前上过学，参加过数学测试，对于一个数学问题，如果你只写下答案，比如说你抄袭了旁边的那个家伙，你会得到那个问题的满分吗？可能不会，因为老师会告诉你，如果你想证明给我看你确实知道如何做这个问题，你需要向我展示步骤，这正是这里的逻辑。假设一个恶意用户想要在实际不知道原始输入的情况下做出有效的证明，他现在不仅需要提出所有这些正确的中间值来构建一个有效的证明，这迅速提高了伪造的难度，这是一件好事，如果你把钱存入一个由零知识证明保护的系统，你不希望那个证明很容易被伪造，这就是为什么所有这些中间值也被称为见证人的技术术语，因为它们是电路经历了诚实执行的见证，并且所有数字都对应得上。</p>
 <p>第二点是关于可扩展性。通常，最简单的事物是最深刻的。因为最简单的事物是最具普遍性的，想想以太坊虚拟机，EVM 中只有几个操作码，但它可以描述你想在以太坊上做的任何操作，无论是质押 购买 NFT 交易 兑换加密货币等等，如果你回想之前的例子，当我们想构建一个零知识证明验证设置时，我们不得不每次都检查原始证明声明，然后为那个证明声明想出一个定制的解决方案，那么有没有一种更通用的方式，有没有一种更便宜的方式，有没有一种一键解决方案来设置验证系统？是的，有人找到了，然而，为了做到这一点，你需要一种非常通用的方式来描述这些商业活动或数学运算，circom 是一个很好的候选，因为它只使用加法和乘法门，这是非常简单的，它可以推广到各种各样的活动，一旦你有了问题的电路描述，那么完成验证设置就像将一个数字插入到一个函数中一样简单，我们将使用的验证设置，剧透一下，叫做 Groth16。它对电路的设置，平台或电路的用途完全不敏感，你只需插入电路，就能为你生成一个验证系统，这迅速减少了为链上的几乎任何活动带来更多隐私所需的资源和人力，这是一个非常大的优势，现在，在我们结束这一部分之前，我想向你展示这个图表在计算术语中是如何表示的，因为当然，计算机无法理解草图。</p>
 <p>首先我想告诉你我所指的信号是什么，信号很简单，信号包括输入、所有中间值、所以见证人和输出。定义这些信号的规则我会在实际编码时告诉你，那么这个电路在计算术语中是如何表示的呢？你做的方式是写下描述每个门之间数量关系的方程，比如说，看看这个左上角的门，我看到 x 乘以 x 等于 m1，对于下一个 m1 乘以 y 等于 m2，然后 y 乘以 y 等于 m3， x 乘以 m3 等于 m4，最后 o 等于 m2 加上 m4 加上 17。所以五个门，五个方程。这样做的好处是什么？我把原来的函数写在这里，注意所有的指数都消失了，所以它有点被拉平了，这对计算机来说是一种更简单的理解方式。另外，你会看到每个方程中，最多只有一次信号之间的乘法，所以不仅是非常线性的，复杂度也非常有限，这实际上是用于生成验证系统的方程系统，这是第一步，在技术术语中，这个方程系统被称为一阶约束系统或 R1CS。它被称为约束系统，因为它描述了电路内的数量之间的关系，它们不能是任意值，它们必须遵循特定的关系，这就是为什么它被称为约束系统。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm init -y</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install --save circom snarkjs</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">touch</span> circuit.circom</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm init -y</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">npm install --save circom snarkjs</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">touch</span> circuit.circom</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">circom circuit.circom --r1cs --wasm</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">node ./circuit_js/generate_witness.js ./circuit_js/circuit.wasm input.json witness.wtns</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">snarkjs wtns <span class="built_in">export</span> json witness.wtns witness.json</span></span><br></pre></td></tr></table></figure>
 
 <p>让我们初始化一个默认的 package.json 并安装必要的包，你将要安装 circom、snarkjs。现在，这将是我第一次详细告诉你关于 snark 这个词，在你读到的大多数零知识文章中，你会看到 ZKSnark 作为一个单词出现，但它们真的不一样。snark 这个词描述了零知识证明的效率如何，snark 代表简洁的非交互式知识论证，简洁意味着证明不能太长或验证需要太长时间，因为那样它将不适合以太坊，因为它会花费太多的 gas，非交互式意味着验证者只需要向证明者提出一个挑战问题，而证明者简单地在那个挑战问题上运气好的可能性是如此之低，以至于一次有效的互动足以建立证明者的主张，论证这个词意味着一个主张，什么主张，主张代表知识，我有满足某个标准的信息，看看它是如何汇集在一起的。在早期，零知识证明不是 snarks 这种情况持续了很长时间，他们通常是笨重的，但我们已经走了很长的路。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pragma circom 2.0.0;</span><br><span class="line"></span><br><span class="line">// f(x,y) = x^2 * y + x * y^2 + 17;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pragma circom 2.0.0;</span><br><span class="line"></span><br><span class="line">// f(x, y)= x^2 * y + x * y^2 + 17;</span><br><span class="line"></span><br><span class="line">// Signal Definition:</span><br><span class="line">// 1. All the inputs are signals</span><br><span class="line">// 2. Every time you multiply two signals together, you need to define a new signal</span><br><span class="line">// 3. 0nly two signals can be multiplied at once to get a new signal</span><br><span class="line">// 4. All the outputs are signals</span><br><span class="line"></span><br><span class="line">template F()&#123;</span><br><span class="line">    signal input x;</span><br><span class="line">    signal input y;</span><br><span class="line">    signal output o;</span><br><span class="line">    </span><br><span class="line">    signal m1 &lt;== X * X;</span><br><span class="line">    signal m2 &lt;== m1 * y;</span><br><span class="line">    </span><br><span class="line">    signal m3 &lt;== y * y;</span><br><span class="line">    signal m4 &lt;== m3 * x;</span><br><span class="line">    o &lt;== m2 + m4 + 17;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">component main = F();</span><br></pre></td></tr></table></figure>
 
 <p>首先，让我们写我们的电路。我创建了一个新文件，名为 circuit.circom，这是类似于 Solidity 的地方，首先，你需要使用 pragma 关键字声明你想使用的 circom 版本，Pragma circom 我将使用版本 2.0.0，在我们写代码之前，让我们写一些注释，我们要定义的函数是 x 平方乘以 y 加上 x 乘以 y 的平方加上 17。然后，我还将给你信号定义的规则，如何定义信号。</p>
 <p>首先，所有的输入都是信号。其次，每次你将两个信号相乘时， 你需要定义一个新的信号。第三条规则是，你不仅可以将两个信号相乘，而且一次只能乘以两个信号，如果你试图将三个信号乘在一起得到一个新的信号，它将无法编译，他会报错。最后一条规则是，所有的输出都是信号。</p>
-<p>让我们写实际的电路，为了定义一个数学子程序，在 circom 中，你使用 template 关键字。我将这个模板命名为 F。现在，我将给你一些视觉辅助 ，以了解这整个事情是如何工作的。当我还是个孩子时，我有一个装满预制电路的大玩具箱</p>
+<p>让我们写实际的电路，为了定义一个数学子程序，在 circom 中，你使用 template 关键字。我将这个模板命名为 F。现在，我将给你一些视觉辅助 ，以了解这整个事情是如何工作的。当我还是个孩子时，我有一个装满预制电路的大玩具箱，每个小部件就像是一个小模板，定义了电气信号通过它们的处理方式，所以这里的工作方式也类似，对于每个处理数学信号的子程序，你将它们定义为模板，当到了组装它们的时候，你在组件级别定义它们，完成整个电路的定义。</p>
+<p>让我们写这个子程序，首先，所有的输入都是信号，所以我会说……然后，我将开始定义中间值，首先定义 x 的平方，这是一个乘法，用于 x 乘以 x，所以这将是一个新的信号，信号 m1 等于 x 乘以 x。我只是重复这个过程，我注意到 m1 现在被定义为一个信号，所以当 m1 与另一个信号相乘时，它也会生成一个新的信号，所以 m1 乘以 y 将产生一个新的信号 m2。我完成了这个过程，然后是输出，通常习惯将输出信号定义在输入信号之后，计算的最后一步是 o 等于 m2 加上 m4 加上 17。</p>
+<p>但这将无法编译，因为我只使用了等号，这是大多数语言用来定义信号的，在 circom 中，你需要使用这个非常奇怪的箭头字符来定义信号，所以我把它们全部改成箭头函数，我们完成了，要完成定义，这是组装阶段。</p>
+<p>要运行这个电路，首先，你需要编译它。编译它的命令是 circom 后跟电路文件，我们要将它编译成什么，首先，你需要将它编译为 R1CS，我们刚才讨论过这个问题，然后也是 WebAssembly。WebAssembly 是一种 Web 浏览器可以理解的二进制代码类型。好的，所以它成功了。所以这个电路是正确实现的。</p>
+<p>现在，你如何运行这个电路？你通过刚才运行的命令生成的 JS 文件运行这个电路，在这个文件夹中，你会看到电路的二进制表示，以及两个实用程序文件，即生成见证和见证计算器。要运行 JS 文件，使用 node circuit.is 生成见证，你需要提供电路表示文件的 WebAssembly 版本，然后给它一个输入文件 以 json 格式，我现在将定义。</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;x&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;y&quot;</span><span class="punctuation">:</span> <span class="number">3</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>对于 x 设置为 2，对于 y 设置为 3。这是我们的输入文件。为了方便起见，我将分割这个屏幕。并将输入放在左边，实际电路放在右边，提供输入文件并命名输出文件，我将命名为 witness.wtns 也代表见证。</p>
+<p>现在你有了一个代表所有见证的二进制文件，你无法读取它，因为它是二进制的。要读取它，你需要将其转换为json，通过运行一个来自 snark.is 的实用程序来完成，提供二进制见证文件并命名输出文件，现在你有了一个新文件，所以这是见证文件的结构：</p>
+<p>首先，见证文件中的第一个数字总是 1，这代表电路中的常量操作，你可以忽略这个数字。</p>
+<p>接下来，总是输出，在这种情况下，只有一个输出 47，现在，让我们快速验证我们没有疯…..</p>
+<p>输出之后，你会有你的输入，这是 2 和 3。</p>
+<p>然后是所有的中间见证值，你会注意到见证文件中见证的数量总是在编译时约束的数量减一，现在，为什么见证的数量总是约束的数量减一？我不确定，我的猜测是这与约束系统的自由度有关，但我不确定。</p>
+<h1 id="MiMC-哈希函数电路-mp4"><a href="#MiMC-哈希函数电路-mp4" class="headerlink" title="MiMC 哈希函数电路.mp4"></a>MiMC 哈希函数电路.mp4</h1><p>在这一部分，我们将实现 MIMC 哈希函数。一个版本将在 Circom 中实现，用于生成零知识证明。另一个版本将在 Solidity 中实现，稍后部署在区块链上。因此，它将包含在后端中，这里我打开了原始论文，这就是 MIMC 的含义，即最小乘法复杂度。当您在区块链上操作时，哈希函数不能太复杂，因为如果乘法复杂度非常高，它将消耗太多的 gas，这样的哈希函数将给用户带来巨大的成本。在这种情况下，这个特定的密码原语，正如摘要所述，专门为零知识证明和其他需要更快，更高效的哈希函数的应用而设计。显然，我们不会浏览这篇 34 页的论文，但幸运的是，其中一位合作者 Arnab Roy 在他的博客，非常简洁明了地描述了这个哈希函数的工作原理，他的博客有一个小节，非常简要而清晰地描述了这个哈希函数的工作原理，这甚至不到一页 PDF 的内容，我删除了更技术性的部分，以便我们可以清晰，简洁地了解到这个哈希函数的实现方式。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/29.png" loading="lazy"></p>
+<p>基本思想是，当你有一个输入 x，你通过多轮加密处理它，每一轮会发生什么，你向输入添加一个常量值 k 和另一个常量 C，然后简单地对该基数进行幂运算，随着你反复进行几轮操作，它不断地越来越多地掩盖原始数字，这就是为什么它会输出一个哈希，它是一个不可逆函数，所有的哈希函数都是如此。</p>
+<p>我想谈两个具体问题：</p>
+<p>首先是这个哈希函数的轮数，轮数是任意的，对于 Tornado Cash 来说，原始源代码大约有 90 轮，出于演示目的，因为这是一个教育系列，我将选择一个随机数字 10，这样所有内容都能适合屏幕，你将清楚地看到它是如何工作的。</p>
+<p>第二， 我想谈谈常量。k 是你提供给原始 x 值的常量，用于哈希函数，但是所有这些值 C 如此处所述，随机常量在 MIMC 初始化时选择为有限域中的随机元素，然后固定下来。这意味着当你实现 MIMC 哈希函数时，你需要为每轮加密生成一堆常量，然后可以将它们硬编码到你的代码中，它们将保持不变，无论你哈希什么。</p>
+<p>请注意，没有轮密钥，相反，每一轮使用相同的密钥，并且在最后一次使用，这就是你与输入一起提供的密钥值，所有操作都在底层字段 FQ 中定义。记得从第二节课开始，我向您展示了随机散点，这就是为什么它能够工作，因为将输入 x 通过多个阶段的加法和幂运算，你最终会在有限域中得到一个随机值，这就是使这个哈希函数有效的原因。</p>
+<p><img src="/images/%E5%8C%BA%E5%9D%97%E9%93%BE-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E6%96%87%E7%AB%A0%E5%AD%A6%E4%B9%A0/%E3%80%90%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%B2%BE%E5%93%81%E8%AF%BE%E7%A8%8B%E3%80%91%E4%BB%8E%20Tornado%20Cash%20%E5%AD%A6%E4%B9%A0%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E/30.png" loading="lazy"></p>
+<p>在我们写 Circom 代码之前，让我们做一些笔记，因为这种语言可能仍然对您来说不是很熟悉。</p>
+<p>首先，我想说的是，我们将使用三次方的代替，我们将把基数提高到五次方。提高指数，将增加对原始输入的模糊性，这将增加安全性，这也是 Tornado Cash 中选择的幂次，它是提高到五次方。记得在 Circom 中，首先，你不能将两个以上的数字相乘，所以对于每一轮，让我们只看一轮，你将得到一个你想要幂运算的基数，它是作为 x 的值从上一轮加密中得到的，对于第一轮，它只是输入加上 k，k 对每一轮都是相同的值，你可以看到这里，它的值都是相同的，改变的常量是 C，加上 CI，我们将在运行哈希函数之前生成 C，所以不用担心。然后，为了计算五次方，我们需要计算几个中间值，首先，你需要计算平方，即基数乘以基数；然后你计算四次方，即基数平方乘以基数平方；然后通过再次与基数相乘，你可以得到五次方。这就是你如何得到五次方。当你乘法的唯一操作是将两个数字相乘时，这个过程对每一轮都会发生，这些显然将被声明为信号，而且因为它对每一轮都会发生，所以它将被声明为一个信号数组，长度等于轮数，这就是我们将如何做到的。</p>
+<p>正如我刚才提到的，会有 10 轮，所以轮数将是 10.</p>
 ]]></content>
       <categories>
         <category>Tornado Cash</category>
@@ -937,8 +960,193 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    uint value = 0;</span><br><span class="line">    function flow(bool x) external &#123;</span><br><span class="line">        if (x) &#123;</span><br><span class="line">            value = 4;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            value = 9;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>下面是该函数的完整反汇编代码:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">062 JUMPDEST | 0x01 | stack after arguments discarded |</span><br><span class="line">063 DUP1     | 0x01 | 0x01 |</span><br><span class="line">064 ISZERO   | 0x00 |0x01 |</span><br><span class="line">065 PUSH1 4b | 0x4b | 0x00 | 0x01 |</span><br><span class="line">067 JUMPI    | 0x01 |</span><br><span class="line">068 PUSH1 04 | 0x04 | 0x01 |</span><br><span class="line">070 PUSH1 00 | 0x00 | 0x04 | 0x01 |</span><br><span class="line">072 SSTORE   | 0x01 |</span><br><span class="line">073 POP      </span><br><span class="line">074 JUMP </span><br><span class="line">075 JUMPDEST </span><br><span class="line">076 PUSH1 09 </span><br><span class="line">078 PUSH1 00 </span><br><span class="line">080 SSTORE </span><br><span class="line">081 POP </span><br><span class="line">082 JUMP</span><br></pre></td></tr></table></figure>
 
+<p>当一个函数被调用时，<strong>它的参数每次都被放在堆栈中</strong>（我们将“稍后证明”），所以在EVM中 <code>x=true=1</code>（因此 false&#x3D;0 ），那么堆栈在 <code>Stack(0)</code> 包含 1。</p>
+<p>在第 63 和 64 字节的指令，堆栈被复制，<code>ISZERO</code> 指令被调用。</p>
+<blockquote>
+<p>备注：第 x 字节上的指令，后文简称 ：指令 x.</p>
+</blockquote>
+<p>该指令显然是在验证 Stack(0)&#x3D;0，如果是，那么 1 被推入堆栈，否则 0 被推入堆栈。</p>
+<p>由于 Stack(0)&#x3D;1，那么 0 被推到堆栈中 <code>| 0x00 | 0x01 |</code>。</p>
+<p>之后 4b 也被推到了堆栈中。堆栈为  <code>| 0x4b | 0x00 | 0x01 |</code>， 然后 JUMPI 被调用</p>
+<p>由于 Stack(1)&#x3D;0，EVM 不会跳到 4b。</p>
+<p>因此，我们可以很容易地推断出，如果堆栈中的第一个参数是 0，那么 EVM 将跳到 4b（十进制的 75），否则EVM 将继续执行流程。</p>
+<p>在指令 68 和 74 之间，我们已经知道发生了什么：EVM 将 4 存储在槽号 0 中。在指令 75 和 81 之间的代码相同：EVM 将 9 存储在槽号 0 中。</p>
+<p>在这两个 “结果” 之后，EVM 都跳到了 3C，执行结束。</p>
+<p>事实上，每次有 JUMPI 指令时，在 solidity 中都有一个对应的 IF 语句（或 WHILE&#x2F;FOR）。</p>
+<h1 id="汇编中的-ELSE-IF"><a href="#汇编中的-ELSE-IF" class="headerlink" title="汇编中的 ELSE IF"></a>汇编中的 ELSE IF</h1><p>如果我们使用一个更复杂的 if 语句呢？这次会有更多的 “else”，但汇编代码会不会更复杂呢？</p>
+<p>(剧透：其实没有)</p>
+<p>编译这段代码（没有优化器）和 solidity 0.8.7，用你想要的任何值调用流程。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    uint value = 0;</span><br><span class="line">    function flow(uint x) external &#123;</span><br><span class="line">        if (x == 1) &#123;</span><br><span class="line">        	value = 4;</span><br><span class="line">        &#125; else if (x == 2) &#123;</span><br><span class="line">        	value = 9;</span><br><span class="line">        &#125; else if (x == 3) &#123;</span><br><span class="line">            value = 14;</span><br><span class="line">        &#125; else if (x == 4) &#123;</span><br><span class="line">            value = 19;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            value = 24;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>像往常一样，让我们来拆解这个函数:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">062 JUMPDEST</span><br><span class="line">063 DUP1</span><br><span class="line">064 PUSH1 01</span><br><span class="line">066 EQ</span><br><span class="line">067 ISZERO</span><br><span class="line">068 PUSH1 4e</span><br><span class="line">070 JUMPI </span><br><span class="line">071 PUSH1 04 </span><br><span class="line">073 PUSH1 00 </span><br><span class="line">075 SSTORE </span><br><span class="line">076 POP </span><br><span class="line">077 JUMP </span><br><span class="line">078 JUMPDEST </span><br><span class="line">079 DUP1 </span><br><span class="line">080 PUSH1 02 </span><br><span class="line">082 EQ </span><br><span class="line">083 ISZERO </span><br><span class="line">084 PUSH1 5e </span><br><span class="line">086 JUMPI </span><br><span class="line">087 PUSH1 09 </span><br><span class="line">089 PUSH1 00 </span><br><span class="line">091 SSTORE </span><br><span class="line">092 POP </span><br><span class="line">093 JUMP </span><br><span class="line">094 JUMPDEST </span><br><span class="line">095 DUP1 </span><br><span class="line">096 PUSH1 03 </span><br><span class="line">098 EQ </span><br><span class="line">099 ISZERO </span><br><span class="line">100 PUSH1 6e </span><br><span class="line">102 JUMPI </span><br><span class="line">103 PUSH1 0e </span><br><span class="line">105 PUSH1 00 </span><br><span class="line">107 SSTORE </span><br><span class="line">108 POP </span><br><span class="line">109 JUMP </span><br><span class="line">110 JUMPDEST </span><br><span class="line">111 DUP1 </span><br><span class="line">112 PUSH1 04 </span><br><span class="line">114 EQ </span><br><span class="line">115 ISZERO </span><br><span class="line">116 PUSH1 7e </span><br><span class="line">118 JUMPI </span><br><span class="line">119 PUSH1 13 </span><br><span class="line">121 PUSH1 00 </span><br><span class="line">123 SSTORE </span><br><span class="line">124 POP </span><br><span class="line">125 JUMP </span><br><span class="line">126 JUMPDEST </span><br><span class="line">127 PUSH1 18 </span><br><span class="line">129 PUSH1 00 </span><br><span class="line">131 SSTORE </span><br><span class="line">132 POP </span><br><span class="line">133 JUMP</span><br></pre></td></tr></table></figure>
+
+<p>这个结构看起来与我们已经看到的东西相似。尽管相当长，但它非常简单。这只是两个不同模块的重复。</p>
+<ol>
+<li>中间条件块（63-70、79-86、95-102、111-118）。<br>它验证 stack(0) 中的值是否等于一个 <code>if else</code> 中间语句。如果不是，它 <code>JUMP</code> 到下一个中间条件，下一个条件继续相同的处理。<br>如果是，它不 <code>JUMP</code> 并执行<strong>SSTORE</strong>（模块2）。</li>
+<li>我们已经非常熟悉了 <strong>SSTORE</strong>， 保存值到存储槽。<br>通过将槽和值推入堆栈并调用 <strong>SSTORE</strong>。<br>一旦完成，EVM JUMP 到另一个位置并结束执行。</li>
+</ol>
+<p>如果所有的条件都不满足（i 不等于 1 或 2 或 3 或 4），则在指令 127 和 133 之间触发 else 语句，这是最后一个 <strong>SSTORE</strong> 块，但没有任何条件。</p>
+<p>事实上，整个结构非常类似于 EVM 执行开始时的函数选择器，以选择符合函数签名的代码。(我们在<a href="https://liuzhujunya.top/2024/02/01/%E5%8C%BA%E5%9D%97%E9%93%BE-%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5EVM/20240201%20%E9%80%9A%E8%BF%87%E9%80%86%E5%90%91%E5%92%8C%E8%B0%83%E8%AF%95%E6%B7%B1%E5%85%A5%20EVM%2001/">第一篇</a>里看到了)</p>
+<p>总结一下这段代码，else if 语句可以翻译成 solidity 中的多个嵌套的 if，这和我们使用 else if 的结果完全一样。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if (x == 1) &#123;</span><br><span class="line">	// do something</span><br><span class="line">&#125; else &#123;</span><br><span class="line">	if (x == 2) &#123;</span><br><span class="line">		// do something</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		if (x == 3) &#123;</span><br><span class="line">			// do something</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			if (x == 4) &#123;</span><br><span class="line">				// do something</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				// do something</span><br><span class="line">			&#125;	</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="汇编中的-For-循环"><a href="#汇编中的-For-循环" class="headerlink" title="汇编中的 For 循环"></a>汇编中的 For 循环</h1><p>与其他编程语言相反，For 语句在 solidity 中没有被广泛使用。</p>
+<p>主要原因是，需要 for 语句的功能往往需要大量的 Gas 来执行功能，这使得智能合约无法使用。这与 while 语句的情况大致相同。</p>
+<p>下面是我们要研究的代码，编译它，部署并用 <code>x=10</code> 调用（0.8.7 优化器 200）。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    uint value = 0;</span><br><span class="line">    function flow(uint x) external &#123;</span><br><span class="line">        for (uint i = 0; i &lt; x; i++) &#123;</span><br><span class="line">            value += i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这次反汇编是比较难研究的，你需要更加专注:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">062 JUMPDEST		| 0x0a |</span><br><span class="line">063 PUSH1 00		| 1x00 | 0x0a |</span><br><span class="line">065 JUMPDEST		</span><br><span class="line">066 DUP2			| 0x0a | 1x00 | 0x0a |</span><br><span class="line">067 DUP2			| 1x00 | 0x0a | 1x00 | 0x0a |</span><br><span class="line">068 LT				| 0x01 | 1x00 | 0x0a |			// 小于号 &lt;</span><br><span class="line">069 ISZERO			| 0x00 | 1x00 | 0x0a |</span><br><span class="line">070 PUSH1 6c		| 0x6c | 0x00 | 1x00 | 0x0a |	// 6c == 108</span><br><span class="line">072 JUMPI			| 0x00 | 0x0a |					// 条件跳转，不符合条件，继续执行</span><br></pre></td></tr></table></figure>
+
+<p>第 62 字节指令是函数 “flow()” 的入口点</p>
+<p>在第 62 字节的指令，值 <strong>0xa</strong> 在堆栈中（十进制的 10），这是 x 的值。（别忘了：在函数中参数总是在堆栈中）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">| 0xa0 |</span><br></pre></td></tr></table></figure>
+
+<p>在第 63 字节的指令，0 被推到堆栈中。这很可能是我们的变量 i &#x3D; 0, (for 循环中的初始化)  <code>| 0x00 | 0xa0 |</code>。</p>
+<p>在指令 65，有一条 <strong>JUMPDEST</strong> 指令，我们将在后面看到原因。</p>
+<p>在指令 66 和 69 之间，<strong>x</strong> 的值与 <strong>i</strong> 的值进行比较，（通过使用指令 <strong>LT</strong>，意思是小于）。</p>
+<p>如果小于，EVM 就跳到第 72 字节的 6c（十进制的 108），如果不是，EVM 就继续。</p>
+<p>很明显，0xa 不小于 0x0，所以在第 73 字节继续执行。</p>
+<p>这应该是 for 循环中的 <code>i &lt; x</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">073 DUP1			| 1x00 | 1x00 | 0x0a |</span><br><span class="line">074 PUSH1 00		| 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">076 DUP1			| 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">077 DUP3			| 1x00 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">078 DUP3			| 0x00 | 1x00 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">079 SLOAD			| 2x00 | 1x00 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">080 PUSH1 57 		| 0x57 | 2x00 | 1x00 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |				// 57 == 87</span><br><span class="line">082 SWAP2 			| 1x00 | 2x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">083 SWAP1  			| 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">084 PUSH1 88 		| 0x88 | 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |		// 88 == 136</span><br><span class="line">086 JUMP</span><br></pre></td></tr></table></figure>
+
+<p>这段代码的目的是 <strong>SLOAD</strong> 0 号槽(从 0 号槽读取)，并推送 57（十进制的 87）。</p>
+<p>是的，这看起来比较复杂，如果你打开优化器，这应该简化为 <code>PUSH1 0; SLOAD; PUSH1 88</code>。</p>
+<p>之后，代码无条件地 JUMP 到 88（十进制的 136）。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">136 JUMPDEST		| 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">137 PUSH1 00		| 0x00 | 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">139 DUP3			| 1x00 | 0x00 | 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">140 NOT				| 1xff | 0x00 | 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">141 DUP3 			| 2x00 | 1xff | 0x00 | 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">142 GT 				| 0x00 | 0x00 | 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">143 ISZERO 			| 0x01 | 0x00 | 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">144 PUSH1 98		| 0x98 | 0x01 | 0x00 | 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">146 JUMPI</span><br><span class="line">147 PUSH1 98 </span><br><span class="line">149 PUSH1 b5 </span><br><span class="line">151 JUMP</span><br></pre></td></tr></table></figure>
+
+<p>由于这里篇幅会很长，我不会在这里解释一切。你只需要知道，在 solidity 0.8.0 及以后的版本中，编译器会注入代码来防止我们在加法时的溢出。</p>
+<p>例如对于 uint256 类型：2²⁵⁶-1 是最大的可能数字，如果我在这个数字上加 1，结果将是 0，因为 2²⁵⁶ 不能放在 256 位的槽中。</p>
+<p>这段代码的目的是测试在进行算术操作之前是否会有溢出。</p>
+<ul>
+<li><p>如果没有溢出，代码就会在 98 处继续执行 (十进制的 152)</p>
+</li>
+<li><p>如果发生了溢出，就会进入到 b5（b5 &#x3D;&#x3D; 181）</p>
+<blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">181 JUMPDEST</span><br><span class="line">182 PUSH4 0x4e487b71	| 0x4e487b71 |</span><br><span class="line">187 PUSH1 0xe0			| 0xe0 | 0x4e487b71 |</span><br><span class="line">189 SHL					| 0x4e487b71 |			// 左移</span><br><span class="line">190 PUSH1 0x00			| 0x00 | 0x4e487b71 |</span><br><span class="line">192 MSTORE				||</span><br><span class="line">193 PUSH1 0x11			| 0x11 |</span><br><span class="line">195 PUSH1 0x04			| 0x04 | 0x11 |</span><br><span class="line">197 MSTORE				||</span><br><span class="line">198 PUSH1 0x24			| 0x24 |</span><br><span class="line">200 PUSH1 0x00			| 0x00 | 0x24 |</span><br><span class="line">202 REVERT 0x -</span><br></pre></td></tr></table></figure>
+
+<p>这里的溢出逻辑我们可以通过追踪的方法看到：</p>
+<p>首先，因为 DUP 指令是用来复制的，所以我们认为 DUP 产生的两个元素是完全相等的，所以这里我设置了两个追踪记号，<code>1x</code> 表示加数 <code>i</code>；<code>2x</code> 表示存储的 <code>value</code>.</p>
+<p>可以看到操作码首先是对加数 i 做了一次取反，也相当于 2²⁵⁶-i；</p>
+<p>然后探求 <code>value</code> 是否大于 2²⁵⁶-i：</p>
+<ol>
+<li>大于表示加法会发生溢出，因为<br>value &gt; 2²⁵⁶-i<br>value+i &gt; 2²⁵⁶</li>
+<li>至此触发后续的 Revert 逻辑</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">152 JUMPDEST			| 0x00 | 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">153 POP					| 2x00 | 1x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">154 ADD					| 3x00 | 0x57 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">155 SWAP1				| 0x57 | 3x00 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">156 JUMP				</span><br></pre></td></tr></table></figure>
+
+<p>一旦溢出验证完成。这段代码将之前 SLOAD 槽 0 的结果加上 i（递增变量）。</p>
+<p>之后，EVM 跳转到 57（十进制的 87），57 是在指令 80 推入到堆栈中。在下一节中你会明白为什么 57 被保存。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">087 JUMPDEST			| 3x00 | 0x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">088 SWAP1				| 0x00 | 3x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">089 SWAP2				| 0x00 | 3x00 | 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">090 SSTORE				| 0x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">091 POP					| 1x00 | 1x00 | 0x0a |</span><br><span class="line">092 DUP2				| 1x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">093 SWAP1				| 1x00 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">094 POP					| 1x00 | 1x00 | 0x0a |</span><br><span class="line">095 PUSH1 65			| 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">097 DUP2				| 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">098 PUSH1 9d			| 0x9d | 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">100 JUMP</span><br></pre></td></tr></table></figure>
+
+<p>这段代码<strong>存储（SSTORE）</strong>之前加法的结果到槽 0 中，并直接跳转到 9d(十进制的 157)。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">157 JUMPDEST			| 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">158 PUSH1 00			| 0x00 | 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">160 PUSH1 00			| 0x00 | 0x00 | 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">162 NOT					| 0xff | 0x00 | 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">163 DUP3				| 1x00 | 0xff | 0x00 | 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">164 EQ					| 0x00 | 0x00 | 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">165 ISZERO				| 0x01 | 0x00 | 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">166 PUSH1 ae			| 0xae | 0x01 | 0x00 | 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">168 JUMPI </span><br><span class="line">169 PUSH1 ae </span><br><span class="line">171 PUSH1 b5 </span><br><span class="line">173 JUMP</span><br></pre></td></tr></table></figure>
+
+<p>这段代码与 136 和 151 之间的代码完全相同，它验证未来算术运算的结果是否处于溢出状态。</p>
+<p>如果一切正常，它将跳转到 ae（十进制的174）。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">174 JUMPDEST			| 0x00 | 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">175 POP					| 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">176 PUSH1 01			| 0x01 | 1x00 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">178 ADD					| 1x01 | 0x65 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">179 SWAP1				| 0x65 | 1x01 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">180 JUMP</span><br></pre></td></tr></table></figure>
+
+<p>它把 1 加到增量变量 i 上，然后 JUMP 到 65（十进制的 101，这是在刚才的第 90 字节处推入的。）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">101 JUMPDEST			| 1x01 | 1x00 | 1x00 | 0x0a |</span><br><span class="line">102 SWAP2				| 1x00 | 1x00 | 1x01 | 0x0a |</span><br><span class="line">103 POP					| 1x00 | 1x01 | 0x0a |</span><br><span class="line">104 POP					| 1x01 | 0x0a |</span><br><span class="line">105 PUSH1 41			| 0x41 | 1x01 | 0x0a |</span><br><span class="line">107 JUMP</span><br></pre></td></tr></table></figure>
+
+<p>这段代码的目的只是为了 “清理” 堆栈并跳转到 41(十进制的的 65)。</p>
+<p>但是你还记得 65 是什么吗？</p>
+<p>这是循环的开始，有了这些信息，就可以还原执行流程了。</p>
+<ol>
+<li>声明 <code>i = 0</code>。</li>
+<li>测试是否 <code>i &lt; x</code>，如果是则直接跳到最后(8)。</li>
+<li>加载Slot 0 ( <code>value</code>变量)。</li>
+<li>验证将i添加到Slot到<code>value</code>时，会不会有溢出。如果测试失败，函数回退，转到181。</li>
+<li>把i加到<code>value</code>，然后 SSTORE 到槽 0。</li>
+<li>验证当 EVM 将添加 1 到 i（递增量）时，会不会有溢出，如果测试失败，函数回退，转到 181。</li>
+<li>给 i 加 1 并返回到 第 2 步。</li>
+<li>结束执行。</li>
+</ol>
+<p>在 i&lt;x 时循环位于 2 和 8 之间（在这个例子中，x&#x3D;10）。</p>
+<p>这是本文最长的部分，但我们已经完成了 for 循环，现在我们来谈谈函数。</p>
+<h1 id="无参数的函数调用"><a href="#无参数的函数调用" class="headerlink" title="无参数的函数调用"></a>无参数的函数调用</h1><p>这一部分是本文最重要的部分，它将帮助我们理解下一篇文章。不要跳过它。</p>
+<p>汇编中的函数行为是什么？</p>
+<p>以下是我们要分析的代码，在没有优化器的情况下编译它（但仍使用 solidity 0.8.7 版本）。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">  uint value = 0;</span><br><span class="line">  function flow() external &#123;</span><br><span class="line">		flow2();</span><br><span class="line">  &#125;</span><br><span class="line">		</span><br><span class="line">	function flow2() public &#123;</span><br><span class="line">		value = 5;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然，还需要对它进行反汇编:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">071 JUMPDEST			| 0x3d | hash |</span><br><span class="line">072 PUSH1 0x4d			| 0x4d | 0x3d | hash |</span><br><span class="line">074 PUSH1 0x4f			| 0x4f | 0x4d | 0x3d | hash |</span><br><span class="line">076 JUMP</span><br><span class="line">077 JUMPDEST</span><br><span class="line">078 JUMP</span><br></pre></td></tr></table></figure>
+
+<p>在第 72 字节指令，4d 被推送（十进制 77）。</p>
+<p>在第 74 字节指令，4f 被推入。</p>
+<p>在第 76 字节指令，EVM 跳转到 Stack(0)，在我们的例子中是 4f（十进制 79）。</p>
+<p>在第 79 字节指令，函数代码非常明显，是 flow2() 函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">079 JUMPDEST			| 0x4d | 0x3d | hash |</span><br><span class="line">080 PUSH1 0x05			| 0x05 | 0x4d | 0x3d | hash |</span><br><span class="line">082 PUSH1 0x00			| 0x00 | 0x05 | 0x4d | 0x3d | hash |</span><br><span class="line">084 DUP2				| 0x05 | 0x00 | 0x05 | 0x4d | 0x3d | hash |</span><br><span class="line">085 SWAP1				| 0x00 | 0x05 | 0x05 | 0x4d | 0x3d | hash |</span><br><span class="line">086 SSTORE				| 0x05 | 0x4d | 0x3d | hash |</span><br><span class="line">087 POP					| 0x4d | 0x3d | hash |</span><br><span class="line">088 JUMP</span><br><span class="line"></span><br><span class="line">077 JUMPDEST</span><br><span class="line">078 JUMP</span><br><span class="line"></span><br><span class="line">061 JUMPDEST</span><br><span class="line">062 STOP</span><br></pre></td></tr></table></figure>
+
+<p>它在槽 0 中存储值 5，仅此而已。</p>
+<p>在存储值之后，在第 88 字节操作码 JUMP 被执行，但是 JUMP 去了哪里？这时 Stack(0) 的值是多少？</p>
+<p>你是否记得 4d 是在第 72 字节指令被推入的？</p>
+<p>函数 flow2（定义在指令 79 和 88 之间，通过使用 PUSH、PUSH 和 DUP，3 个值被添加到堆栈，通过使用消耗 2 个值的 SSTORE 和 POP， 3 个值被移除。</p>
+<p>所以在第 74 字节，其于调用 PUSH 4f 之前的堆栈与第 88 字节相同。</p>
+<p>结果在 flow2() 开始之前，Stack(0)&#x3D;4d。因此在 88 字节的跳转到 Stack(0) &#x3D; 4d (&#x3D;十进制77 )</p>
+<p><strong>solidity 中的所有函数一旦执行就会使用堆栈，并在执行后清理它。因此，堆栈在执行前后将完全相同！</strong></p>
+<p>我们可以注意到，在函数 flow2 结束后，EVM 在调用 flow2() 的第 75 字节后的 77 字节处出现了 JUMP。为什么会出现这种情况？</p>
+<p>在函数 flow2() 结束后，函数 flow() 继续。这就是为什么 4d 被 PUSH 了：以保存函数执行的状态。</p>
+<p>由于 flow2() 被嵌套在 flow() 中，在执行完 flow2() 后，EVM 需要继续执行 flow() 的流程。为了做到这一点，在调用 flow2() 之前，EVM 在堆栈中保存了 JUMP 之后的下一条指令（JUMPDEST）以恢复执行。</p>
+<p>在 solidity 中每次函数被调用时（或其他汇编如 x86 或 ARM 也是类似）。当前函数的字节&#x2F;地址被保存在堆栈中，以便在被调用的函数完成后继续执行。</p>
+<p>如果一切正常，让我们在了解更复杂的函数，如果我们在 flow2() 函数中加入参数（比如一个 uint）会怎样？</p>
+<h1 id="带参数的函数调用"><a href="#带参数的函数调用" class="headerlink" title="带参数的函数调用"></a>带参数的函数调用</h1><p>这是我们关于逆向函数调用的第二个例子，在没有优化器的情况下进行编译。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    	uint value = 0;</span><br><span class="line">   	function flow() external &#123;</span><br><span class="line">		flow2(5);</span><br><span class="line">    &#125;</span><br><span class="line">		</span><br><span class="line">	function flow2(uint y) public &#123;</span><br><span class="line">		value = y;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>让我们来反汇编一下:(参数为 5 调用 flow2)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">087 JUMPDEST			| 0x05 | 0x4d |</span><br><span class="line">088 DUP1				| 0x05 | 0x05 | 0x4d |</span><br><span class="line">089 PUSH1 0x00			| 0x00 | 0x05 | 0x05 | 0x4d |</span><br><span class="line">091 DUP2				| 0x05 | 0x00 | 0x05 | 0x05 | 0x4d |</span><br><span class="line">092 SWAP1				| 0x00 | 0x05 | 0x05 | 0x05 | 0x4d |</span><br><span class="line">093 SSTORE				| 0x05 | 0x05 | 0x4d |</span><br><span class="line">094 POP					| 0x05 | 0x4d |</span><br><span class="line">095 POP					| 0x4d |</span><br><span class="line">096 JUMP				// 4d==77；flow2 结束</span><br><span class="line">097 JUMPDEST			| 0x55 |</span><br><span class="line">098 PUSH1 0x69			| 0x69 | 0x55 |</span><br><span class="line">100 PUSH1 0x05			| 0x05 | 0x69 | 0x55 |</span><br><span class="line">102 PUSH1 0x57			| 0x57 | 0x05 | 0x69 | 0x55 |</span><br><span class="line">104 JUMP				// 57==87；69==105；55==85</span><br><span class="line">105 JUMPDEST 0x -</span><br><span class="line">106 JUMP 0x -</span><br></pre></td></tr></table></figure>
+
+<p>函数 flow() 的入口点开始于指令 97，就在它把 69、05 和 57 推入堆栈之后。</p>
+<p>正如你可能猜到的那样：</p>
+<p>69（十进制的105）保存了函数调用后的字节位置。</p>
+<p>05 是该函数的参数</p>
+<p>57（十进制的87）是函数 flow2 的地址，现在将通过 JUMP 在 104 字节指令调用。</p>
+<p>在指令 87 和 96 之间，这是函数 “flow2”，它 SSTORE 了 Stack(0) 的内容，在这里是 05（提供给函数 flow2 的参数）。</p>
+<p>在这之后是跳转，因为这是该函数的结束</p>
+<p>反汇编几乎是完全一样的（除了函数在代码的其他区域），但唯一真正的区别是，参数5被推到了堆栈中。</p>
+<p>和第一段代码一样，这个函数每次都会清理堆栈</p>
+<h1 id="带返回值的函数调用"><a href="#带返回值的函数调用" class="headerlink" title="带返回值的函数调用"></a>带返回值的函数调用</h1><p>现在，让我们看看如果 flow2 函数不接受参数而返回一个值会发生什么。</p>
+<p>剧透：想法是一样的，区别也是很小的。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    uint value = 0;</span><br><span class="line">    function flow() external &#123;</span><br><span class="line">        uint n = flow2();</span><br><span class="line">        value = n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function flow2() public returns(uint) &#123;</span><br><span class="line">    	return 5;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>完整的反汇编（函数flow()的入口点是90）：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">090 PUSH1 0x00		| 0x00 | 0x3d | hash |</span><br><span class="line">092 PUSH1 0x61		| 0x61 | 0x00 | 0x3d | hash |</span><br><span class="line">094 PUSH1 0x6d		| 0x6d | 0x61 | 0x00 | 0x3d | hash |</span><br><span class="line">096 JUMP</span><br><span class="line"></span><br><span class="line">109 JUMPDEST		| 0x61 | 0x00 | 0x3d | hash |</span><br><span class="line">110 PUSH1 0x00		| 0x00 | 0x61 | 0x00 | 0x3d | hash |</span><br><span class="line">112 PUSH1 0x05		| 0x05 | 0x00 | 0x61 | 0x00 | 0x3d | hash |</span><br><span class="line">114 SWAP1			| 0x00 | 0x05 | 0x61 | 0x00 | 0x3d | hash |</span><br><span class="line">115 POP				| 0x05 | 0x61 | 0x00 | 0x3d | hash |</span><br><span class="line">116 SWAP1			| 0x61 | 0x05 | 0x00 | 0x3d | hash |</span><br><span class="line">117 JUMP</span><br><span class="line"></span><br><span class="line">097 JUMPDEST		| 0x05 | 0x00 | 0x3d | hash |</span><br><span class="line">098 SWAP1			| 0x00 | 0x05 | 0x3d | hash |</span><br><span class="line">099 POP				| 0x05 | 0x3d | hash |</span><br><span class="line">100 DUP1			| 0x05 | 0x05 | 0x3d | hash |</span><br><span class="line">101 PUSH1 0x00		| 0x00 | 0x05 | 0x05 | 0x3d | hash |</span><br><span class="line">103 DUP2			| 0x05 | 0x00 | 0x05 | 0x05 | 0x3d | hash |</span><br><span class="line">104 SWAP1			| 0x00 | 0x05 | 0x05 | 0x05 | 0x3d | hash |</span><br><span class="line">105 SSTORE			| 0x05 | 0x05 | 0x3d | hash |</span><br><span class="line">106 POP				| 0x05 | 0x3d | hash |</span><br><span class="line">107 POP				| 0x3d | hash |</span><br><span class="line">108 JUMP</span><br><span class="line"></span><br><span class="line">061 JUMPDEST</span><br><span class="line">062 STOP</span><br></pre></td></tr></table></figure>
+
+<p>在指令 90 和 94 之间，0x0 0x61 和 0x6d 被推到堆栈中。</p>
+<p>然后函数 JUMP 到 6d（109 的十进制）。</p>
+<p>在指令 109 和 117 之间的函数 flow2() 把 5 推到堆栈（所有的 5 条指令都简化为 PUSH 5，优化器应该被启用，以便在代码中看到它）。</p>
+<p>在 117 直接处的堆栈是（61 和 5）。</p>
+<p>61，我们已经知道了其作用，但是 5 是什么？你可能猜到了。这是该函数的返回值</p>
+<p>你可能已经注意到了，返回值也被推到了堆栈中。</p>
+<p>在执行 flow2() 之后，flow 函数仍将继续，堆栈是相同的（如前所述），但值是 5 !</p>
+<h1 id="让我们把它放在一起"><a href="#让我们把它放在一起" class="headerlink" title="让我们把它放在一起"></a>让我们把它放在一起</h1><p>最后，这是这篇文章的最后一个例子。</p>
+<p>如果我们通过在 flow2() 函数中增加一个返回值和两个参数，把这三个例子结合起来，会怎么样？</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    uint value = 0;</span><br><span class="line">    function flow() external &#123;</span><br><span class="line">        uint n = flow2(5,7);</span><br><span class="line">        value = n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function flow2(uint x,uint y) public returns(uint) &#123;</span><br><span class="line">    	return x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>让我们分析一下! (剧透：也没有那么大的区别)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">117 JUMPDEST			| 0x43 |</span><br><span class="line">118 PUSH1 0x00			| 0x00 | 0x43 |</span><br><span class="line">120 PUSH2 0x0083		| 0x0083 | 0x00 | 0x43 |</span><br><span class="line">123 PUSH1 0x05			| 0x05 | 0x0083 | 0x00 | 0x43 |</span><br><span class="line">125 PUSH1 0x07			| 0x07 | 0x05 | 0x0083 | 0x00 | 0x43 |</span><br><span class="line">127 PUSH2 0x008f		| 0x008f | 0x07 | 0x05 | 0x0083 | 0x00 | 0x43 |</span><br><span class="line">130 JUMP</span><br><span class="line"></span><br><span class="line">143 JUMPDEST			| 0x07 | 0x05 | 0x0083 | 0x00 | 0x43 |</span><br><span class="line">144 PUSH1 0x00			| 0x00 | 0x07 | 0x05 | 0x0083 | 0x00 | 0x43 |</span><br><span class="line">146 DUP3				| 0x05 | 0x00 | 0x07 | 0x05 | 0x0083 | 0x00 | 0x43 |</span><br><span class="line">147 SWAP1				| 0x00 | 0x05 | 0x07 | 0x05 | 0x0083 | 0x00 | 0x43 |</span><br><span class="line">148 POP					| 0x05 | 0x07 | 0x05 | 0x0083 | 0x00 | 0x43 |</span><br><span class="line">149 SWAP3				| 0x0083 | 0x07 | 0x05 | 0x05 | 0x00 | 0x43 |</span><br><span class="line">150 SWAP2				| 0x05 | 0x07 | 0x0083 | 0x05 | 0x00 | 0x43 |</span><br><span class="line">151 POP					| 0x07 | 0x0083 | 0x05 | 0x00 | 0x43 |</span><br><span class="line">152 POP					| 0x0083 | 0x05 | 0x00 | 0x43 |</span><br><span class="line">153 JUMP</span><br><span class="line"></span><br><span class="line">131 JUMPDEST			| 0x05 | 0x00 | 0x43 |</span><br><span class="line">132 SWAP1				| 0x00 | 0x05 | 0x43 |</span><br><span class="line">133 POP					| 0x05 | 0x43 |</span><br><span class="line">134 DUP1				| 0x05 | 0x05 | 0x43 |</span><br><span class="line">135 PUSH1 0x00			| 0x00 | 0x05 | 0x05 | 0x43 |</span><br><span class="line">137 DUP2				| 0x05 | 0x00 | 0x05 | 0x05 | 0x43 |</span><br><span class="line">138 SWAP1				| 0x00 | 0x05 | 0x05 | 0x05 | 0x43 |</span><br><span class="line">139 SSTORE				| 0x05 | 0x05 | 0x43 |</span><br><span class="line">140 POP					| 0x05 | 0x43 |</span><br><span class="line">141 POP					| 0x43 |</span><br><span class="line">142 JUMP</span><br><span class="line"></span><br><span class="line">067 JUMPDEST</span><br><span class="line">068 STOP</span><br></pre></td></tr></table></figure>
+
+<p>flow() 函数的入口点在指令 118 字节。</p>
+<p>83 ( 十进制 131) 是保存调用后位置，05 和 07 是参数，8f (143 十进制)是函数的地址。</p>
+<p>在指令 143 和 153 之间，函数 flow2() 删除了 y(7)，因为它不需要这个值，把 x(5) 放在堆栈中并返回。</p>
+<p>函数 JUMP 到保存的字节（83，十进制的 131），函数 flow() 的执行通过存储返回值 5 而继续进行。</p>
+<p>一旦完成，它就跳到 STOP 点，执行在此结束。</p>
+<p>关于这个函数没有什么可说的，这种行为是预期的。参数、保存的字节和返回值都存储在堆栈中，该函数已经正确完成了工作。</p>
+<p><strong>那么，你需要记住什么</strong>？</p>
+<p>当你在 solidity 中调用一个函数时（在汇编中）。</p>
+<ol>
+<li>EVM 在调用前将所有的参数推到堆栈中</li>
+<li>该函数被执行</li>
+<li>所有的返回值都被推送到堆栈中</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这是系列的第 5 篇。这是这个系列中最难的部分，但这是必要的。现在我们已经对 solidity 中汇编的执行流程有了更好的理解。</p>
+<p>接下来，我们将学习完整的 solidity 智能合约布局和它的不同部分。</p>
 ]]></content>
       <categories>
         <category>区块链-通过逆向和调试深入EVM</category>
