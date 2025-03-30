@@ -205,8 +205,13 @@ categories:
 
 
 $S$: 用户可控的源 (\emph{sources}) 集合；
+
 $T$: 被污染 (\emph{tainted}) 的变量集合；
+
 $C_T$: 从被污染变量到其来源 (\emph{sources}) 的映射；
+
 $F$: 可疑函数 (\emph{suspicious functions}) 的集合；
+
 $\mathrm{Mem}$, $\mathrm{Sto}$: 分别表示 EVM 中的内存区 (\emph{memory}) 与存储区 (\emph{storage})；
+
 $V$, $EC$, $SM$: 检测器 (\emph{Detector}) 中三阶段检测的标识。它们各自以函数 $f$ 和参数 $p$ 作为输入。
