@@ -1,6 +1,6 @@
 ---
-title: DefectChecker：基于EVM字节码分析的智能合约缺陷检测自动化
-date: 2024-10-30
+title: 你所有的代币都属于我们：揭秘Solidity智能合约中的地址验证漏洞
+date: 2025-03-30
 tags: 
   - 静态代码分析
   - 区块链
