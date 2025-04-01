@@ -202,18 +202,18 @@ C2：跨过程的控制流和数据流分析。为了检测此漏洞，需要准
 #### 栈相关操作码
 
 栈相关操作码仅与栈交互，且不改变控制流，例如 ADD、SWAP 和 DUP。以一个接受两个参数 $(op_{uid_1},op_{uid_2})$ 并返回一个结果 $(op_{uid_r})$ 的操作码 ADD 为例，除了进行必要的栈操作之外，我们也将污点传播规则（taint propagation rules）形式化如下：
-$
+$$
 \{op_{uid_1}, op_{uid_2}\} \cap (\mathcal{S} \cup \mathcal{T}) \neq \emptyset 
 \vdash \mathcal{T} := \mathcal{T} \cup \{op_{uid_r}\}
-$
+$$
 
-$
+$$
 C_{\mathcal{T}}[op_{uid_r}] := \begin{cases}
 \{op_{uid_1}\}, & op_{uid_1} \in \mathcal{S} \cup \mathcal{T} \\[6pt]
 \{op_{uid_2}\}, & op_{uid_2} \in \mathcal{S} \cup \mathcal{T} \\[6pt]
 \{op_{uid_1}, op_{uid_2}\}, & \{op_{uid_1}, op_{uid_2}\} \cap (\mathcal{S} \cup \mathcal{T}) \neq \emptyset
 \end{cases}
-$
+$$
 
 上述第一条规则表示，如果任意操作数属于集合 $\mathcal{S}$（用户可控源集合）或 $\mathcal{T}$（污点变量集合），则返回值也应被加入集合 $\mathcal{T}$，即标记为污点。第二条规则更新了集合 $C_{\mathcal{T}}$（污点变量到其源的映射），它记录了从当前操作码 $op_{uid_r}$ 到其直接污点前驱的污点关系。需要注意的是，虽然这一类别的其他操作码在参数数量和返回值上可能有所不同，但其传播规则是相似的。
 
@@ -222,44 +222,44 @@ $
 正如我们在§2.1中提到的，内存和存储由EVM维护。其中的数据以不同的方式组织。具体而言，存储空间以键值对形式存放，其值通过给定的键[3]获取；而内存则是一段连续的字节数组。对内存中的数据访问则通过计算得到的偏移量实现。然而，在以太坊智能合约中，内存通常相当稀疏。因此，我们受He等人[39]提出的方法启发，将内存视作键值对集合，其中键为偏移量，值为对应的数据。因此，我们统一用索引方式表示内存与存储中的数据，如 $Sto[key]$ 或 $Mem[offset]$。
 
 **加载相关Opcode。** 这包括 MLOAD 和 SLOAD，即从内存或存储中读取数据。这两个操作均接受一个参数 $tar$，即目标地址，并返回 $ret$，表示取得的数据。污点传播规则定义如下：
-$
+$$
 tar \in \mathcal{S} \cup \mathcal{T} \vdash \mathcal{T} := \mathcal{T} \cup \{ret\}
-$
+$$
 
-$
+$$
 C_{\mathcal{T}}[ret] := \{tar\}, \quad \text{if } tar \in \mathcal{S} \cup \mathcal{T}
-$
+$$
 
 换句话说，如果 $tar$ 是污点变量，返回值 $ret$ 也会被标记为污点，它们之间的污点依赖关系将被保存在 $C_{\mathcal{T}}$ 中。此外，还存在另一种情况，即由 $tar$ 指定的数据本身为污点。因此，我们进一步给出污点传播规则（以下以从内存中读取数据为例）：
-$
+$$
 Mem[tar] \in \mathcal{S} \cup \mathcal{T} \vdash \mathcal{T} := \mathcal{T} \cup \{ret\}
-$
+$$
 
-$
+$$
 C_{\mathcal{T}}[ret] := \{Mem[tar]\}, \quad \text{if } Mem[tar] \in \mathcal{S} \cup \mathcal{T}
-$
+$$
 
 **存储相关操作码。** STORE 与 MSTORE 均接受两个参数 $val$ 和 $dest$，分别表示待存储的数据及其目标地址。因此，我们可将污点传播规则形式化定义如下：
-$
+$$
 \{val, dest\} \cap (\mathcal{S} \cup \mathcal{T}) \neq \emptyset \vdash \mathcal{T} := \mathcal{T} \cup \{val\}
-$
+$$
 
-$
+$$
 C_{\mathcal{T}}[val] := \{dest\}, \quad \text{if } dest \in \mathcal{S} \cup \mathcal{T}
-$
+$$
 
 也就是说，如果 $val$ 或者 $dest$ 任一为污点变量，最终存储的值 $val$ 将被标记为污点。在维护污点依赖关系时，我们仅考虑 $val$ 对 $dest$ 的依赖关系，而不会考虑从 $val$ 到 $val$ 自身的依赖关系。
 
 #### 调用相关操作码
 
 有一些操作码可以执行外部调用，例如 CALL、DELEGATECALL 和 SELFDESTRUCT。在所有参数中，我们最关注的是地址参数，将其记为 $param_{addr}$。因此，我们专门定制污点传播规则如下：
-$
+$$
 C_{\mathcal{T}}.ancestor(param_{addr}) = \text{CALLDATALOAD} \vdash \mathcal{T} := \mathcal{T} \cup \{suc\}
-$
+$$
 
-$
+$$
 C_{\mathcal{T}}[suc] := \{param_{addr}\}
-$
+$$
 
 具体而言，我们主要关心的是 $param_{addr}$ 的祖先节点（ancestor）是否能从 CALLDATALOAD 产生污点，因为 CALLDATALOAD 是集合 $\mathcal{S}$ 中唯一能解析地址类型变量的源。因此，如果 $C_{\mathcal{T}}.ancestor(param_{addr})=\text{CALLDATALOAD}$ 成立，这意味着攻击者最终可以通过函数入口向外部调用传递恶意地址。
 
@@ -297,25 +297,25 @@ JUMP 和 JUMPI 操作码对污点传播处理至关重要，因为它们接受�
 根据原则 P2，在第二阶段，我们进一步检查参数 $param_j$ 是否可被用于外部调用相关指令的目标地址。因此，我们实现了一个名为 $EC(f_i,param_j)$ 的函数。如果在函数中，该参数被用作任何外部调用指令的目标，则该函数返回 $True$。
 
 在以太坊中，外部调用指令接受一个地址作为参数，并允许当前合约与该地址交互。函数 $EC(f_i,param_j)$ 的实现也较为直观。具体而言，如果某个外部调用指令的目标地址 $tar$ 的污点前驱（tainted predecessor）是参数 $param_j$，或者参数本身即为调用目标 $tar$，则函数 $EC(f_i,param_j)$ 返回 $True$；否则返回 $False$。形式化表示为：
-$
+$$
 EC(f, p) := 
 \begin{cases}
 True, & p \in C_{\mathcal{T}}[tar] \lor tar = p \\[6pt]
 False, & \text{otherwise}.
 \end{cases}
-$
+$$
 类似地，为避免无意义的资源消耗，仅当状态对应返回值为 $True$ 时，才会进入第三阶段检查。我们将返回值为 $False$ 的情况视作无价值的漏洞合约，不再进一步处理。
 
 #### 第三阶段：调用后状态修改
 
 根据原则 $P3$，我们关注的是链上状态（on-chain states）是否可能依据第二阶段检测所关注的外部调用指令的返回值而更新。因此，我们实现了函数 $SM(f_i,param_j)$。在以太坊中，链上状态的更新方式可归纳为两种。一方面，某些链上状态可以被视作普通变量并直接修改，例如：BALANCE。另一方面，SSTORE 指令也可以用于修改链上状态（参见 §2.1）。因此，对于所有这些可能的目标状态（即链上状态关键词、以及 SSTORE 指令中的 $val$ 和 $dest$ 参数），我们将它们统一归入集合 $\mathcal{V}$ 中。如果集合 $\mathcal{V}$ 中的任何元素 $v$ 存在一个污点前驱（tainted predecessor），且该前驱与外部调用的返回值（即第二阶段关注的外部调用指令）有关，则函数 $SM$ 返回 $True$；否则返回 $False$。形式化表示为：
-$
+$$
 SM(f,p):=
 \begin{cases}
 True, & \exists e \in \mathcal{V}, suc \in C_{\mathcal{T}}[e] \\[6pt]
 False, & \text{otherwise}.
 \end{cases}
-$
+$$
 因此，所有返回值为 $True$ 的状态将作为最终状态保留。
 
 #### 地址验证漏洞合约
@@ -323,13 +323,13 @@ $
 简而言之，通过上述三阶段的检测，漏洞检测器（Detector）可以有效地识别出由于地址验证漏洞（address verification vulnerability）而可能被攻击者利用的状态。我们可以形式化地总结我们的检测策略如下：
 
 通过解析来自模拟器（Simulator）传递的状态集合（states），检测器（Detector）可获得一组可能存在漏洞的目标元组：
-$
+$$
 Tuples = \{(f_i,param_j),\dots\} := parse(states)
-$
+$$
 经过三阶段的检测，仅保留有价值且存在漏洞的状态：
-$
+$$
 Remained = \{(f,p)\in Tuples\mid \neg V(f,p)\wedge EC(f,p)\wedge SM(f,p)\}
-$
+$$
 如果合约中存在任意一个状态对应于集合 $Remained$ 中的某个元组，则该合约存在地址验证漏洞。
 
 ## 评估
