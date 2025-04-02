@@ -287,7 +287,7 @@ JUMP 和 JUMPI 操作码对污点传播处理至关重要，因为它们接受�
 第一阶段旨在检查合约是否采用了白名单验证方式。因此，我们设计了一个函数 $V(f_i, param_j)$。该函数以可疑函数集合 $\mathcal{F}$ 中的第 $i$ 个函数和它的第 $j$ 个参数作为输入，验证该参数是否经过了 §2.2 节中描述的任何一种验证方式。函数 $V(f_i, param_j)$ 的逻辑定义如下：
 
 1. 如果 $param_j$ 不是地址类型，我们认为此情况不需要进一步检查，此时函数返回 $True$，即：$V(f_i, param_j)\text{returns}True;$
-2. 针对每条 JUMPI 指令，我们检查其条件 $cond$ 是否被参数 $param_j$ 污染，且进一步污点来源是否为 CALLDATALOAD。形式化而言，此情况表现为： $param_j\inC_{\mathcal{T}}[cond]\wedge\text{CALLDATALOAD}\inC_{\mathcal{T}}[param_j]$ 。若上述条件成立，函数同样返回 $True$ ，即： $V(f_i,param_j)\text{returns}True;$
+2. 针对每条 JUMPI 指令，我们检查其条件 $cond$ 是否被参数 $param_j$ 污染，且进一步污点来源是否为 CALLDATALOAD。形式化而言，此情况表现为： $param_j\in$ $C_{\mathcal{T}}[cond]\wedge\text{CALLDATALOAD}\in$ $C_{\mathcal{T}}[param_j]$ 。若上述条件成立，函数同样返回 $True$ ，即： $V(f_i,param_j)\text{returns}True;$
 3. 其他情况下，元组 $(f_i,param_j)$ 的检查返回 $False$ 。
 
 注意，前两个步骤返回 $True$ 意味着白名单验证不适用或已正常执行。换言之，仅当函数返回 $False$ 时，该参数才进入下一阶段（第二阶段）的检查。
