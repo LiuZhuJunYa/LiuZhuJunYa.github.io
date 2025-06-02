@@ -189,8 +189,7 @@ zkCross 包含两种隐私保护协议（Θ 和 Φ），分别针对两类跨链
 
 <p style="text-align:center"><img src="./2.png" alt="bug"/></p>
 
-<p style="text-align:center">图 2： 隐私保护跨链转移协议 Θ 流程。蓝色块表示交易 $\(\mathrm{Tx}_{\mathrm{Burn}}\)$ 的哈希摘要，红色块表示 Merkle 证明信息，即 $\(h_{\mathrm{Burn}}\)$ 与 $\(\mathrm{root}_{\mathrm{Burn}}\)$。
-</p>
+<p style="text-align:center">图 2： 隐私保护跨链转移协议 Θ 流程。蓝色块表示交易 $\(\mathrm{Tx}_{\mathrm{Burn}}\)$ 的哈希摘要，红色块表示 Merkle 证明信息，即 $\(h_{\mathrm{Burn}}\)$ 与 $\(\mathrm{root}_{\mathrm{Burn}}\)$。</p>
 
 基于上述分析，我们设计了隐私保护跨链转移协议 Θ（见图 2），以解决接收方地址与转移金额泄露带来的隐私风险。我们选用 zk-SNARK 隐藏接收方公钥 $pk_{R^L}$，并通过设置固定面额 [12,16,29] 隐藏转移金额。例如，在以太坊链上，当基本面额设为 2 ETH，若 $S^L$ 意图向 $R^L$ 转移 6 ETH，则需执行三笔 2 ETH 的转移交易。此设计通过多笔交易掩盖具体转移金额，实现隐私保护。协议 Θ 的具体流程如下。
 
@@ -211,3 +210,293 @@ zkCross 包含两种隐私保护协议（Θ 和 Φ），分别针对两类跨链
   h(\mathrm{Tx}_{\mathrm{Burn}}) \overset{\mathrm{def}}{=} \mathrm{hash}\bigl(pk^S,\mathrm{addr}_{R^L},v_S,\;h(pk_{R^L},r,sn)\bigr).
   $$
   随后，$S^L$ 通过链下通信将以下参数发送给 $R^L$：随机数 $r$、序列号 $sn$ 以及由一组哈希构成的 Merkle 证明 $h_{\mathrm{Burn}}$，其中 $h_{\mathrm{Burn}}$ 包含 Merkle 根 $\mathrm{root}_{\mathrm{Burn}}$ 与交易 $\mathrm{Tx}_{\mathrm{Burn}}$ 的 Merkle 路径。
+
+
+
+- **Θ.Mint：**  
+  
+  在链下通信完成后，$R^{II}$ 选择安全参数并构造新的电路 $\Lambda_{\Theta}$（如图 3所示）。整个电路包含两种功能单元（由虚线框表示）：Hash 和 MP，其中 Hash 用于计算输入数据的哈希值，MP 实现 Merkle 证明功能以证明某笔交易存在于某区块中。$R^{II}$ 调用算法 $\Pi.\mathrm{Setup}$（见第 4.2 节）获取密钥对 $(pk_{\Theta},vk_{\Theta})$。然后，它采用算法 $\Pi.\mathrm{Prove}$ 对公共输入  
+  $$
+  (pk_{R^L},\,sn,\,v_S,\,\mathrm{root}_{\mathrm{Burn}})
+  $$
+  和私有输入  
+  $$
+  (pk^s,\,addr_{R^L},\,r,\,h_{\mathrm{Burn}})
+  $$
+  生成零知识证明 $\pi_{\Theta}$。注意，在此交易中，$\widetilde{pk}_{R^L}$ 作为交易从 $R^{II}$ 发送至智能合约 $\xi^{II}$ 的公钥是公开的。随后，$R^{II}$ 将 $\pi_{\Theta}$ 与公共输入一并封装成交易 $\mathrm{Tx}_{\mathrm{Mint}}$，并发送至智能合约 $\xi^{II}$（或专用铸造账户），以获取等值资产 $v_S$。最后，智能合约 $\xi^{II}$ 通过算法 $\Pi.\mathrm{Verify}$ 验证 $\pi_{\Theta}$ 的有效性，并将资产发送给 $R^{II}$。  
+  $$
+  \mathrm{Tx}_{\mathrm{Mint}} \overset{\mathrm{def}}{=} (\mathrm{From}:R;\ \mathrm{To}:\xi;\ \pi_{\Theta},\,\widetilde{pk}_{R^L},\,sn,\,v_S,\,\mathrm{root}_{\mathrm{Burn}}).
+  $$
+  
+- **Θ.Redeem：** 
+  
+  如果 $R^{II}$ 未能在时锁 $T_3$ 前完成 Θ.Mint，则 $S^L$ 可向智能合约 $\xi^I$ 请求赎回 $v_S$。此时，$S^L$ 需要按 Θ.Mint 步骤生成相同的证明流程，仅需将电路中的公共/私有输入替换为 $S^L$ 所控制的公私钥。证明生成完成后，$S^L$ 将交易 $\mathrm{Tx}_{\mathrm{Redeem}}$ 发送至 $\xi^I$，并在验证成功后收回资产 $v_S$。  
+  $$
+  \mathrm{Tx}_{\mathrm{Redeem}} \overset{\mathrm{def}}{=} (\mathrm{From}:S;\ \mathrm{To}:\xi;\ \pi_{\mathrm{Redeem}},\,\widetilde{pk}_{R^L},\,sn,\,v_S,\,\mathrm{root}_{\mathrm{Burn}}).
+  $$
+
+#### 5.2.2 隐私保护跨链交换协议
+
+我们采用 HTLC 设计了一种跨链交换协议。根据第 4.3 节中 HTLC 的定义，HTLC.Unlock 要求交互双方使用相同的原像来解锁交换资产，这会使攻击者容易识别双方关联性。因此，隐私保护设计的核心挑战在于在保证 HTLC 原子性的同时，掩蔽原像。此外，还需保护交换数额的隐私。为此，我们沿用了跨链转移中的做法：通过设置固定面额来消除通过交换金额暴露隐私的风险。
+
+为应对 HTLC 原像带来的隐私挑战，我们基于 zk-SNARK（见第 4.2 节）提出了隐私保护协议 Φ。该协议包括四个步骤：Prepare、Lock、Unlock 和 Refund。按照 HTLC 要求（第 4.3 节），Φ 需要在 Chain I（即 $S^I,R^I$）和 Chain II（即 $S^{II},R^{II}$）上分别存在交互双方的账户。注意，一次跨链交换中，Unlock 和 Refund 仅能执行其一：执行 Unlock 表示交换成功，执行 Refund 则表示交换金额已退回发送方。
+
+<p style="text-align:center"><img src="./4.png" alt="bug"/></p>
+
+<p style="text-align:center">图 4： Φ.Prepare 的电路逻辑图。灰色背景参数为通过 zk-SNARK 保护的私有数据</p>
+
+**Φ.Prepare。** 在此过程中，$S$ 需要生成一个安全参数，并结合图 4 所示的电路 $\Lambda_{\Phi}^{\mathrm{off}}$，通过设置算法 $\Pi.\mathrm{Setup}$ 派生出密钥对 $(pk_{\Phi}^{\mathrm{off}},\,vk_{\Phi}^{\mathrm{off}})$。电路 $\Lambda_{\Phi}^{\mathrm{off}}$ 包含两种功能单元（用虚线框表示），即哈希函数（Hash）和异或操作（XOR）。具体而言，$S$ 生成两个原像 $\mathrm{pre}^I$ 和 $\mathrm{pre}^{II}$，两个随机序列号 $\mathrm{sn}^I$ 和 $\mathrm{sn}^{II}$，以及一个 256 位整数 $Z_{256}$；其中将 $\mathrm{sn}^I$ 与 $Z_{256}$ 通过 XOR 运算得到 $\widetilde{\mathrm{sn}}^I$。这些随机序列号作为私有输入保存，而原像和 $Z_{256}$ 作为公共输入。利用哈希功能，分别计算  
+$$
+h(\mathrm{pre}^I,\mathrm{sn}^I)\quad\text{和}\quad h(\mathrm{pre}^{II},\mathrm{sn}^{II})\,,
+$$
+即以 $(\mathrm{pre}^I,\mathrm{sn}^I)$ 和 $(\mathrm{pre}^{II},\mathrm{sn}^{II})$ 作为输入得到对应哈希值。随后，$S$ 通过协议 $\Pi.\mathrm{Prove}$ 生成零知识证明 $\pi_{\Phi}^{\mathrm{off}}$。该证明连同公共输入（哈希结果 $h(\mathrm{pre}^I,\mathrm{sn}^I)$、$h(\mathrm{pre}^{II},\mathrm{sn}^{II})$，原像 $\mathrm{pre}^I,\,\mathrm{pre}^{II}$，以及整数 $Z_{256}$）由 $S$ 通过链下通信发送给 $R$。该链下过程可实现以下目标：首先，$S$ 能在不泄露 $\mathrm{sn}^I$ 的前提下，证明 $\mathrm{sn}^I$ 与 $\widetilde{\mathrm{sn}}^I$ 之间的关系；其次，$R$ 只需执行一次逆向运算即可根据 $\widetilde{\mathrm{sn}}^I$ 还原出 $\mathrm{sn}^I$。
+
+**Φ.Lock。** 在链下通信完成后，基于交易 $T_{x\mathrm{Lock}}$，$S^I$ 使用 $h(\mathrm{pre}^I,\mathrm{sn}^I)$ 在智能合约 $\xi^I$ 中锁定资产 $v_S$。在 $R^I$ 验证 $S^I$ 发送的 $T_{x\mathrm{Lock}}$ 的正确性后，$R^I$ 使用 $h(\mathrm{pre}^{II},\mathrm{sn}^{II})$ 向智能合约 $\xi^{II}$ 发送 $T_{x\mathrm{Lock}}$，以锁定资产 $v_R$。该时锁操作与第 4.3 节中介绍的 HTLC.Lock 步骤一致，其中双方在对应智能合约上分别设置时锁 $T_1$ 和 $T_2$，且满足 $T_1 > T_2$。  
+$$
+T_{x\mathrm{Lock}} \overset{\mathrm{def}}{=} (\mathrm{From}:S^I/R^I;\ \mathrm{To}:\xi;\ v,\;h(\mathrm{pre},\mathrm{sn})).
+$$
+达成共识后，$T_{x\mathrm{Lock}}$ 的哈希摘要作为叶子节点包含在一个区块中，其定义为：  
+$$
+h(T_{x\mathrm{Lock}}) \overset{\mathrm{def}}{=} \mathrm{hash}\bigl(pk,\mathrm{addr}_{\xi},v,\;h(\mathrm{pre},\mathrm{sn})\bigr).
+$$
+**Φ.Unlock。** 在时锁 \(T_2\) 之内，\(S^{II}\) 首先构造一个电路 \(\Lambda_{\Phi}^{\mathrm{on}}\)，其逻辑与 \(\Lambda_{\Theta}\)（见图 3）类似，但需要修改其输入（见图 5）。具体而言，公共输入包括序列号 \(\mathrm{sn}^{II}\)、金额 \(v_R\) 以及 Merkle 根 \(\mathrm{root}_{\mathrm{Lock}}\)。私有输入则包括 \(R^I\) 的公钥 \(\widetilde{pk}_{R^I}\)、智能合约地址 \(\mathrm{addr}_\xi\)、原像 \(\mathrm{pre}^I\)、交易 \(T_{x\mathrm{Lock}}\) 的 Merkle 证明 \(\mathrm{h}_{\mathrm{Lock}}^{II}\)、交易哈希 \(h^{II}(T_{x\mathrm{Lock}})\) 以及哈希锁 \(h(\mathrm{pre}^I,\mathrm{sn}^I)\)。与 Θ.Mint 类似，\(S^{II}\) 基于上述电路生成证明 \(\pi_{\Phi}^{I}\)。随后，\(S^{II}\) 通过交易 \(T_{x\mathrm{Unlock}}\) 将 \(\pi_{\Phi}^{I}\) 及其公共输入提交给智能合约 \(\xi^{II}\)，以解锁金额 \(v_R\)。在此之后，\(R^I\) 学习到 \(\mathrm{sn}^I\)，并将其与整数 \(Z_{256}\) 进行 XOR 运算，得到 \(\widetilde{\mathrm{sn}}^I\)。接着，\(R^I\) 按照与 \(S^{II}\) 相同的步骤，基于电路生成证明 \(\pi_{\Phi}^{II}\)，其公共输入为 \((\mathrm{sn}^I,\,v_S,\,\mathrm{root}_{\mathrm{Lock}})\)，私有输入为 \((pk_{R^I},\,\mathrm{addr}_\xi,\,\mathrm{pre}^I,\,h_{\mathrm{Lock}}^{I},\,h(\mathrm{pre}^I,\mathrm{sn}^I))\)。最后，\(R^I\) 通过交易 \(T_{x\mathrm{Unlock}}\) 提交 \(\pi_{\Phi}^{II}\) 并获取金额 \(v_S\)。
+
+<p style="text-align:center"><img src="./5.png" alt="bug"/></p>
+
+**图 5：** Φ.Unlock 的电路逻辑图。灰色背景参数为通过 zk-SNARK 保护的私有数据。
+
+$$
+T_{x\mathrm{Unlock}} \overset{\mathrm{def}}{=} (\mathrm{From}:S^{II}/R^I;\ \mathrm{To}:\xi;\ \pi,\;\mathrm{sn},\;v,\;\mathrm{root}_{\mathrm{Lock}}).
+$$
+
+**Φ.Refund。** 与第 4.3 节中介绍的 HTLC.Refund 相同，如果 $S^{II}$ 未能在时锁 $T_2$ 内发送 $T_{x\mathrm{Unlock}}$，则 $R^I$ 将无法计算出 $\mathrm{sn}^I$。因此，两条链上的智能合约将在超时后将锁定的资产退还给相应方。
+
+为了便于读者理解，我们在图 6 中总结了使用协议 Φ 进行跨链交换的完整流程，展示了 $S$ 与 $R$ 之间的交互。
+
+<p style="text-align:center"><img src="./6.png" alt="bug"/></p>
+
+**图 6：** 基于协议 Φ 的跨链交换流程概览。
+
+#### 5.2.3 讨论
+
+当某一方未显式遵循协议（Θ 或 Φ）时，为了应对突发情况，协议仍能保证金额结算的正确性。
+
+协议 Θ 确保交互结果要么是 $R$ 收到 $v_S$，要么是 $S$ 收回 $v_S$。具体而言，当 $S$ 完成 Θ.Burn 后，如果 $S$ 未能执行 Θ.Transmit，则 $R$ 无法执行 Θ.Mint。为防止金额 $v_S$ 因死锁而被永久锁定，若 $R$ 未执行 Θ.Mint，$S$ 可在超时后执行 Θ.Redeem 来收回 $v_S$。
+
+协议 Φ 确保交互结果要么是 $S$ 和 $R$ 双方成功互换对方资产，要么是双方分别退回各自的锁定资产。在 Φ.Lock 阶段，如果 $S$ 执行了锁定操作但 $R$ 未执行 Φ.Unlock，且 $\mathrm{sn}^I$ 保持不可见，则 $R$ 无法计算出 $\mathrm{sn}^I$，也就无法执行 Φ.Unlock。此时，于 Φ.Refund 阶段，双方将各自退回锁定的资产。一旦 $S$ 最终执行 Φ.Unlock，$R$ 即可接收 $\mathrm{sn}^I$ 并通过其计算 $\widetilde{\mathrm{sn}}^I$，从而完成解锁操作。在这种情况下，双方均可获得对方的资产。
+
+### 5.3 跨链审计协议
+
+为解决 FAI 问题，我们开发了一种审计协议 Ψ，以提升跨链审计的效率。此外，Ψ 可与隐私保护协议（第 5.2 节中介绍）兼容，从而解决 IPA 问题。
+
+在我们的方案中，审计的目的是检查下层区块链中块内的交易是否符合审计者所设定的审计要求。根据具体需求，审计任务可分为基础任务或复杂任务。前者仅涉及对单笔交易的审计，而后者则涉及对多笔交易的聚合审计。zkCross 可用于这两类审计任务：基础任务如验证交易金额和地址的合法性；复杂任务如在指定时间段内确认各节点所发送交易总额的合法性。协议 Ψ 的核心在于其新提出的电路（见图 8），该电路可同时执行交易审计与聚合操作。聚合过程的实现方式类似于 zk-Rollup（第 4.2 节中介绍），但我们的方案可进一步减少链上存储开销并隐藏交易内容。zk-Rollup 的原始设计旨在处理尚未达成共识的链下交易，而在 zkCross 中，审计重点在于已在下层区块链中经共识验证的交易。因此，对于某些审计任务，不需要像 zk-Rollup 那样公开交易金额和相关地址，以防止恶意篡改链下交易。
+
+为了帮助理解，我们通过图 7 中的示例详细阐述协议 Ψ 的内容。该示例展示了三个块（标识为 Block I-1、Block I-2 和 Block I-3）在 Chain I 上的演进过程，并分别将 Chain I 的状态标注为 a–e（出现在第一块）。当矿工构造了包含交易 $t_0$ 的新块（如 Block I-2）后，$t_0$ 会将账户状态从 e 更新至 e′，对应的状态根从 root 1 变为 root 2。大多数区块链系统同时涉及多笔交易和多账户状态的更改，例如从 Block I-2 到 Block I-3 之间的状态转变。提交者在发现新块后，会在审计链上更新 Chain I 的新状态根（即 state root 3）。与此同时，为向审计者证明该状态转移的正确性，提交者会生成一个零知识证明，例如图 7 中展示的证明 $\pi_{\Psi}^3$。协议 Ψ 的整个流程可分为三个步骤：Initialize、Commit 和 Audit。
+
+<p style="text-align:center"><img src="./7.png" alt="bug"/></p>
+
+**图 7：** 基于跨链审计协议的审计链与 Chain I 之间的交互示例。  
+
+**Ψ.Initialize。** 为了基于算法 Π.Setup 启动协议 Ψ，提交者 $C_T$ 需要生成一个安全参数，记为 $1^\lambda$，并随后利用该安全参数与图 8 所示的电路 $\Lambda_{\Psi}$ 派生密钥对 $(pk_{\Psi},\,vk_{\Psi})$。可以看出，电路 $\Lambda_{\Psi}$ 由四个功能模块组成（用虚线框标示），即审计函数（Auditing Function，AF）、签名验证函数（Signature Verification Function，SVF）、状态转换函数（State Transition Function，STF）和根验证函数（Root Verification Function，RVF）。在此示例中，审计的重点在于验证发送方在 Chain I 上地址的合法性。因此，AF 通过检查该地址是否存在于黑名单中来完成交易审计。SVF 用于证明交易签名的正确性；STF 确保在交易发生后，从旧状态 $\mathrm{State}^{\mathrm{old}}$ 到新状态 $\mathrm{State}^{\mathrm{new}}$ 的状态转换是正确的；RVF 则通过重新计算状态根来保证 $\mathrm{State}^{\mathrm{old}}$ 和 $\mathrm{State}^{\mathrm{new}}$ 与 Chain I 各区块中记录的状态保持一致。例如，在图 7 中，Block I-2 的状态（$\mathrm{State}^{\mathrm{old}} = a,b,c,d,e$）在经过 $n$ 笔交易后变为 Block I-3 的状态（$\mathrm{State}^{\mathrm{new}} = a',b',c',d',e'$）。需要注意的是，可根据审计任务将来自多个区块的交易进行压缩，并相应地修改电路 $\Lambda_{\Psi}$ 的逻辑。
+
+<p style="text-align:center"><img src="./8.png" alt="bug"/></p>
+
+**图 8：** 用于跨链审计协议 Ψ 的电路逻辑图。参数的具体取值基于图 7 中所示的从 Block I-2 到 Block I-3 的状态转换过程派生。私有输入以灰色背景表示。
+
+**Ψ.Commit。** 在此步骤中，提交者 $C_T$ 需要准备信息以设置算法 $\Pi.\mathrm{Prove}$ 的特定私有输入和公共输入。我们继续以图 7 中所示的 Block I-3 为例。具体而言，$C_T$ 收集一组交易 $(t_{x1} – t_{xn})$，并将账户状态信息 $\bigl(\mathrm{State}^{\mathrm{old}},\,\mathrm{State}^{\mathrm{new}}\bigr)$ 与交易内容（例如转账金额 $v$、公钥 $pk$ 以及签名 $\sigma$）作为私有输入 $\widetilde{w}$；同时，将初始根（$\mathrm{root}_2$）和最终状态根（$\mathrm{root}_3$）作为公共输入 $\bar{x}$。需要注意的是，黑名单可以直接作为常量写入电路，从而减少电路的输入数量。随后，$C_T$ 根据上述数据 $(\bar{x};\,\widetilde{w})$ 以及由 $\Psi.\mathrm{Initialize}$ 生成的证明密钥 $pk$ 调用算法 $\Pi.\mathrm{Prove}$，以生成对应状态转换的证明 $\pi_{\Psi}^3$。最后，$C_T$ 注册为审计链上的轻节点，并将公共输入 $\bar{x}$ 与证明 $\pi_{\Psi}^3$ 一并封装到新的交易 $\mathrm{Tx}_{\mathrm{Commit}}$ 中，提交至审计链。
+
+$$
+\mathrm{Tx}_{\mathrm{Commit}} \overset{\mathrm{def}}{=} (\mathrm{From}:C_T;\ \mathrm{To}:\xi;\ \bar{x},\,\pi)\,.
+$$
+
+## 6 安全性分析
+
+**Lemma 1（zk-SNARK 的属性 [13,15]）。**  
+
+zk-SNARK 具有简洁性（succinctness）属性，即无论证明过程的复杂度如何，验证一个证明的复杂度始终保持在 $O(1)$；此外，证明大小保持固定。此外，zk-SNARK 是一种非交互式零知识证明技术，满足完备性（completeness）、健壮性（soundness）和零知识（zero-knowledge）等要求。
+
+**Theorem 1（不可关联性）。** 
+
+一个发送方 $S$ 通过协议 Θ 或 Φ 与接收方 $R$ 交互。在抵抗碰撞（collision-resistant）哈希函数和零知识证明系统的安全保证下，对于任意匿名集（anonymity set），对手无法基于 $S$ 发起的信息关联到 $R$，反之亦然。
+
+**证明。** zkCross 考虑了所有可能影响不可关联性的因素，包括接收方地址、原像（preimages）和交易金额。具体而言，每笔区块链交易都会记录发送方和接收方的地址，这为对手提供了联系双方的信息。此外，在 HTLC 协议中，交互双方使用相同的原像来生成哈希锁，这进一步便于对手将其账户关联起来。更甚者，每笔交易金额的差异也会使对手能够通过相同的状态变化将发送方和接收方的账户对应起来。
+
+在匿名集中，我们通过以下实验来定义不可关联性：假设有两个由发送方 $S$ 发起的交易——一笔交易（记为 $\mathrm{tx}$）发送给接收方 $R$，另一笔交易（记为 $\mathrm{tx}'$）发送给接收方 $R'$。对手 $\mathcal{A}$ 需要猜测到底是 $\mathrm{tx}$ 还是 $\mathrm{tx}'$ 发往 $R$。注意，$\mathrm{tx}$ 和 $\mathrm{tx}'$ 是同类型的交易，例如都为 $\mathrm{Tx}_{\mathrm{Burn}}$。
+
+令
+$$
+\Pr\bigl[Exp_{\mathcal{A},\,zkCross}^{\mathrm{Unlinkability}}(\lambda) = 1\bigr]
+$$
+表示对手 $\mathcal{A}$ 在不可关联性实验中的成功概率，其中 $\lambda$ 为安全参数。若对于所有多项式时间对手 $\mathcal{A}$，均有
+$$
+\Bigl|\Pr\bigl[Exp_{\mathcal{A},\,zkCross}^{\mathrm{Unlinkability}}(\lambda) = 1\bigr] - \tfrac{1}{2}\Bigr| \le \mathrm{negl}(\lambda)\,,
+$$
+则称 zkCross 满足不可关联性属性。
+
+我们将 $\mathcal{U}$ 表示为一个匿名集，包含在某一时段内状态发生变化的所有接收方，其中实际交易的接收方在该匿名集中被隐藏。匿名集的大小记为 $|\mathcal{U}|$。如果对手知道某发送方的地址并试图破坏不可关联性，则必须将该发送方地址与匿名集 $\mathcal{U}$ 中对应的接收方地址关联起来。当 $|\mathcal{U}| = 1$ 时，仅存在一个活动的 $S$–$R$ 对。因此，在此情形下，利用任何隐私保护方案都无法在我们的场景中实现对 $S$ 和 $R$ 之间关联的隐藏。在后续讨论中，我们仅考虑满足 $|\mathcal{U}| > 1$ 的匿名集。zkCross 采用了以下方法来保证不可关联性：隐藏接收方地址、使用独立原像以及添加等额交易，从而确保对手破坏不可关联性的概率可忽略不计。  
+
+**[隐藏接收方地址]**  
+
+zkCross 采用哈希和 zk-SNARK 来隐藏接收方地址。
+
+具体而言，在 Θ.Burn 中，zkCross 使用  
+$$
+h(pk_{R^L},\,r,\,sn)
+$$
+来隐藏接收方地址 $pk_{R^L}$。要想获得 $pk_{R^L}$，对手必须先获取 $sn$ 和 $r$，其中 $sn$ 会在协议结束时被公开，而 $r$ 是由 zk-SNARK 保护的私有输入。根据 Lemma 1，zk-SNARK 具有零知识性属性，这意味着对手 $\mathcal{A}$ 推断出私有输入的概率是可忽略的。此外，由于哈希函数的安全性，对手在不了解 $r$ 的情况下从 $h(pk_{R^L},\,r,\,sn)$ 中获取 $pk_{R^L}$ 的概率也是可忽略的。在 Θ.Mint 中，$R^{II}$ 将 $pk_{S^L}$ 作为 zk-SNARK 的私有输入来隐藏 $S^L$ 的地址。同样地，在 Θ.Redeem 中，$S^L$ 将 $pk_{R^{II}}$ 作为私有输入来隐藏 $R^{II}$ 的地址，这要求对手须要破坏 zk-SNARK 的零知识性，而这种概率也是可忽略的。
+
+在跨链交换过程中，协议 Φ 采用 HTLC，该协议不涉及 $S^L$ 与 $R^L$ 之间的链间交互。HTLC 仅在同一条链内在账户之间转移资金，例如在 $S^L$ 与 $R^L$ 之间，或在 $S^{II}$ 与 $R^{II}$ 之间。Φ 首先采用与协议 Θ 相似的方式来隐藏接收方的地址，从而防止对手将同一链内交互双方的地址（例如 $S^L$ 与 $R^L$）关联起来。此外，由于同一实体在不同链上的账户是相互独立的，对手无法将 $S^L$ 与 $S^{II}$ 或将 $R^L$ 与 $R^{II}$ 联系在一起。类似于协议 Θ 的分析，基于 zk-SNARK 和哈希函数的安全性，对手 $\mathcal{A}$ 推断接收方地址的概率可忽略不计。基于以上设计，在  
+$$
+\Pr\bigl[Exp^{\mathrm{Unlinkability}}_{\mathcal{A},\,zkCross}(\lambda) = 1\bigr]
+$$
+的实验中，对手 $\mathcal{A}$ 基于接收方地址将 $S$ 与 $R$ 关联的概率为  
+$$
+\tfrac{1}{2} + \mathrm{negl}(\lambda)\,.
+$$
+**[使用独立原像]**  
+
+在 HTLC 中，当 $S$ 与 $R$ 交互时，该交互涉及两个由同一原像生成的哈希锁。对手 $\mathcal{A}$ 可以基于相同的哈希锁将 $S$ 和 $R$ 关联起来。在 zkCross 中，交互方使用独立的原像来生成哈希锁，并采用 zk-SNARK 来确保原像的正确性。
+
+具体而言，在步骤 Φ.Lock 中，$S^I$ 和 $R^{II}$ 使用独立的哈希锁来锁定交换金额。然而，使用独立原像可能会破坏协议的安全性，例如，$R^{II}$ 无法验证 $S$ 提供的原像是否正确。设计挑战在于：需要实体 $S$ 说服 $R$ 哈希锁的正确性，并确保 $R^I$ 仅在 $S^I$ 执行解锁操作（即揭示 $sn$）之后才执行解锁。为了解决上述挑战，我们设计了图 4 中所示的新颖电路。基于该电路，$S$ 可以生成一个证明，以说服 $R$ 哈希锁的正确性，从而消除 [6] 中假设双方需共享同一秘密的要求。由于解锁信息 $sn$ 被隐藏，$R^I$ 只有在 $S^I$ 执行解锁操作（揭示 $sn$）之后才能执行相应操作。基于上述设计，对于由两个独立原像生成的两个哈希锁，攻击者破坏哈希函数碰撞抗性以获取原像的概率可忽略。因此，在实验  
+$$
+\Pr\bigl[Exp^{\mathrm{Unlinkability}}_{\mathcal{A},\,zkCross}(\lambda) = 1\bigr]
+$$
+中，对手基于原像将 $S$ 和 $R$ 关联的成功概率为  
+$$
+\tfrac{1}{2} + \mathrm{negl}(\lambda).
+$$
+**[添加相同金额的交易]** 
+
+我们通过设定基本面额将一笔转账金额拆分为多个子金额，从而增加网络中具有相同金额的交易数量。类似于文献 [12,16,29]，子金额是一个可根据具体场景设定的固定值。上述设计意味着在网络中始终可以找到两笔金额相同的交易，从而保证 $|\mathcal{U}| > 1$。
+
+基于以上分析，可以得出：在实验 
+$$
+\Pr\bigl[Exp^{\mathrm{Unlinkability}}_{\mathcal{A},\,zkCross}(\lambda) = 1\bigr]\,,
+$$
+中，即使对手收集了可能破坏不可关联性的所有因素，如接收方地址、原像和交易金额，其破坏不可关联性的概率仍为 $\tfrac{1}{2} + \mathrm{negl}(\lambda)$。因此，
+$$
+\Bigl|\Pr\bigl[Exp^{\mathrm{Unlinkability}}_{\mathcal{A},\,zkCross}(\lambda) = 1\bigr] - \tfrac{1}{2}\Bigr| \le \mathrm{negl}(\lambda)\,,
+$$
+表明 zkCross 满足不可关联性属性。  
+
+**Theorem 2（效率）。**  
+
+在一个由 $k$ 条普通区块链组成的网络中，每条区块链平均每秒产生 $m$ 个新区块，并且平均每个区块包含 $n$ 笔交易。zkCross 可以将审计效率提高近 $n$ 倍。  
+
+**Proof.** 我们考虑两种审计方法：审计者逐笔检查每笔交易（称为全量审计方法），平均每笔交易的审计时间为 $t_1$；或者依赖协议 $\Psi$ 进行审计，平均每次证明验证时间为 $t_2$。基于 Lemma 1，zk-SNARK 具有简洁性，保证 $t_1$ 和 $t_2$ 始终保持在 $O(1)$。第一种方法需要耗费时间 
+$$
+t_1 \times k \times m \times n
+$$
+来审计整个网络，而第二种方法仅需耗费时间 
+$$
+t_2 \times k \times m.
+$$
+两者之比为 
+$$
+\frac{t_1 \times k \times m \times n}{t_2 \times k \times m} \;=\; \frac{t_1 \times n}{t_2}.
+$$
+值得注意的是，随着单个区块内处理的交易数量呈线性增长，在步骤 $\Psi.\mathrm{Audit}$ 中验证证明的时间保持不变。因此，与同样任务的全量审计方案相比，zkCross 在审计时间上大约快了 $n$ 倍。  
+
+## 7 性能评估
+
+在本节中，我们在本地服务器和云服务器上实现了 zkCross 系统，并进行了全面测试，以评估三种协议在运行时间、延迟、吞吐量、Gas 消耗、审计时间和证明大小等方面的性能。我们的代码库已在 GitHub 上开源[^1]。
+
+> [^1]: 代码库地址请参见论文附录或项目主页。
+>
+> 1 https://github.com/Anonymous-Authors-zkCross/zkCross
+>
+> 2 https://github.com/akosba/xjsnark
+>
+> 3 https://github.com/ethereum/go-ethereum
+>
+> 4 https://github.com/ethereum/solidity
+
+### 7.1 实现
+
+zkCross 包含三种协议，即两种隐私保护跨链协议 (Θ, Φ) 和跨链审计协议 Ψ，每种协议均由两个关键组件构成：链下 zk-SNARK 和链上交易。  
+- 对于链下 zk-SNARK，我们使用 xjsnark 来构建各协议所需的电路，这些电路由超过 1,500 行代码实现。随后，我们采用 Groth16 算法 [13] 来实现 zk-SNARK 的 Setup（初始化）、Prove（生成）和 Verify（验证）。Groth16 算法被广泛认可，并已在区块链领域确立为可靠范式 [14]。  
+- 对于链上组件，每个节点运行 go-ethereum（官方的 Go 语言实现的以太坊协议客户端）来搭建区块链，并使用 Solidity 编写智能合约及实现交易逻辑，代码量超过 500 行。由于 go-ethereum 和 Solidity 原生不支持对 zk-SNARK 证明的验证，我们对 go-ethereum 和 Solidity 的源码进行了修改，在智能合约中新增了一个用于证明验证的函数，并将调用该函数所需的 Gas 设置为 440,000（相当于 Groth16 验证所需的 Gas）[^36]。
+
+我们在本地服务器和云服务器上测试了 zkCross 的性能。  
+- **本地服务器**：配备 Intel® Xeon® Silver 4214R CPU @ 2.40 GHz × 48 核，以及 98.3 GB 内存，运行 64 位 Ubuntu 20.04.2 LTS。  
+- **云服务器**：使用 50 台 c6.3xlarge 实例，每台均运行 Ubuntu 20.04 系统，搭载 Intel® Xeon® Platinum 8269CY 处理器（12 vCPU，3.2 GHz）和 48 GB 内存。我们在每台实例中启动 4 个 Docker 节点，以基于工作量证明（Proof-of-Work）共识算法构建多条区块链，并将每条区块链的交易数量设置为 10,000。  
+
+有关实验环境的更多细节将在汇报性能评估结果之前进行说明。
+
+### 7.2 实验结果
+
+#### 7.2.1 跨链转移与交换
+
+我们在云服务器上构建了两条区块链，并根据测试需求在每条区块链中设置不同数量的节点和交易。
+
+我们首先测试了 zk-SNARK 的性能，包括三个步骤的时间开销：Setup、Prove 和 Verify。zk-SNARK 的性能因所使用的电路而异。在协议 Θ 和 Φ 中，共有三个电路。用于协议 Θ 的电路为 $\Lambda_{\Theta}$（如图 3 所示）；用于协议 Φ 的电路为 $\Lambda_{\Phi}^{\mathrm{off}}$（如图 4 所示）和 $\Lambda_{\Phi}^{\mathrm{on}}$（如图 5 所示）。$\Lambda_{\Theta}$ 和 $\Lambda_{\Phi}^{\mathrm{on}}$ 的规模与 MP 函数的输入有关，而 MP 函数对应于一个区块中包含的交易数量，即区块大小。例如，一个包含 16 笔交易的区块（区块大小 $=16$）可以构造一棵高度为 $4$ 的满二叉树，此时 MP 需要包含 $4$ 个哈希值，并执行相应的 $4$ 次哈希运算。
+
+<p style="text-align:center"><img src="./9.png" alt="bug"/></p>
+
+**图 9：** 针对不同区块大小的证明生成及验证时间。左图对应电路 $\Lambda_{\Theta}$；右图对应电路 $\Lambda_{\Phi}^{\mathrm{on}}$。
+
+如图 9 所示，我们测试了与电路 $\Lambda_{\Theta}$ 和 $\Lambda_{\Phi}^{\mathrm{on}}$ 相关的 zk-SNARK 时间开销，并将区块大小从 16 改变到 256。随着区块大小的增加，Setup 和 Prove 的时间消耗呈线性增长，而 Verify 的时间几乎保持不变。虽然 Setup 和 Prove 相较于毫秒级别的 Verify 需要更多时间，但由于它们在链下运行，不会占用额外的链上资源。表 1 列出了基于电路 $\Lambda_{\Phi}^{\mathrm{off}}$ 的 Setup、Prove 和 Verify 平均时间，分别为 6.96 秒、1.91 秒和 5.16 毫秒。
+
+**表 1：** 基于电路 $\Lambda_{\Phi}^{\mathrm{off}}$ 的三步时间开销。
+
+| 步骤     | Setup (秒) | Prove (秒) | Verify (毫秒) |
+| -------- | ---------- | ---------- | ------------- |
+| 平均耗时 | 6.96       | 1.91       | 5.16          |
+
+然后，我们测试了在不同节点规模下交易延迟和系统吞吐量。协议 Θ 包含交易 $\mathrm{Tx}_{\mathrm{Burn}}$ 和 $\mathrm{Tx}_{\mathrm{Mint}}$，以及 $\mathrm{Tx}_{\mathrm{Redeem}}$（$\mathrm{Tx}_{\mathrm{Redeem}}$ 与 $\mathrm{Tx}_{\mathrm{Mint}}$ 性能相同），而协议 Φ 整合了交易 $\mathrm{Tx}_{\mathrm{Lock}}$ 和 $\mathrm{Tx}_{\mathrm{Unlock}}$。注意，交易延迟是指从交易被发送到区块链到被矿工确认所消耗的时间。吞吐量的度量单位为 TPS，指每秒系统能够处理的交易数量。为了获得更准确的测试结果，我们建立了两条区块链，并调整链上节点数量来模拟跨链环境。如图 10 所示，每条区块链的最大节点数为 100。网络中的交易数量与节点数量相关，也就是说，节点越多，网络中的交易越多。我们规定交易数量等于节点数量的 10 倍，即在一个拥有 100 个节点的网络中有 1,000 笔待处理交易。
+
+<p style="text-align:center"><img src="./10.png" alt="bug"/></p>
+
+**图 10：** 跨链转移协议 Θ （上图）和跨链交换协议 Φ （下图）在网络延迟（左图）和吞吐量（右图）方面的性能。
+
+具体而言，图 10（(a)、(b)）和（(c)、(d)）分别展示了协议 Θ 和 Φ 的性能。随着网络中节点数量的增加，四种交易类型的延迟略有上升，导致相应的网络吞吐量略有下降。当网络中有 100 个节点时，交易 $\mathrm{Tx}_{\mathrm{Burn}}$ 的延迟约为 5.50 秒，而协议 Θ 中的交易 $\mathrm{Tx}_{\mathrm{Mint}}$ 的延迟约为 6.14 秒，如图 10（(a)）所示。对应的网络吞吐量（TPS）对于 $\mathrm{Tx}_{\mathrm{Burn}}$ 和 $\mathrm{Tx}_{\mathrm{Mint}}$ 分别为 45.78 和 32.58，如图 10（(b））所示。在协议 Φ（见图 10（(c)、(d)））中，交易 $\mathrm{Tx}_{\mathrm{Lock}}$ 的完成时间约为 5.44 秒，而交易 $\mathrm{Tx}_{\mathrm{Unlock}}$ 的完成时间约为 6.21 秒。对应的网络吞吐量对于 $\mathrm{Tx}_{\mathrm{Lock}}$ 和 $\mathrm{Tx}_{\mathrm{Unlock}}$ 分别为 48.38 和 32.55。随着节点和交易数量的增加，通信延迟以及交易在队列中等待的数量同时增多，从而导致交易延迟延长、网络吞吐量下降。为缓解该问题，建议采用二层扩容方案 [15] 以降低交易延迟并提升系统吞吐量。
+
+最后，我们对两个 20 个节点的区块链网络中的每种协议进行了 Gas 消耗模拟。如表 2 所示，协议 Θ 消耗 494,000 单位 Gas（约合 1.72 美元），而协议 Φ 则消耗 901,472 单位 Gas（约合 3.13 美元）。其中，协议 Θ 的 Gas 消耗主要来自证明验证；协议 Φ 的 Gas 消耗则主要源于证明验证以及与智能合约的多次交互。
+
+**表 2：每种协议的 Gas 消耗**
+
+| 协议 | Gas     | ETH      | USD* |
+| ---- | ------- | -------- | ---- |
+| Θ    | 494,000 | 0.000494 | 1.72 |
+| Φ    | 901,472 | 0.000901 | 3.13 |
+
+\* 假设 GasPrice = 1 Gwei，1 ETH = $10^9$ Gwei，1 ETH = 3,470.71 USD。
+
+### 7.2.2 跨链审计
+
+在本实验中，我们构建了一条由 20 个节点组成的审计链，用于审计下层链中所有交易的发送方是否被包含在审计链的黑名单内。实验结果如图 11（(a)、(b)）所示。具体而言：
+
+<p style="text-align:center"><img src="./11.png" alt="bug"/></p>
+
+**图 11：** 跨链审计协议 \(\Psi\) 随交易数量变化的证明大小、证明验证时间（左图）和审计时间（右图）。
+
+在图 11（a）中，我们首先评估了电路 \(\Lambda_{\Psi}\)（见图 8）中聚合交易数量对审计时间和证明大小的影响。我们将聚合的交易数量从 50 变化到 250，并观察到审计所需时间（即证明验证时间）从 8.52 毫秒增加到 16.43 毫秒，而证明大小保持在 127.38 字节。可以看出，得益于 zk-SNARK 的简洁性，在单个证明中聚合的交易数量增加，仅会导致验证时间略有上升，而证明大小并未改变。
+
+随后，在图 11（b）中，我们对比了使用协议 \(\Psi\) 与不使用 \(\Psi\)（即全量审计）的审计效率。我们将总交易数量从 100 变化到 10,000，这相当于下层普通链的数量从 1 到 100 不等，每条链处理 100 笔交易。可以看到，在总交易数量为 100 时，不使用 \(\Psi\) 的审计时间约为 35.66 秒，而使用 \(\Psi\) 仅需 1.10 秒。然而，当交易数量增加到 10,000 时，由于 20 个节点之间的网络拥塞，不使用 \(\Psi\) 的情况下审计时间约为 3.15 小时；相比之下，使用 \(\Psi\) 时审计时间缩短至约 40 秒，显著提升了效率。
+
+**表 3：Protocol Ψ 的 Gas 消耗**
+
+| 协议 | Gas     | ETH      | USD* |
+| ---- | ------- | -------- | ---- |
+| Ψ    | 466,520 | 0.000467 | 1.62 |
+
+\* 假设 GasPrice = 1 Gwei，1 Ether = $10^9$ Gwei，1 Ether = 3,470.71 美元。
+
+然后，基于第 7.2.1 节中概述的 Gas 实验设置，我们对审计协议 Ψ 进行了测试，其中每个证明包含 50 笔交易。如表 3 所示，执行协议 Ψ 所需的 Gas 为 466,520。注意，如第 5.3 节中所述，证明验证可以在不使用智能合约的情况下实现，从而进一步减少 Gas 消耗。
+
+**表 4：zk-Rollup 与我们方案的存储开销**
+
+| 方案      | 约束数量   | 公共输入 (KB) | 验证密钥 (KB) |
+| --------- | ---------- | ------------- | ------------- |
+| zk-Rollup | 11,466,073 | 10.21         | 12.20         |
+| 本方案    | 11,763,593 | 6.83          | 0.24          |
+
+最后，我们模拟了在两个电路均包含 100 笔交易的情况下，zk-Rollup（第 4.2 节中介绍）和我们的协议 Ψ 的存储开销。如表 4 所示，Ψ 增加了电路约束数量，但显著减少了公共输入和验证密钥的大小，需要上传到审计链，从而降低了审计者的存储成本。根据以太坊的存储成本模型，存储 256 位（32 字节）的数据需要 20,000 单位 Gas [5]。因此，验证 100 笔交易大约可以节省 16 KB 的空间，并节约约 10,000,000 单位 Gas。这对于拥有数十亿交易的区块链网络而言，节省意义显著。  
+
+## 8 结论
+
+在本文中，我们提出了 zkCross，一种支持隐私保护和高效审计的跨链方案。zkCross 采用了一种新颖的审计架构，包含三种协议，以解决跨链可关联性泄露（CLE）问题、隐私与审计不兼容（IPA）问题以及全面审计效率低下（FAI）问题。我们进行了全面的安全性分析并开展了综合仿真实验，结果表明 zkCross 在保持隐私的同时能够显著提升审计效率。在未来的研究中，我们将致力于增强系统在保持隐私的前提下的抗攻击能力。此外，我们还计划将 zkCross 扩展至支持多层（超过两层）的审计，从而拓展其应用场景并进一步优化审计效率。
+
+## 致谢
+
+我们衷心感谢匿名的 USENIX Security Shepherd 及审稿人对本论文所提出的建设性意见，这些意见帮助我们改进了本文。本研究部分得到以下项目支持：中国国家重点研发计划（编号 2023YFB2703600）、中国国家自然科学基金（编号 62232010、62302266、U23A20302）、山东省优秀青年科学基金（编号 2023HWYQ-008）以及山东省重点基础研究项目（编号 ZR2022ZD02）。
