@@ -245,3 +245,76 @@ zkCross 包含两种隐私保护协议（Θ 和 Φ），分别针对两类跨链
   \mathrm{Tx}_{\mathrm{Redeem}} \overset{\mathrm{def}}{=} (\mathrm{From}:S;\ \mathrm{To}:\xi;\ \pi_{\mathrm{Redeem}},\,\widetilde{pk}_{R^L},\,sn,\,v_S,\,\mathrm{root}_{\mathrm{Burn}}).
   $$
 
+#### 5.2.2 隐私保护跨链交换协议
+
+我们采用 HTLC 设计了一种跨链交换协议。根据第 4.3 节中 HTLC 的定义，HTLC.Unlock 要求交互双方使用相同的原像来解锁交换资产，这会使攻击者容易识别双方关联性。因此，隐私保护设计的核心挑战在于在保证 HTLC 原子性的同时，掩蔽原像。此外，还需保护交换数额的隐私。为此，我们沿用了跨链转移中的做法：通过设置固定面额来消除通过交换金额暴露隐私的风险。
+
+为应对 HTLC 原像带来的隐私挑战，我们基于 zk-SNARK（见第 4.2 节）提出了隐私保护协议 Φ。该协议包括四个步骤：Prepare、Lock、Unlock 和 Refund。按照 HTLC 要求（第 4.3 节），Φ 需要在 Chain I（即 $S^I,R^I$）和 Chain II（即 $S^{II},R^{II}$）上分别存在交互双方的账户。注意，一次跨链交换中，Unlock 和 Refund 仅能执行其一：执行 Unlock 表示交换成功，执行 Refund 则表示交换金额已退回发送方。
+
+<p style="text-align:center"><img src="./4.png" alt="bug"/></p>
+
+<p style="text-align:center">图 4： Φ.Prepare 的电路逻辑图。灰色背景参数为通过 zk-SNARK 保护的私有数据</p>
+
+**Φ.Prepare。** 在此过程中，$S$ 需要生成一个安全参数，并结合图 4 所示的电路 $\Lambda_{\Phi}^{\mathrm{off}}$，通过设置算法 $\Pi.\mathrm{Setup}$ 派生出密钥对 $(pk_{\Phi}^{\mathrm{off}},\,vk_{\Phi}^{\mathrm{off}})$。电路 $\Lambda_{\Phi}^{\mathrm{off}}$ 包含两种功能单元（用虚线框表示），即哈希函数（Hash）和异或操作（XOR）。具体而言，$S$ 生成两个原像 $\mathrm{pre}^I$ 和 $\mathrm{pre}^{II}$，两个随机序列号 $\mathrm{sn}^I$ 和 $\mathrm{sn}^{II}$，以及一个 256 位整数 $Z_{256}$；其中将 $\mathrm{sn}^I$ 与 $Z_{256}$ 通过 XOR 运算得到 $\widetilde{\mathrm{sn}}^I$。这些随机序列号作为私有输入保存，而原像和 $Z_{256}$ 作为公共输入。利用哈希功能，分别计算  
+$$
+h(\mathrm{pre}^I,\mathrm{sn}^I)\quad\text{和}\quad h(\mathrm{pre}^{II},\mathrm{sn}^{II})\,,
+$$
+即以 $(\mathrm{pre}^I,\mathrm{sn}^I)$ 和 $(\mathrm{pre}^{II},\mathrm{sn}^{II})$ 作为输入得到对应哈希值。随后，$S$ 通过协议 $\Pi.\mathrm{Prove}$ 生成零知识证明 $\pi_{\Phi}^{\mathrm{off}}$。该证明连同公共输入（哈希结果 $h(\mathrm{pre}^I,\mathrm{sn}^I)$、$h(\mathrm{pre}^{II},\mathrm{sn}^{II})$，原像 $\mathrm{pre}^I,\,\mathrm{pre}^{II}$，以及整数 $Z_{256}$）由 $S$ 通过链下通信发送给 $R$。该链下过程可实现以下目标：首先，$S$ 能在不泄露 $\mathrm{sn}^I$ 的前提下，证明 $\mathrm{sn}^I$ 与 $\widetilde{\mathrm{sn}}^I$ 之间的关系；其次，$R$ 只需执行一次逆向运算即可根据 $\widetilde{\mathrm{sn}}^I$ 还原出 $\mathrm{sn}^I$。
+
+**Φ.Lock。** 在链下通信完成后，基于交易 $T_{x\mathrm{Lock}}$，$S^I$ 使用 $h(\mathrm{pre}^I,\mathrm{sn}^I)$ 在智能合约 $\xi^I$ 中锁定资产 $v_S$。在 $R^I$ 验证 $S^I$ 发送的 $T_{x\mathrm{Lock}}$ 的正确性后，$R^I$ 使用 $h(\mathrm{pre}^{II},\mathrm{sn}^{II})$ 向智能合约 $\xi^{II}$ 发送 $T_{x\mathrm{Lock}}$，以锁定资产 $v_R$。该时锁操作与第 4.3 节中介绍的 HTLC.Lock 步骤一致，其中双方在对应智能合约上分别设置时锁 $T_1$ 和 $T_2$，且满足 $T_1 > T_2$。  
+$$
+T_{x\mathrm{Lock}} \overset{\mathrm{def}}{=} (\mathrm{From}:S^I/R^I;\ \mathrm{To}:\xi;\ v,\;h(\mathrm{pre},\mathrm{sn})).
+$$
+达成共识后，$T_{x\mathrm{Lock}}$ 的哈希摘要作为叶子节点包含在一个区块中，其定义为：  
+$$
+h(T_{x\mathrm{Lock}}) \overset{\mathrm{def}}{=} \mathrm{hash}\bigl(pk,\mathrm{addr}_{\xi},v,\;h(\mathrm{pre},\mathrm{sn})\bigr).
+$$
+**Φ.Unlock。** 在时锁 \(T_2\) 之内，\(S^{II}\) 首先构造一个电路 \(\Lambda_{\Phi}^{\mathrm{on}}\)，其逻辑与 \(\Lambda_{\Theta}\)（见图 3）类似，但需要修改其输入（见图 5）。具体而言，公共输入包括序列号 \(\mathrm{sn}^{II}\)、金额 \(v_R\) 以及 Merkle 根 \(\mathrm{root}_{\mathrm{Lock}}\)。私有输入则包括 \(R^I\) 的公钥 \(\widetilde{pk}_{R^I}\)、智能合约地址 \(\mathrm{addr}_\xi\)、原像 \(\mathrm{pre}^I\)、交易 \(T_{x\mathrm{Lock}}\) 的 Merkle 证明 \(\mathrm{h}_{\mathrm{Lock}}^{II}\)、交易哈希 \(h^{II}(T_{x\mathrm{Lock}})\) 以及哈希锁 \(h(\mathrm{pre}^I,\mathrm{sn}^I)\)。与 Θ.Mint 类似，\(S^{II}\) 基于上述电路生成证明 \(\pi_{\Phi}^{I}\)。随后，\(S^{II}\) 通过交易 \(T_{x\mathrm{Unlock}}\) 将 \(\pi_{\Phi}^{I}\) 及其公共输入提交给智能合约 \(\xi^{II}\)，以解锁金额 \(v_R\)。在此之后，\(R^I\) 学习到 \(\mathrm{sn}^I\)，并将其与整数 \(Z_{256}\) 进行 XOR 运算，得到 \(\widetilde{\mathrm{sn}}^I\)。接着，\(R^I\) 按照与 \(S^{II}\) 相同的步骤，基于电路生成证明 \(\pi_{\Phi}^{II}\)，其公共输入为 \((\mathrm{sn}^I,\,v_S,\,\mathrm{root}_{\mathrm{Lock}})\)，私有输入为 \((pk_{R^I},\,\mathrm{addr}_\xi,\,\mathrm{pre}^I,\,h_{\mathrm{Lock}}^{I},\,h(\mathrm{pre}^I,\mathrm{sn}^I))\)。最后，\(R^I\) 通过交易 \(T_{x\mathrm{Unlock}}\) 提交 \(\pi_{\Phi}^{II}\) 并获取金额 \(v_S\)。
+
+<p style="text-align:center"><img src="./5.png" alt="bug"/></p>
+
+**图 5：** Φ.Unlock 的电路逻辑图。灰色背景参数为通过 zk-SNARK 保护的私有数据。
+
+$$
+T_{x\mathrm{Unlock}} \overset{\mathrm{def}}{=} (\mathrm{From}:S^{II}/R^I;\ \mathrm{To}:\xi;\ \pi,\;\mathrm{sn},\;v,\;\mathrm{root}_{\mathrm{Lock}}).
+$$
+
+**Φ.Refund。** 与第 4.3 节中介绍的 HTLC.Refund 相同，如果 $S^{II}$ 未能在时锁 $T_2$ 内发送 $T_{x\mathrm{Unlock}}$，则 $R^I$ 将无法计算出 $\mathrm{sn}^I$。因此，两条链上的智能合约将在超时后将锁定的资产退还给相应方。
+
+为了便于读者理解，我们在图 6 中总结了使用协议 Φ 进行跨链交换的完整流程，展示了 $S$ 与 $R$ 之间的交互。
+
+<p style="text-align:center"><img src="./6.png" alt="bug"/></p>
+
+**图 6：** 基于协议 Φ 的跨链交换流程概览。
+
+#### 5.2.3 讨论
+
+当某一方未显式遵循协议（Θ 或 Φ）时，为了应对突发情况，协议仍能保证金额结算的正确性。
+
+协议 Θ 确保交互结果要么是 $R$ 收到 $v_S$，要么是 $S$ 收回 $v_S$。具体而言，当 $S$ 完成 Θ.Burn 后，如果 $S$ 未能执行 Θ.Transmit，则 $R$ 无法执行 Θ.Mint。为防止金额 $v_S$ 因死锁而被永久锁定，若 $R$ 未执行 Θ.Mint，$S$ 可在超时后执行 Θ.Redeem 来收回 $v_S$。
+
+协议 Φ 确保交互结果要么是 $S$ 和 $R$ 双方成功互换对方资产，要么是双方分别退回各自的锁定资产。在 Φ.Lock 阶段，如果 $S$ 执行了锁定操作但 $R$ 未执行 Φ.Unlock，且 $\mathrm{sn}^I$ 保持不可见，则 $R$ 无法计算出 $\mathrm{sn}^I$，也就无法执行 Φ.Unlock。此时，于 Φ.Refund 阶段，双方将各自退回锁定的资产。一旦 $S$ 最终执行 Φ.Unlock，$R$ 即可接收 $\mathrm{sn}^I$ 并通过其计算 $\widetilde{\mathrm{sn}}^I$，从而完成解锁操作。在这种情况下，双方均可获得对方的资产。
+
+### 5.3 跨链审计协议
+
+为解决 FAI 问题，我们开发了一种审计协议 Ψ，以提升跨链审计的效率。此外，Ψ 可与隐私保护协议（第 5.2 节中介绍）兼容，从而解决 IPA 问题。
+
+在我们的方案中，审计的目的是检查下层区块链中块内的交易是否符合审计者所设定的审计要求。根据具体需求，审计任务可分为基础任务或复杂任务。前者仅涉及对单笔交易的审计，而后者则涉及对多笔交易的聚合审计。zkCross 可用于这两类审计任务：基础任务如验证交易金额和地址的合法性；复杂任务如在指定时间段内确认各节点所发送交易总额的合法性。协议 Ψ 的核心在于其新提出的电路（见图 8），该电路可同时执行交易审计与聚合操作。聚合过程的实现方式类似于 zk-Rollup（第 4.2 节中介绍），但我们的方案可进一步减少链上存储开销并隐藏交易内容。zk-Rollup 的原始设计旨在处理尚未达成共识的链下交易，而在 zkCross 中，审计重点在于已在下层区块链中经共识验证的交易。因此，对于某些审计任务，不需要像 zk-Rollup 那样公开交易金额和相关地址，以防止恶意篡改链下交易。
+
+为了帮助理解，我们通过图 7 中的示例详细阐述协议 Ψ 的内容。该示例展示了三个块（标识为 Block I-1、Block I-2 和 Block I-3）在 Chain I 上的演进过程，并分别将 Chain I 的状态标注为 a–e（出现在第一块）。当矿工构造了包含交易 $t_0$ 的新块（如 Block I-2）后，$t_0$ 会将账户状态从 e 更新至 e′，对应的状态根从 root 1 变为 root 2。大多数区块链系统同时涉及多笔交易和多账户状态的更改，例如从 Block I-2 到 Block I-3 之间的状态转变。提交者在发现新块后，会在审计链上更新 Chain I 的新状态根（即 state root 3）。与此同时，为向审计者证明该状态转移的正确性，提交者会生成一个零知识证明，例如图 7 中展示的证明 $\pi_{\Psi}^3$。协议 Ψ 的整个流程可分为三个步骤：Initialize、Commit 和 Audit。
+
+<p style="text-align:center"><img src="./7.png" alt="bug"/></p>
+
+**图 7：** 基于跨链审计协议的审计链与 Chain I 之间的交互示例。  
+
+**Ψ.Initialize。** 为了基于算法 Π.Setup 启动协议 Ψ，提交者 $C_T$ 需要生成一个安全参数，记为 $1^\lambda$，并随后利用该安全参数与图 8 所示的电路 $\Lambda_{\Psi}$ 派生密钥对 $(pk_{\Psi},\,vk_{\Psi})$。可以看出，电路 $\Lambda_{\Psi}$ 由四个功能模块组成（用虚线框标示），即审计函数（Auditing Function，AF）、签名验证函数（Signature Verification Function，SVF）、状态转换函数（State Transition Function，STF）和根验证函数（Root Verification Function，RVF）。在此示例中，审计的重点在于验证发送方在 Chain I 上地址的合法性。因此，AF 通过检查该地址是否存在于黑名单中来完成交易审计。SVF 用于证明交易签名的正确性；STF 确保在交易发生后，从旧状态 $\mathrm{State}^{\mathrm{old}}$ 到新状态 $\mathrm{State}^{\mathrm{new}}$ 的状态转换是正确的；RVF 则通过重新计算状态根来保证 $\mathrm{State}^{\mathrm{old}}$ 和 $\mathrm{State}^{\mathrm{new}}$ 与 Chain I 各区块中记录的状态保持一致。例如，在图 7 中，Block I-2 的状态（$\mathrm{State}^{\mathrm{old}} = a,b,c,d,e$）在经过 $n$ 笔交易后变为 Block I-3 的状态（$\mathrm{State}^{\mathrm{new}} = a',b',c',d',e'$）。需要注意的是，可根据审计任务将来自多个区块的交易进行压缩，并相应地修改电路 $\Lambda_{\Psi}$ 的逻辑。
+
+<p style="text-align:center"><img src="./8.png" alt="bug"/></p>
+
+**图 8：** 用于跨链审计协议 Ψ 的电路逻辑图。参数的具体取值基于图 7 中所示的从 Block I-2 到 Block I-3 的状态转换过程派生。私有输入以灰色背景表示。
+
+**Ψ.Commit。** 在此步骤中，提交者 $C_T$ 需要准备信息以设置算法 $\Pi.\mathrm{Prove}$ 的特定私有输入和公共输入。我们继续以图 7 中所示的 Block I-3 为例。具体而言，$C_T$ 收集一组交易 $(t_{x1} – t_{xn})$，并将账户状态信息 $\bigl(\mathrm{State}^{\mathrm{old}},\,\mathrm{State}^{\mathrm{new}}\bigr)$ 与交易内容（例如转账金额 $v$、公钥 $pk$ 以及签名 $\sigma$）作为私有输入 $\widetilde{w}$；同时，将初始根（$\mathrm{root}_2$）和最终状态根（$\mathrm{root}_3$）作为公共输入 $\bar{x}$。需要注意的是，黑名单可以直接作为常量写入电路，从而减少电路的输入数量。随后，$C_T$ 根据上述数据 $(\bar{x};\,\widetilde{w})$ 以及由 $\Psi.\mathrm{Initialize}$ 生成的证明密钥 $pk$ 调用算法 $\Pi.\mathrm{Prove}$，以生成对应状态转换的证明 $\pi_{\Psi}^3$。最后，$C_T$ 注册为审计链上的轻节点，并将公共输入 $\bar{x}$ 与证明 $\pi_{\Psi}^3$ 一并封装到新的交易 $\mathrm{Tx}_{\mathrm{Commit}}$ 中，提交至审计链。
+
+$$
+\mathrm{Tx}_{\mathrm{Commit}} \overset{\mathrm{def}}{=} (\mathrm{From}:C_T;\ \mathrm{To}:\xi;\ \bar{x},\,\pi)\,.
+$$
