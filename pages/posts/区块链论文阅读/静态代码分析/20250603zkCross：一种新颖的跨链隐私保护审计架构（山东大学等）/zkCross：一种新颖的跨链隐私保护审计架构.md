@@ -189,7 +189,7 @@ zkCross 包含两种隐私保护协议（Θ 和 Φ），分别针对两类跨链
 
 <p style="text-align:center"><img src="./2.png" alt="bug"/></p>
 
-<p style="text-align:center">图 2： 隐私保护跨链转移协议 Θ 流程。蓝色块表示交易 $\(\mathrm{Tx}_{\mathrm{Burn}}\)$ 的哈希摘要，红色块表示 Merkle 证明信息，即 $\(h_{\mathrm{Burn}}\)$ 与 $\(\mathrm{root}_{\mathrm{Burn}}\)$。</p>
+图 2： 隐私保护跨链转移协议 Θ 流程。蓝色块表示交易 $\(\mathrm{Tx}_{\mathrm{Burn}}\)$ 的哈希摘要，红色块表示 Merkle 证明信息，即 $\(h_{\mathrm{Burn}}\)$ 与 $\(\mathrm{root}_{\mathrm{Burn}}\)$。
 
 基于上述分析，我们设计了隐私保护跨链转移协议 Θ（见图 2），以解决接收方地址与转移金额泄露带来的隐私风险。我们选用 zk-SNARK 隐藏接收方公钥 $pk_{R^L}$，并通过设置固定面额 [12,16,29] 隐藏转移金额。例如，在以太坊链上，当基本面额设为 2 ETH，若 $S^L$ 意图向 $R^L$ 转移 6 ETH，则需执行三笔 2 ETH 的转移交易。此设计通过多笔交易掩盖具体转移金额，实现隐私保护。协议 Θ 的具体流程如下。
 
@@ -253,22 +253,28 @@ zkCross 包含两种隐私保护协议（Θ 和 Φ），分别针对两类跨链
 
 <p style="text-align:center"><img src="./4.png" alt="bug"/></p>
 
-<p style="text-align:center">图 4： Φ.Prepare 的电路逻辑图。灰色背景参数为通过 zk-SNARK 保护的私有数据</p>
+图 4： Φ.Prepare 的电路逻辑图。灰色背景参数为通过 zk-SNARK 保护的私有数据
 
 **Φ.Prepare。** 在此过程中，$S$ 需要生成一个安全参数，并结合图 4 所示的电路 $\Lambda_{\Phi}^{\mathrm{off}}$，通过设置算法 $\Pi.\mathrm{Setup}$ 派生出密钥对 $(pk_{\Phi}^{\mathrm{off}},\,vk_{\Phi}^{\mathrm{off}})$。电路 $\Lambda_{\Phi}^{\mathrm{off}}$ 包含两种功能单元（用虚线框表示），即哈希函数（Hash）和异或操作（XOR）。具体而言，$S$ 生成两个原像 $\mathrm{pre}^I$ 和 $\mathrm{pre}^{II}$，两个随机序列号 $\mathrm{sn}^I$ 和 $\mathrm{sn}^{II}$，以及一个 256 位整数 $Z_{256}$；其中将 $\mathrm{sn}^I$ 与 $Z_{256}$ 通过 XOR 运算得到 $\widetilde{\mathrm{sn}}^I$。这些随机序列号作为私有输入保存，而原像和 $Z_{256}$ 作为公共输入。利用哈希功能，分别计算  
+
 $$
 h(\mathrm{pre}^I,\mathrm{sn}^I)\quad\text{和}\quad h(\mathrm{pre}^{II},\mathrm{sn}^{II})\,,
 $$
+
 即以 $(\mathrm{pre}^I,\mathrm{sn}^I)$ 和 $(\mathrm{pre}^{II},\mathrm{sn}^{II})$ 作为输入得到对应哈希值。随后，$S$ 通过协议 $\Pi.\mathrm{Prove}$ 生成零知识证明 $\pi_{\Phi}^{\mathrm{off}}$。该证明连同公共输入（哈希结果 $h(\mathrm{pre}^I,\mathrm{sn}^I)$、$h(\mathrm{pre}^{II},\mathrm{sn}^{II})$，原像 $\mathrm{pre}^I,\,\mathrm{pre}^{II}$，以及整数 $Z_{256}$）由 $S$ 通过链下通信发送给 $R$。该链下过程可实现以下目标：首先，$S$ 能在不泄露 $\mathrm{sn}^I$ 的前提下，证明 $\mathrm{sn}^I$ 与 $\widetilde{\mathrm{sn}}^I$ 之间的关系；其次，$R$ 只需执行一次逆向运算即可根据 $\widetilde{\mathrm{sn}}^I$ 还原出 $\mathrm{sn}^I$。
 
 **Φ.Lock。** 在链下通信完成后，基于交易 $T_{x\mathrm{Lock}}$，$S^I$ 使用 $h(\mathrm{pre}^I,\mathrm{sn}^I)$ 在智能合约 $\xi^I$ 中锁定资产 $v_S$。在 $R^I$ 验证 $S^I$ 发送的 $T_{x\mathrm{Lock}}$ 的正确性后，$R^I$ 使用 $h(\mathrm{pre}^{II},\mathrm{sn}^{II})$ 向智能合约 $\xi^{II}$ 发送 $T_{x\mathrm{Lock}}$，以锁定资产 $v_R$。该时锁操作与第 4.3 节中介绍的 HTLC.Lock 步骤一致，其中双方在对应智能合约上分别设置时锁 $T_1$ 和 $T_2$，且满足 $T_1 > T_2$。  
+
 $$
 T_{x\mathrm{Lock}} \overset{\mathrm{def}}{=} (\mathrm{From}:S^I/R^I;\ \mathrm{To}:\xi;\ v,\;h(\mathrm{pre},\mathrm{sn})).
 $$
+
 达成共识后，$T_{x\mathrm{Lock}}$ 的哈希摘要作为叶子节点包含在一个区块中，其定义为：  
+
 $$
 h(T_{x\mathrm{Lock}}) \overset{\mathrm{def}}{=} \mathrm{hash}\bigl(pk,\mathrm{addr}_{\xi},v,\;h(\mathrm{pre},\mathrm{sn})\bigr).
 $$
+
 **Φ.Unlock。** 在时锁 \(T_2\) 之内，\(S^{II}\) 首先构造一个电路 \(\Lambda_{\Phi}^{\mathrm{on}}\)，其逻辑与 \(\Lambda_{\Theta}\)（见图 3）类似，但需要修改其输入（见图 5）。具体而言，公共输入包括序列号 \(\mathrm{sn}^{II}\)、金额 \(v_R\) 以及 Merkle 根 \(\mathrm{root}_{\mathrm{Lock}}\)。私有输入则包括 \(R^I\) 的公钥 \(\widetilde{pk}_{R^I}\)、智能合约地址 \(\mathrm{addr}_\xi\)、原像 \(\mathrm{pre}^I\)、交易 \(T_{x\mathrm{Lock}}\) 的 Merkle 证明 \(\mathrm{h}_{\mathrm{Lock}}^{II}\)、交易哈希 \(h^{II}(T_{x\mathrm{Lock}})\) 以及哈希锁 \(h(\mathrm{pre}^I,\mathrm{sn}^I)\)。与 Θ.Mint 类似，\(S^{II}\) 基于上述电路生成证明 \(\pi_{\Phi}^{I}\)。随后，\(S^{II}\) 通过交易 \(T_{x\mathrm{Unlock}}\) 将 \(\pi_{\Phi}^{I}\) 及其公共输入提交给智能合约 \(\xi^{II}\)，以解锁金额 \(v_R\)。在此之后，\(R^I\) 学习到 \(\mathrm{sn}^I\)，并将其与整数 \(Z_{256}\) 进行 XOR 运算，得到 \(\widetilde{\mathrm{sn}}^I\)。接着，\(R^I\) 按照与 \(S^{II}\) 相同的步骤，基于电路生成证明 \(\pi_{\Phi}^{II}\)，其公共输入为 \((\mathrm{sn}^I,\,v_S,\,\mathrm{root}_{\mathrm{Lock}})\)，私有输入为 \((pk_{R^I},\,\mathrm{addr}_\xi,\,\mathrm{pre}^I,\,h_{\mathrm{Lock}}^{I},\,h(\mathrm{pre}^I,\mathrm{sn}^I))\)。最后，\(R^I\) 通过交易 \(T_{x\mathrm{Unlock}}\) 提交 \(\pi_{\Phi}^{II}\) 并获取金额 \(v_S\)。
 
 <p style="text-align:center"><img src="./5.png" alt="bug"/></p>
