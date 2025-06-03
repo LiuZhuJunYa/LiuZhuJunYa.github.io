@@ -189,7 +189,7 @@ zkCross 包含两种隐私保护协议（Θ 和 Φ），分别针对两类跨链
 
 <p style="text-align:center"><img src="./2.png" alt="bug"/></p>
 
-图 2： 隐私保护跨链转移协议 Θ 流程。蓝色块表示交易 $\(\mathrm{Tx}_{\mathrm{Burn}}\)$ 的哈希摘要，红色块表示 Merkle 证明信息，即 $\(h_{\mathrm{Burn}}\)$ 与 $\(\mathrm{root}_{\mathrm{Burn}}\)$。
+图 2： 隐私保护跨链转移协议 Θ 流程。蓝色块表示交易 $\mathrm{Tx}_{\mathrm{Burn}}$ 的哈希摘要，红色块表示 Merkle 证明信息，即 $h_{\mathrm{Burn}}$ 与 $\mathrm{root}_{\mathrm{Burn}}$。
 
 基于上述分析，我们设计了隐私保护跨链转移协议 Θ（见图 2），以解决接收方地址与转移金额泄露带来的隐私风险。我们选用 zk-SNARK 隐藏接收方公钥 $pk_{R^L}$，并通过设置固定面额 [12,16,29] 隐藏转移金额。例如，在以太坊链上，当基本面额设为 2 ETH，若 $S^L$ 意图向 $R^L$ 转移 6 ETH，则需执行三笔 2 ETH 的转移交易。此设计通过多笔交易掩盖具体转移金额，实现隐私保护。协议 Θ 的具体流程如下。
 
