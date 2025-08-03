@@ -196,54 +196,54 @@ zkCross 包含两种隐私保护协议（Θ 和 Φ），分别针对两类跨链
 假设 Chain I 中的 $S^L$ 向 Chain II 中的 $R^L$ 转移金额 $v_S$，其中 $v_S$ 为标准面额。整个协议由四个步骤组成：Burn、Transmit、Mint 和 Redeem。注意在一次跨链转移中，Mint 和 Redeem 步骤只能执行其一：若执行 Mint，则表示转移成功；若执行 Redeem，则表示所转移的金额已退回发送方。
 
 **Θ.Burn：**  
-  
+
 在此步骤中，$S^L$ 将交易 $\mathrm{Tx}_{\mathrm{Burn}}$ 发送至智能合约 $\xi^I$（或专用销毁账户）以“销毁”金额 $v_S$。交易 $\mathrm{Tx}_{\mathrm{Burn}}$ 包含转移金额 $v_S$ 以及通过对接收方公钥 $pk_{R^L}$、随机数 $r$ 和序列号 $sn$ 进行哈希后得到的摘要 $h(pk_{R^L},r,sn)$。在哈希函数中同时引入 $r$ 与 $sn$ 可以增强哈希结果的随机性，隐藏接收方信息 $pk_{R^L}$ 并防止暴力破解攻击 [19]。$r$ 与 $sn$ 可通过伪随机函数（PRF）[20] 生成；同时，$sn$ 作为跨链转移活动的唯一标识符（类似货币序列号）。一旦 $v_S$ 被认领，对应的 $sn$ 将被公开以防止双花攻击 [42]。智能合约在验证签名合法性及账户余额充足后，锁定 $v_S$ 并设置时锁 $T_3$。  
-  
-  $$
+
+$$
   \mathrm{Tx}_{\mathrm{Burn}} \overset{\mathrm{def}}{=} (\mathrm{From}:S;\ \mathrm{To}:\xi;\ v_S;\ h(pk_{R^L},r,sn)).
-  $$
-  
+$$
+
 上述设计确保对手仅能获知某节点发起了交易 $\mathrm{Tx}_{\mathrm{Burn}}$，却无法得知其接收方。
-  
+
 **Θ.Transmit：**  
-  
+
 达成共识后，交易 $\mathrm{Tx}_{\mathrm{Burn}}$ 的哈希摘要将作为叶子节点包含于 Chain I 的区块中。为简化描述，此处省略 Nonce、区块号等非核心字段。$\mathrm{Tx}_{\mathrm{Burn}}$ 的哈希摘要定义为：  
-  
-  $$
+
+$$
   h(\mathrm{Tx}_{\mathrm{Burn}}) \overset{\mathrm{def}}{=} \mathrm{hash}\bigl(pk^S,\mathrm{addr}_{R^L},v_S,\;h(pk_{R^L},r,sn)\bigr).
-  $$
-  
+$$
+
 随后，$S^L$ 通过链下通信将以下参数发送给 $R^L$：随机数 $r$、序列号 $sn$ 以及由一组哈希构成的 Merkle 证明 $h_{\mathrm{Burn}}$，其中 $h_{\mathrm{Burn}}$ 包含 Merkle 根 $\mathrm{root}_{\mathrm{Burn}}$ 与交易 $\mathrm{Tx}_{\mathrm{Burn}}$ 的 Merkle 路径。
 
 
 
 **Θ.Mint：**  
-  
+
 在链下通信完成后，$R^{II}$ 选择安全参数并构造新的电路 $\Lambda_{\Theta}$（如图 3所示）。整个电路包含两种功能单元（由虚线框表示）：Hash 和 MP，其中 Hash 用于计算输入数据的哈希值，MP 实现 Merkle 证明功能以证明某笔交易存在于某区块中。$R^{II}$ 调用算法 $\Pi.\mathrm{Setup}$（见第 4.2 节）获取密钥对 $(pk_{\Theta},vk_{\Theta})$。然后，它采用算法 $\Pi.\mathrm{Prove}$ 对公共输入  
-  
-  $$
+
+$$
   (pk_{R^L},\,sn,\,v_S,\,\mathrm{root}_{\mathrm{Burn}})
-  $$
-  
+$$
+
 和私有输入  
-  
-  $$
+
+$$
   (pk^s,\,addr_{R^L},\,r,\,h_{\mathrm{Burn}})
-  $$
-  
+$$
+
 生成零知识证明 $\pi_{\Theta}$。注意，在此交易中，$\widetilde{pk}_{R^L}$ 作为交易从 $R^{II}$ 发送至智能合约 $\xi^{II}$ 的公钥是公开的。随后，$R^{II}$ 将 $\pi_{\Theta}$ 与公共输入一并封装成交易 $\mathrm{Tx}_{\mathrm{Mint}}$，并发送至智能合约 $\xi^{II}$（或专用铸造账户），以获取等值资产 $v_S$。最后，智能合约 $\xi^{II}$ 通过算法 $\Pi.\mathrm{Verify}$ 验证 $\pi_{\Theta}$ 的有效性，并将资产发送给 $R^{II}$。  
-  
-  $$
+
+$$
   \mathrm{Tx}_{\mathrm{Mint}} \overset{\mathrm{def}}{=} (\mathrm{From}:R;\ \mathrm{To}:\xi;\ \pi_{\Theta},\,\widetilde{pk}_{R^L},\,sn,\,v_S,\,\mathrm{root}_{\mathrm{Burn}}).
-  $$
-  
+$$
+
 **Θ.Redeem：** 
-  
+
 如果 $R^{II}$ 未能在时锁 $T_3$ 前完成 Θ.Mint，则 $S^L$ 可向智能合约 $\xi^I$ 请求赎回 $v_S$。此时，$S^L$ 需要按 Θ.Mint 步骤生成相同的证明流程，仅需将电路中的公共/私有输入替换为 $S^L$ 所控制的公私钥。证明生成完成后，$S^L$ 将交易 $\mathrm{Tx}_{\mathrm{Redeem}}$ 发送至 $\xi^I$，并在验证成功后收回资产 $v_S$。  
-  
-  $$
+
+$$
   \mathrm{Tx}_{\mathrm{Redeem}} \overset{\mathrm{def}}{=} (\mathrm{From}:S;\ \mathrm{To}:\xi;\ \pi_{\mathrm{Redeem}},\,\widetilde{pk}_{R^L},\,sn,\,v_S,\,\mathrm{root}_{\mathrm{Burn}}).
-  $$
+$$
 
 #### 5.2.2 隐私保护跨链交换协议
 
@@ -275,7 +275,7 @@ $$
 h(T_{x\mathrm{Lock}}) \overset{\mathrm{def}}{=} \mathrm{hash}\bigl(pk,\mathrm{addr}_{\xi},v,\;h(\mathrm{pre},\mathrm{sn})\bigr).
 $$
 
-Φ.Unlock. 在 $T_{2}$ 阶段，$S^{II}$ 首先生成一个电路 $\Lambda^{II}_{\Phi}$，该电路的逻辑与图 3 所示的 $\Lambda_{\Theta}$ 类似，但需要修改其输入（见图 5）。具体而言，公共输入包括序列号 $sn^{II$、金额 $v_{R$ 和 Merkle 根 $\mathit{root}^{\mathit{lock}}_{L}$。私有输入则由接收方 $R^{II}$ 的公钥 $pk^{R^{II}}$、智能合约地址 $addr^{R^{II}}$、原像 $pre^{II}$、交易 $T_{X\mathit{lock}}$ 的 Merkle 证明（记作 $\hat{h}^{II}_{\mathit{Lock}}$）、交易哈希 $h^{II}\bigl(T_{X\mathit{lock}}\bigr)$ 和哈希锁 $h\bigl(pre^{II},\,sn^{II}\bigr)$ 组成。类似于 $\Theta.\mathit{Mint}$，$S^{II}$ 基于上述电路生成一个零知识证明 $\pi^{II}_{\Phi}$。然后，$S^{II}$ 将证明 $\pi^{II}_{\Phi}$ 及公共输入 $(sn^{II},\,v_{R},\,\mathit{root}^{\mathit{lock}}_{L})$ 通过 $T_{X\mathit{unlock}}$ 发送给智能合约 $\Theta^{II}$，以解锁 $v_{R}$。随后，$R^{II}$ 获得 $sn^{II}$ 并使用 $\mathbb{Z}_{256}$ 中的异或运算恢复出 $sn$。按照与 $S^{II}$ 相同的步骤，$R^{I}$ 生成一个零知识证明 $\pi^{I}_{\Phi}$，其公共输入为 $(sn^{I},\,v_{S},\,\mathit{root}^{\mathit{lock}}_{L})$，私有输入为 $\bigl(pk^{R^{I}},\,addr^{R^{I}},\,pre^{I},\,h^{I}_{\mathit{Lock}}\bigl(T_{X\mathit{lock}}\bigr),\,h(pre^{I},\,sn^{I})\bigr)$，然后发送 $T_{X\mathit{unlock}}$ 来获取 $v_{S}$。
+Φ.Unlock. 在 $T_{2}$ 阶段，$S^{II}$ 首先生成一个电路 $\Lambda^{II}_{\Phi}$，该电路的逻辑与图 3 所示的 $\Lambda_{\Theta}$ 类似，但需要修改其输入（见图 5）。具体而言，公共输入包括序列号 $sn^{II}$、金额 $v_{R}$ 和 Merkle 根 $\mathit{root}^{\mathit{lock}}_{L}$。私有输入则由接收方 $R^{II}$ 的公钥 $pk^{R^{II}}$、智能合约地址 $addr^{R^{II}}$、原像 $pre^{II}$、交易 $T_{X\mathit{lock}}$ 的 Merkle 证明（记作 $\hat{h}^{II}_{\mathit{Lock}}$）、交易哈希 $h^{II}\bigl(T_{X\mathit{lock}}\bigr)$ 和哈希锁 $h\bigl(pre^{II},\,sn^{II}\bigr)$ 组成。类似于 $\Theta.\mathit{Mint}$，$S^{II}$ 基于上述电路生成一个零知识证明 $\pi^{II}_{\Phi}$。然后，$S^{II}$ 将证明 $\pi^{II}_{\Phi}$ 及公共输入 $(sn^{II},\,v_{R},\,\mathit{root}^{\mathit{lock}}_{L})$ 通过 $T_{X\mathit{unlock}}$ 发送给智能合约 $\Theta^{II}$，以解锁 $v_{R}$。随后，$R^{II}$ 获得 $sn^{II}$ 并使用 $\mathbb{Z}_{256}$ 中的异或运算恢复出 $sn$。按照与 $S^{II}$ 相同的步骤，$R^{I}$ 生成一个零知识证明 $\pi^{I}_{\Phi}$，其公共输入为 $(sn^{I},\,v_{S},\,\mathit{root}^{\mathit{lock}}_{L})$，私有输入为 $\bigl(pk^{R^{I}},\,addr^{R^{I}},\,pre^{I},\,h^{I}_{\mathit{Lock}}\bigl(T_{X\mathit{lock}}\bigr),\,h(pre^{I},\,sn^{I})\bigr)$，然后发送 $T_{X\mathit{unlock}}$ 来获取 $v_{S}$。
 
 <p style="text-align:center"><img src="./5.png" alt="bug"/></p>
 
