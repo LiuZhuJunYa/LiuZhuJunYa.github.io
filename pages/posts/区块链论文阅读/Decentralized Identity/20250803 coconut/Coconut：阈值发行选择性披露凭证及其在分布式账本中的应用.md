@@ -71,3 +71,29 @@ b) 密码假设：Coconut 需要素数阶 p 的群$( \mathbb{G}_1, \mathbb{G}_2,
 Coconut 也依赖于一个密码安全的哈希函数 H，将一个元素哈希到$\mathbb{G}_1$，即$H : \mathbb{G}_1 \rightarrow \mathbb{G}_1$。我们通过序列化输入点的 (x,y) 坐标并应用一个全域哈希函数来哈希这个字符串到一个$\mathbb{G}_1$的元素来实现这个函数（如同 Boneh 等 [10]）。
 
 c) 阈值和通信假设：Coconut 假设诚实多数$(n/2 < t)$来防止恶意当局任意发行凭证。Coconut 当局不需要彼此通信；用户等待 t-out-of-n 回复（以任何到达顺序）并将它们聚合到一个整合凭证；因此 Coconut 隐含地假设一个异步设置。然而，我们当前的实现依赖于 Kate 等 [33] 的分布式密钥生成协议，该协议要求 (i) 弱同步用于活性（但不是用于安全），以及 (ii) 至多三分之一的不诚实当局。
+
+### B. 方案定义和安全属性
+
+我们呈现组成阈值凭证方案的协议：
+
+* $\text{Setup}(1^\lambda) \to (\text{params})$：定义系统参数$\text{params}$，相对于安全参数$\lambda$。这些参数是公开可用的。
+
+* $\text{KeyGen}(\text{params}) \to (\text{sk}, \text{vk})$：由当局运行，以从公共$\text{params}$生成它们的秘密密钥$\text{sk}$和验证密钥$\text{vk}$。
+
+* $\text{AggKey}(\text{vk}_1, \ldots, \text{vk}_t) \to (\text{vk})$：由任何想要验证凭证的人运行，以聚合任何 t 个验证密钥$\text{vk}_i$的子集到一个单一的整合验证密钥$\text{vk}$。
+
+* $\text{IssueCred}(m, \phi) \to (\sigma)$：是一个用户和每个当局之间的交互协议，通过该协议，用户获得嵌入私有属性 m 的凭证$\sigma$，该属性满足语句$\phi$。
+
+* $\text{AggCred}(\sigma_1, \ldots, \sigma_t) \to (\sigma)$：由用户运行，以聚合任何 t 个部分凭证$\sigma_i$的子集到一个单一的整合凭证$\sigma$。
+
+* $\text{ProveCred}(\text{vk}, m, \phi) \to (\Theta, \phi')$：由用户运行，以计算一个证明$\Theta$，证明拥有一个凭证，该凭证认证私有属性 m 满足语句$\phi$（在相应的验证密钥$\text{vk}$下）。
+
+* $\text{VerifyCred}(\text{vk}, \Theta, \phi') \to (\text{true}/\text{false})$：由任何想要验证嵌入私有属性的凭证的人运行，该属性满足语句$\phi'$，使用验证密钥$\text{vk}$和由$\text{ProveCred}$生成的密码材料$\Theta$。
+
+一个阈值凭证方案必须满足以下安全属性：
+
+不可伪造性：对于一个对抗性用户来说，必须是不可行的，即说服一个诚实验证者他们拥有一个凭证，如果他们事实上没有（即，如果他们没有从至少 t 个当局收到有效的部分凭证）。
+
+盲性：对于一个对抗性当局来说，必须是不可行的，即在$\text{IssueCred}$协议的执行期间学习关于属性 m 的任何信息，除了 m 满足$\phi$的事实。
+
+不可链接性 / 零知识：对于一个对抗性当局来说，必须是不可行的，即学习关于属性 m 的任何事情，除了它满足$\phi$，或链接$\text{ProveCred}$的执行与另一个$\text{ProveCred}$的执行或与$\text{IssueCred}$的执行（对于一个给定的属性 m）。
