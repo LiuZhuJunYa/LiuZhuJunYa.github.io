@@ -47,3 +47,27 @@ Coconut 用户架构是如图 1 所示。在图 1 中，Coconut 用户可发送�
 * 短凭证：每个部分凭证——以及整合凭证——精确由两个群元素组成，无论嵌入在凭证中的属性数量或当局的数量。
 
 作为结果，大量当局可被用于发行凭证，而不会显著影响效率。
+
+## III. Coconut 构造
+
+我们逐步介绍支持 Coconut 架构的密码原语，从 Pointcheval 和 Sanders [43] 以及 Boneh 等 [10]、[9] 的设计到完整的 Coconut 方案。
+
+* 步骤 1：我们首先回顾（第 III-C 节）Pointcheval 等 [43] 的单属性凭证方案。我们呈现其限制，这些限制阻止它满足我们在第 II 节中呈现的设计目标，并且我们展示如何整合来自 Boneh 等 [10] 的原则来克服它们。
+* 步骤 2：我们介绍（第 III-D 节）Coconut 阈值凭证方案，该方案具有 Pointcheval 和 Sanders [43] 以及 Boneh 等 [10] 的所有属性，并且允许我们实现所有设计目标。
+* 步骤 3：最后，我们扩展（第 III-E 节）我们的方案以支持同时嵌入 q 个不同属性（m1, ..., mq）的凭证。
+
+### A. 符号和假设
+
+我们呈现本文其余部分中使用的符号，以及我们的原语所依赖的安全假设。
+
+a) 零知识证明：我们的凭证方案使用非交互零知识证明来断言知识和关系在离散对数值上。我们用 Camenisch 等 [17] 引入的符号来表示这些非交互零知识证明：
+
+$$ \text{NIZK}\{(x,y,\dots) : \text{statements about } x,y,\dots.\} $$
+
+其中表示在零知识中证明秘密值 (x,y,...) （所有其他值是公开的）满足冒号后的语句。
+
+b) 密码假设：Coconut 需要素数阶 p 的群 $$ ( \mathbb{G}_1, \mathbb{G}_2, \mathbb{G}_T ) $$ 带有双线性映射 $$ e : \mathbb{G}_1 \times \mathbb{G}_2 \rightarrow \mathbb{G}_T $$ 并满足以下性质：(i) 双线性意味着对于所有 $$ g_1 \in \mathbb{G}_1, g_2 \in \mathbb{G}_2 $$ 和 $$ (a,b) \in \mathbb{F}_p^2 $$, $$ e(g_1^a, g_2^b) = e(g_1,g_2)^{a b} $$。(ii) 非退化意味着对于所有 $$ g_1 \neq 1_{\mathbb{G}_1}, g_2 \in \mathbb{G}_2 $$, $$ g_2 \neq 1 $$； $$ e(g_1, g_2) \in \mathbb{G}_T $$, $$ e(g_1,g_2) \neq 1 $$。效率意味着映射 e 是高效可计算的；(iv) 此外， $$ \mathbb{G}_1 \neq \mathbb{G}_2 $$，并且在 $$ \mathbb{G}_1 $$ 和 $$ \mathbb{G}_2 $$ 之间没有高效同态。类型-3 配对是高效的 [25]。它们支持 XDH 假设，该假设意味着计算 co-Diffie-Hellman (co-CDH) 问题在 $$ \mathbb{G}_1 $$ 和 $$ \mathbb{G}_2 $$ 中的难度，以及决策 Diffie-Hellman (DDH) 问题在 $$ \mathbb{G}_T $$ [10] 中的难度。
+
+Coconut 也依赖于一个密码安全的哈希函数 H，将一个元素哈希到 $$ \mathbb{G}_1 $$，即 $$ H : \mathbb{G}_1 \rightarrow \mathbb{G}_1 $$。我们通过序列化输入点的 (x,y) 坐标并应用一个全域哈希函数来哈希这个字符串到一个 $$ \mathbb{G}_1 $$ 的元素来实现这个函数（如同 Boneh 等 [10]）。
+
+c) 阈值和通信假设：Coconut 假设诚实多数 $$ (n/2 < t) $$ 来防止恶意当局任意发行凭证。Coconut 当局不需要彼此通信；用户等待 t-out-of-n 回复（以任何到达顺序）并将它们聚合到一个整合凭证；因此 Coconut 隐含地假设一个异步设置。然而，我们当前的实现依赖于 Kate 等 [33] 的分布式密钥生成协议，该协议要求 (i) 弱同步用于活性（但不是用于安全），以及 (ii) 至多三分之一的不诚实当局。
