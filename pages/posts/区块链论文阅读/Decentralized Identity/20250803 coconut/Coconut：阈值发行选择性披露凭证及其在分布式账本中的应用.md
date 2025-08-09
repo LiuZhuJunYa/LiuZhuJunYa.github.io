@@ -97,3 +97,16 @@ c) 阈值和通信假设：Coconut 假设诚实多数$(n/2 < t)$来防止恶意�
 盲性：对于一个对抗性当局来说，必须是不可行的，即在$\text{IssueCred}$协议的执行期间学习关于属性 m 的任何信息，除了 m 满足$\phi$的事实。
 
 不可链接性 / 零知识：对于一个对抗性当局来说，必须是不可行的，即学习关于属性 m 的任何事情，除了它满足$\phi$，或链接$\text{ProveCred}$的执行与另一个$\text{ProveCred}$的执行或与$\text{IssueCred}$的执行（对于一个给定的属性 m）。
+
+### C. Coconut 的基础
+
+在给出完整的 Coconut 构造之前，我们首先回顾 Pointcheval 和 Sanders [43] 提出的凭证方案；他们的构造具有与 CL-签名 [16] 相同的属性，但更高效。该方案在类型 3 的双线性群$( \mathbb{G}_1, \mathbb{G}_2, \mathbb{G}_T )$中工作，带有双线性映射$e : \mathbb{G}_1 \times \mathbb{G}_2 \to \mathbb{G}_T$，如第 III-A 节所述。
+
+* $\text{P.Setup}(1^\lambda) \to (\text{params})$：选择一个双线性群$( \mathbb{G}_1, \mathbb{G}_2, \mathbb{G}_T )$，其阶为 p，其中 p 是一个 λ-位素数。让$g_1$是$\mathbb{G}_1$的生成元，以及$g_2$是$\mathbb{G}_2$的生成元。该系统参数是$\text{params} = ( \mathbb{G}_1, \mathbb{G}_2, \mathbb{G}_T, p, g_1, g_2 )$。
+* $\text{P.KeyGen}(\text{params}) \to (\text{sk}, \text{vk})$：选择一个随机秘密密钥$\text{sk} = (x, y) \in \mathbb{F}_p^2$。解析$\text{params} = ( \mathbb{G}_1, \mathbb{G}_2, \mathbb{G}_T, p, g_1, g_2 )$；并发布验证密钥$\text{vk} = (g_2, \alpha, \beta) = (g_2, g_2^x, g_2^y)$。
+* $\text{P.Sign}(\text{params}, \text{sk}, m) \to (\sigma)$：解析$\text{sk} = (x, y)$。挑选一个随机$r \in \mathbb{F}_p$并设置$h = g_1^r$。输出$\sigma = (h, s) = (h, h^{x + y m})$。
+* $\text{P.Verify}(\text{params}, \text{vk}, m, \sigma) \to (\text{true}/\text{false})$：解析$\text{vk} = (g_2, \alpha, \beta)$和$\sigma = (h, s)$。如果$h \neq 1$并且$e(h, \alpha \beta^m) = e(s, g_2)$，则输出 true；否则输出 false。
+
+签名$\sigma = (h, s)$是可随机化的，通过选择一个随机$r' \in \mathbb{F}_p$并计算$\sigma' = (h^{r'}, s^{r'})$。上述方案可以被修改以获得关于私有属性的凭证：为了运行$\text{IssueCred}$，用户首先挑选一个随机$t \in \mathbb{F}_p$，计算承诺$c_m = g_1^t Y^m$到消息 m，其中$Y = g_1^y$；并将其发送到一个单一当局，连同一个零知识证明关于该承诺的开承诺。该当局验证该证明，挑选一个随机$u \in \mathbb{F}_p$并返回$\tilde{\sigma} = (h, \hat{s}) = (g_1^u, (X c_m)^u)$其中$X = g_1^x$。用户通过计算$\sigma = (h, \hat{s} h^{-t})$来解盲该签名，并且这个值充当凭证。
+
+该方案提供盲性、不可链接性、效率和短凭证；但它不支持我们的设计目标。这种限制来自于$\text{P.Sign}$算法——发行当局使用一个私有且自我生成的随机数 r 来计算凭证，这阻止了该方案被高效地分布到一个多当局设置。为了克服该限制，我们利用由 BLS 签名 [10] 引入的一个概念；利用一个哈希函数$H : \mathbb{F}_p \to \mathbb{G}_1$来计算群元素$h = H(m)$。下一节描述 Coconut 如何整合这些概念来实现我们所有的设计目标。
