@@ -130,3 +130,73 @@ Coconut 假设诚实多数（$n/2 < t$）以防止恶意权威机构任意签发
 签名 $\sigma = (h, s)$ 可以通过选择一个随机数 $r' \in \mathbb{F}_p$ 并计算 $\sigma' = (h^{r'}, s^{r'})$ 来重新随机化。上述方案可以修改以向私有属性颁发凭证：用户首先选择一个随机数 $t \in \mathbb{F}_p$，计算消息 $m$ 的承诺值 $c_p = g_1^t Y^m$ 其中 $Y = g_1^y$，并将其与一个零知识证明（用于证明该承诺的正确性）一起发送给单个权威机构。权威机构验证该证明后，选择一个随机数 $u \in \mathbb{F}_p$，返回 $\tilde{\sigma} = (h, \tilde{s}) = (g^u, (X c_p)^u)$ 其中 $X = g_1^x$。用户通过计算 $\sigma = (h, \tilde{s}(h)^{-t})$ 来取消盲化，该值即为凭证。
 
 该方案具备盲性、不可链接性、高效性和短凭证等特性；但它不支持门限签发，因此无法满足我们的设计目标。这一限制源于 **P.Sign** 算法——签发机构使用私钥和自生成的随机数 $r$ 来计算凭证，这使得该方案无法在多权威环境中高效分布化。为克服这一限制，我们利用 BLS 签名 [10] 引入的一个概念；使用哈希函数 $H : \mathbb{F}_p \rightarrow \mathbb{G}_1$ 计算群元素 $h = H(m)$。下一节将描述 Coconut 如何结合这些概念来实现所有设计目标。
+
+### D. Coconut 门限凭证方案
+
+我们介绍 **Coconut** 门限凭证方案，允许用户在私有或公共属性 $m$ 上获得部分凭证 $\sigma_i$。在一个拥有 $n$ 个权威机构的系统中，一个 $t-out-of-n$ 的门限凭证方案提供了极大的灵活性，因为用户只需收集 $n/2 < t \le n$ 个部分凭证即可重新计算出合并凭证（$t$ 和 $n$ 都是方案参数）。
+
+#### a) 密码学原语
+
+为了简单起见，我们下面描述一个由可信第三方执行的密钥生成算法 **TTPKeyGen**；该协议也可以通过分布式方式执行，例如 Gennaro 等人 [27] 所示的同步假设下，或者 Kate 等人 [33] 所示的弱同步假设下。增加或移除权威机构需要重新运行密钥生成算法——这种限制继承自底层 Shamir 秘密共享协议 [48]，可以通过 Herzberg 等人 [29] 引入的技术进行缓解。
+
+------
+
+- **Setup**$(1^\lambda) \rightarrow (\text{params})$：选择一个阶为 $p$ 的双线性群 $(\mathbb{G}_1, \mathbb{G}_2, \mathbb{G}_T)$，其中 $p$ 是一个 $\lambda$ 位的素数。令 $g_1, h_1$ 为 $\mathbb{G}_1$ 的生成元，$g_2$ 为 $\mathbb{G}_2$ 的生成元。系统参数为 $\text{params} = (\mathbb{G}_1, \mathbb{G}_2, \mathbb{G}_T, p, g_1, g_2, h_1)$。
+
+- **TTPKeyGen**$(\text{params}, t, n) \rightarrow (\text{sk}, \text{vk})$：选择两个次数为 $t-1$ 的多项式 $v, w$，其系数在 $\mathbb{F}_p$ 中，并设 $(x, y) = (v(0), w(0))$。为每个权威机构 $i \in [1, \ldots, n]$ 分配私钥 $\text{sk}_i = (x_i, y_i) = (v(i), w(i))$ 并公开验证密钥 $\text{vk}_i = (g_2, \alpha_i, \beta_i) = (g_2, g_2^{x_i}, g_2^{y_i})$。
+
+- **IssueCred**$(m, \phi) \rightarrow (\sigma)$：凭证签发由三个算法组成：
+
+  * **PrepareBlindSign**$(m, \phi) \rightarrow (d, \Lambda, \phi)$：用户生成一个 El-Gamal 密钥对 $(d, \gamma = g_1^d)$；选择一个随机数 $o \in \mathbb{F}_p$，计算承诺值 $c_m$ 和群元素 $h \in \mathbb{G}_1$:
+    $$
+    c_m = g_1^m h_1^o \ \ \ \ \ and \ \ \ \ \ h = H(c_m)
+    $$
+    随机选择 $k \in \mathbb{F}_p$，计算 $m$ 的 El-Gamal 加密：
+    $$
+    c = Enc(h^m) = (g_1^k, \gamma^k h^m)
+    $$
+    输出 $(d, \Lambda = (\gamma, c_m, c, \pi_s), \phi)$，其中 $\phi$ 是 $m$ 满足的应用特定谓词，$\pi_s$ 为零知识证明：
+    $$
+    \pi_s = NIZK\{(d, m, o, k) : \gamma = g_1^d \wedge c_m = g_1^m h_1^o \wedge c = (g_1^k, \gamma^k h^m) \wedge \phi(m) = 1\}
+    $$
+
+  * **BlindSign**$(\text{sk}_i, \Lambda, \phi) \rightarrow (\tilde{\sigma}_i)$：权威 $i$ 解析 $\Lambda = (\gamma, c_m, c, \pi_s)$，$\text{sk}_i = (x_i, y_i)$，以及 $c = (a, b)$，重新计算 $h = H(c_m)$ 并用 $\gamma, c_m, \phi$ 验证 $\pi_s$。若验证通过，构造 $\tilde{c}_i = (a^{y}, h^{x_i} b^{y_i})$ 输出 $\tilde{\sigma}_i = (h, \tilde{c}_i)$；否则输出 $⊥$ 并终止协议。
+
+  * **Unblind**$(\tilde{\sigma}_i, d) \rightarrow (\sigma_i)$：用户解析 $\tilde{\sigma}_i = (h, \tilde{c})$ 和 $\tilde{c} = (\tilde{a}, \tilde{b})$，计算 $\sigma_i = (h, \tilde{b}(\tilde{a})^{-d})$ 输出 $\sigma_i$。
+
+* **AggCred**$(\sigma_1, \ldots, \sigma_t) \rightarrow (\sigma)$：解析每个 $\sigma_i = (h, s_i)$，输出$(h, \prod_{i=1}^t s_i^{l_i})$ 其中 $l$ 为拉格朗日系数：
+  $$
+  l_i = \left[ \prod_{j=1, j \neq i}^t (0-j) \right] \cdot \left[ \prod_{j=1, j \neq i}^t (i-j) \right]^{-1} \bmod p
+  $$
+
+* **ProveCred**$(\text{vk}, m, \sigma, \phi') \rightarrow (\Theta, \phi')$：解析 $\sigma = (h, s)$ 和 $\text{vk} = (g_2, \alpha, \beta)$，随机选择 $r', r \in \mathbb{F}_p^2$，令 $\sigma' = (h', s') = (h^{r'}, s^{r'})$，构造 $\kappa = \alpha \beta^m g_2^r$，$\nu = (h')^r$，输出 $\Theta = ((\kappa, \nu, \sigma', \pi_v), \phi')$，其中 $\phi'$ 是一个由 $m$ 满足的特定应用谓词， $\pi_v$ 则是零知识证明：
+  $$
+  \pi_v = NIZK\{(m, r) : \kappa = \alpha \beta^m g_2^r \wedge \nu = (h')^r \wedge \phi'(m) = 1\}
+  $$
+
+- **VerifyCred**$(\text{vk}, \Theta, \phi') \rightarrow (\text{true/false})$：解析 $\Theta = (\kappa, \nu, \sigma', \pi_v)$ 和 $\sigma' = (h', s')$，使用 $\text{vk}$ 和 $\phi'$ 验证 $\pi_v$。若验证成功且 $h' \neq 1$ 且 $e(h', \kappa) = e(s'\nu, g_2)$，则输出 **true**，否则输出 **false**。
+
+#### b) 正确性与说明
+
+**Setup** 算法生成公共参数。凭证是 $\mathbb{G}_1$ 的元素，而验证密钥是 $\mathbb{G}_2$ 的元素。图 2 展示了协议交互过程。
+
+<p style="text-align:center"><img src="./2.jpg" alt="bug"/></p>
+
+<p style="text-align:center">图 2：Coconut 门限凭证协议交互过程</p>
+
+为了使属性 $m \in \mathbb{F}_p$ 对权威机构保密，用户运行 **PrepareBlindSign** 生成 $\Lambda = (\gamma, c_m, c, \pi_s)$。他们创建一个 El-Gamal 密钥对 $(d, \gamma = g_1^d)$，选择一个随机数 $o \in \mathbb{F}_p$，并计算承诺值 $c_m = g_1^m h_1^o$。然后，用户计算 $h = H(c_m)$ 以及 $h^m$ 的加密：
+$$
+c = Enc(h^m) = (a, b) = (g_1^k, \gamma^k h^m)，其中 \ k \in \mathbb{F}_p
+$$
+最后，用户将 $(\Lambda, \phi)$ 发送给签发者，其中 $\pi_s$ 是一个零知识证明，用于证明 $m$ 满足应用特定谓词 $\phi$，并且 $\gamma, c_m, c$ 的正确性（①）。Coconut 所需的所有零知识证明均基于标准 sigma 协议，用于展示离散对数表示的知识；它们基于 DH 假设 [17]，且不需要任何可信设置。
+
+为了对属性进行盲签名，每个权威 $i$ 验证证明 $\pi_s$，并利用 El-Gamal 的同态性质生成加密
+$$
+\tilde{c} = (a^y, h^{x_i} b^{y_i}) = (g_1^{ky_i}, \gamma^{ky_i} h^{x_i + y_i \cdot m})
+$$
+需要注意的是，每个权威必须在相同的元素 $h$ 上进行操作。从直观上看，从 $h = H(c_m)$ 生成 $h$ 等价于计算 $h = g_1^{\tilde{r}}$，其中 $\tilde{r} \in \mathbb{F}_p$ 对用户来说是未知的（如 Pointcheval 和 Sanders [43] 所述）。然而，由于 $h$ 是确定性的，每个权威都可以独立地推导它，并防止伪造，因为不同的 $m_0$ 和 $m_1$ 不可能导致相同的 $h$。正如 III-C 节中所述，Pointcheval 和 Sanders 的盲签名方案直接从属性的承诺构造凭证，并由权威机构秘密选择一个盲化因子；这不适合门限凭证的签发。我们通过在方案中引入 El-Gamal 密文 $c$ 并利用其同态性来规避此问题，如上所述。
+
+当用户收到 $\tilde{c}$ 时，他们使用 El-Gamal 私钥 $d$ 解密它，以恢复部分凭证 $\sigma_i = (h, h^{x_i + y_i \cdot m})$。此过程由 **Unblind** 算法（②）执行。然后，用户可以调用 **AggCred** 算法来聚合任意 $t$ 个部分凭证。该算法使用拉格朗日基多项式 $l$，可通过多项式插值重构原始的 $v(0)$ 和 $w(0)$：
+$$
+v(0) = \sum_{i=1}^t v(i) l_i \quad\text{以及}\quad w(0) = \sum_{i=1}^t w(i) l_i
+$$
