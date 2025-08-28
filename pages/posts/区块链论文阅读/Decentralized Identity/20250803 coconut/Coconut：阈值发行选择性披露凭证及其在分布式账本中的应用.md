@@ -139,8 +139,6 @@ Coconut 假设诚实多数（$n/2 < t$）以防止恶意权威机构任意签发
 
 为了简单起见，我们下面描述一个由可信第三方执行的密钥生成算法 **TTPKeyGen**；该协议也可以通过分布式方式执行，例如 Gennaro 等人 [27] 所示的同步假设下，或者 Kate 等人 [33] 所示的弱同步假设下。增加或移除权威机构需要重新运行密钥生成算法——这种限制继承自底层 Shamir 秘密共享协议 [48]，可以通过 Herzberg 等人 [29] 引入的技术进行缓解。
 
-------
-
 - **Setup**$(1^\lambda) \rightarrow (\text{params})$：选择一个阶为 $p$ 的双线性群 $(\mathbb{G}_1, \mathbb{G}_2, \mathbb{G}_T)$，其中 $p$ 是一个 $\lambda$ 位的素数。令 $g_1, h_1$ 为 $\mathbb{G}_1$ 的生成元，$g_2$ 为 $\mathbb{G}_2$ 的生成元。系统参数为 $\text{params} = (\mathbb{G}_1, \mathbb{G}_2, \mathbb{G}_T, p, g_1, g_2, h_1)$。
 
 - **TTPKeyGen**$(\text{params}, t, n) \rightarrow (\text{sk}, \text{vk})$：选择两个次数为 $t-1$ 的多项式 $v, w$，其系数在 $\mathbb{F}_p$ 中，并设 $(x, y) = (v(0), w(0))$。为每个权威机构 $i \in [1, \ldots, n]$ 分配私钥 $\text{sk}_i = (x_i, y_i) = (v(i), w(i))$ 并公开验证密钥 $\text{vk}_i = (g_2, \alpha_i, \beta_i) = (g_2, g_2^{x_i}, g_2^{y_i})$。
