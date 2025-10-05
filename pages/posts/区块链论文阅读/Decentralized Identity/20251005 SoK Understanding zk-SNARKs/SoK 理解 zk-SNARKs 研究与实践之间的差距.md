@@ -85,3 +85,59 @@ categories:
 | ZKML     | 零知识机器学习（Zero-Knowledge Machine Learning）            |
 | zk-SNARK | 零知识、简洁、非交互式知识论证（Zero-Knowledge Succinct Non-Interactive Argument of Knowledge） |
 | zk-VM    | 零知识虚拟机（Zero-Knowledge Virtual Machine）               |
+
+## 2 背景
+
+在本节中，我们聚焦于 zk-SNARK 的概念，并在第 2.1 节介绍其定义，同时在第 2.2 节介绍主流技术。此外，我们在表 1 中汇总了所有缩写及其全称。借助这些符号，我们讨论 zk-SNARK 的研究发展。
+
+### 2.1 IP、NIZK 与 zk-SNARK 的概念
+
+这里我们介绍 ZKP 领域中广泛使用的 IP【35】、NIZK【36】与 zk-SNARK【37】的形式化概念。它们的相似之处在于：对于一个固定的 NP 关系 $R$，证明者可以使验证者信服，即对公开输入 $x$，他们知道一个见证 $w$，使得 $(x, w) \in R$。不同之处在于，IP 允许多轮通信，而 NIZK 与 zk-SNARK 是非交互式的。此外，zk-SNARK 还进一步具有效率方面的要求。
+
+**定义 2.1（IP）。** 设 $R$ 是由某个 NP 语言 $L$ 所诱导的二元关系。给定公共输入 $x$ 与证明者的输入 $w$，我们把证明者 $P$ 与验证者 $V$ 之间的交互记作 $\langle P(w),V\rangle(x)$。若存在一个可忽略函数 $\varepsilon$ 使得下述性质成立，则称二元组 $(P, V)$ 是 $L$ 的一个 IP 系统：
+
+- **完备性（Completeness）：** 若 $(x,w)\in R$，则 $\Pr[\langle P(w),V\rangle(x)=1]=1$。
+- **可靠性（Soundness）：** 若 $(x,w)\notin R$，并且对于任意恶意证明者 $P^{\ast}$，都有 $\Pr[\langle P^{\ast}(w),V\rangle(x)=1]\le \varepsilon(|x|)$。
+
+**定义 2.2（NIZK）。** 一个 NIZK 证明由三个算法组成（$\mathrm{Setup},\ \mathrm{Prove},\ \mathrm{Verify}$），定义如下：
+
+- $\mathrm{Setup}(pp)\to (pk,vk)$：在输入公共参数 $pp$ 时，输出证明密钥与验证密钥 $pk,vk$。
+- $\mathrm{Prove}(pk,x,w,R)\to \pi$：在输入 $pk$、实例与见证对 $(x,w)$，以及关系 $R$ 时，输出证明 $\pi$。
+- $\mathrm{Verify}(vk,x,\pi)\to {0,1}$：在输入 $vk,x,\pi$ 时，输出 $1$ 或 $0$，分别表示是否接受 $\pi$。
+
+此外，NIZK 证明需要满足以下三个性质：
+
+- **完备性（Completeness）：** 给定 $(x,w)\in R$，诚实的证明者将使验证者输出 $1$。
+- **可靠性（Soundness）：** 给定 $(x,w)\notin R$，与验证者交互的恶意证明者只能以可忽略的概率使其输出 $1$。
+- **零知识（Zero knowledge）：** 给定 $(x,w)\in R$，存在一个模拟器，能在与一个（可能是恶意的）验证者交互的情形下，产生与诚实证明者“视图”等价的输出；该视图在计算上与真实执行（证明者与验证者之间的实际交互记录）不可区分。注意：模拟器拿不到 $w$，而证明者拿到 $w$；因此从验证者视角看，证明并不包含关于 $w$ 的信息。
+
+当**证明大小**与**验证时间**都被待证陈述规模所界定时，NIZK 被称为 **zk-SNARK**：
+
+- 证明大小相对于电路规模是**多对数级**（polylogarithmic）的；
+- 验证时间相对于电路规模也是**多对数级**的。
+
+此外，还存在其他概念，如**可扩展透明的知识论证**（STARK）【38】与**双重高效交互式证明**（DEIP）【39】——它们给出了与 zk-SNARK 类似的 ZKP 体系。实际上，这些概念可视作 zk-SNARK 的变体，主要区别在于引入了新的性质。例如，STARK 要求**透明设置**、**标准模型**下的构造以及**后量子安全性**；DEIP 要求证明端具有**近线性**的复杂度。为简明起见，本文用 **zk-SNARK** 统称高效的 NIZK 证明。
+
+### 2.2 密码学技术
+
+在本节中，我们介绍**交互式预言机证明**（interactive oracle proof, **IOP**），它是 **IP** 的一种推广。我们也介绍**多项式承诺方案**（polynomial commitment scheme, **PCS**），它可以在 **IOP** 中实例化预言机。我们之所以重视 **IOP** 与 **PCS**，是因为它们有助于搭建主流证明系统的结构。更多信息（包括具体构造）参见文献【40】。
+
+**定义 2.3（IOP）。** 设公共输入为 $x$（验证者与证明者皆知），见证串为 $w$（仅证明者所知），并令**轮复杂度** $r(x)\in\mathbb{N}$。一个具有 $r(x)$ 轮的 IOP 系统规定：在每一轮中，证明者向验证者发送一条消息（该消息可依赖见证 $w$ 以及先前消息），验证者具有**预言机访问**（oracle access），随后验证者向证明者返回一条消息。与证明者交互结束后，验证者的输出要么是 $\mathsf{accept}$，要么是 $\mathsf{reject}$。
+
+更具体地，设 $R$ 是由某个 NP 语言 $L$ 所诱导的二元关系，且**可靠性误差**为 $\varepsilon\in[0,1]$。若一对交互式随机算法 $(P,V)$ 满足下列性质，则称其是 $L$ 的、误差为 $\varepsilon$ 的 IOP 系统：
+
+- **完备性（Completeness）：** 若 $(x,w)\in R$，则
+   $$\Pr\big[V(\langle P(x,w)\rangle,x)=\mathsf{accept}\big]=1.$$
+- **可靠性（Soundness）：** 若 $(x,w)\notin R$，则对任意证明 $\pi$，都有
+   $$\Pr\big[V(\pi,x)=\mathsf{accept}\big]\le \varepsilon.$$
+
+作为 IOP 的一个特例，**多项式 IOP（PIOP）** 表示一种类似的交互过程：证明会生成能够对次数低于给定上界的多项式进行求值的预言机。为保证隐私，PIOP 通常通过 **PCS** 来实例化，定义如下。
+
+**定义 2.4（PCS）。** PCS 允许证明者先对一个多项式 $f$ 进行承诺，随后在指定点上证明该被承诺多项式的求值是正确的。PCS 由四个算法组成：$\mathrm{Setup}$、$\mathrm{Commit}$、$\mathrm{Open}$ 与 $\mathrm{VerifyPoly}$。
+
+- $\mathrm{Setup}(1^{\kappa})\to \mathrm{ck}$：输入安全参数 $\kappa$，输出承诺密钥 $\mathrm{ck}$。
+- $\mathrm{Commit}(\mathrm{ck},f)\to \mathrm{com}$：输入 $\mathrm{ck}$ 与多项式 $f$，输出对 $f$ 的承诺 $\mathrm{com}$。
+- $\mathrm{Open}(\mathrm{ck},f,\mathrm{com},i)\to \big(f(i),\pi\big)$：输入 $\mathrm{ck},f,\mathrm{com}$ 及给定点 $i$，输出取值 $f(i)$ 与证明 $\pi$。
+- $\mathrm{VerifyPoly}(\mathrm{ck},\mathrm{com},i,f(i),\pi)\to\{0,1\}$：输入 $\mathrm{ck},\mathrm{com},i,f(i),\pi$，若接受则输出 $1$，否则输出 $0$。
+
+我们强调：以 **PCS** 实例化的 **PIOP** 是当前构建 **zk-SNARK** 的主流技术。通过不同的 PCS 实例化，可以实现 zk-SNARK 所需的性质（例如短证明、透明性以及后量子安全性）。此外，还有其他技术，如**二次算术程序**（QAP），可用于把**常数大小的概率可检验证明**（PCP）构造成 zk-SNARK【37】。下文我们将对这些技术作简要介绍。
