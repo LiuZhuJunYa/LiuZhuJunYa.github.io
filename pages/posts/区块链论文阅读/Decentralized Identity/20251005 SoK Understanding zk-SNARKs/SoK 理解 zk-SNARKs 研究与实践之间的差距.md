@@ -219,3 +219,134 @@ $$
 **应用（Applications）：** 通用 zk-SNARK 可用于多种应用并证明不同的计算：（1）在**保密区块链**中，zk-SNARK 可用于证明一笔交易是**有效**的（例如，发送方是否有足够资金、交易是否被正确签名以及金额是否处于某一范围内），而**不向公众披露交易细节**，从而解决比特币中的隐私问题。已有区块链应用包括 zcash【6】、Ethereum【61】、zkSync【62】与 Aztec【63】等。（2）在**零知识机器学习（ZKML）\**中，zk-SNARK 可在\**不泄露底层数据**的情况下**验证训练过程的正确性**。这使得证明者无需共享其本地数据集，也能以可验证的方式训练模型。现有 ZKML 应用主要聚焦于为**决策树**【64】、**联邦学习**【65】与**卷积神经网络**【12】生成证明等。（3）在**密码学**中，zk-SNARK 已被用于构建**后量子签名**【17】、**可验证的差分隐私机制**【66】与**忘却传输**【67】等。
 
 > **要点（Takeaways）。确定开放问题的范围——** 借助**总配方**，从业者可以更好地界定其工作的范围，定位其问题，并理解各个部件如何作为一个 zk-SNARK 协同工作。举例而言：（1）**降低证明者时间**的最新工作包括：开发更高效的**证明系统**、改进**电路编译器**以及利用**硬件加速**（优化器）。（2）文献【43】提出了一个**为 zk-SNARK 寻找最优证明大小**的理论问题。这里的建议是：在**证明系统层**，在理解了其他组件的功能之后，读者可以把注意力聚焦于其进展，而不被其他因素分散。
+
+## 4 证明系统的分类
+
+在本节中，我们讨论作为 zk-SNARK 领域核心的**证明系统**。我们依据**信息论证明**将 zk-SNARK 划分为两大类：**PCP** 与 **IP**。我们分别讨论每一类中用于构造 zk-SNARK 的技术，并总结对研究者与开发者都至关重要的性质，例如**透明性**、**后量子安全性**、**通用设置**与**效率**。完整的分类表见**表 2**。
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <caption>表 2：从不同视角对 ZKP 的分类</caption>
+  <thead>
+    <tr>
+      <th colspan="2">信息论</th>
+      <th colspan="2">方法论</th>
+      <th colspan="3">隐私</th>
+      <th colspan="3">可扩展性</th>
+      <th rowspan="2">示例</th>
+      <th rowspan="2">参考文献</th>
+    </tr>
+    <tr>
+      <th>类型</th>
+      <th>变体</th>
+      <th>约束系统</th>
+      <th>技术</th>
+      <th>底层问题</th>
+      <th>后量子</th>
+      <th>透明设置</th>
+      <th>证明者时间</th>
+      <th>验证者时间</th>
+      <th>证明大小</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- PCP -->
+    <tr>
+      <td rowspan="2">PCP</td>
+      <td>LPCP</td>
+      <td>R1CS</td>
+      <td>QAP</td>
+      <td>q 型 KoE</td>
+      <td>○</td>
+      <td>✗</td>
+      <td>$O(N\log N)$</td>
+      <td>$O(l)$</td>
+      <td>$O(1)$</td>
+      <td>Groth16</td>
+      <td>[37, 43, 68, 69]</td>
+    </tr>
+    <tr>
+      <td>/</td>
+      <td>分层电路</td>
+      <td>GKR</td>
+      <td>hash</td>
+      <td>●</td>
+      <td>✓</td>
+      <td>$O(N)$</td>
+      <td>$O(d\log N)$</td>
+      <td>$O(d\log N)$</td>
+      <td>Virgo, Stark</td>
+      <td>[39, 41, 70, 71]</td>
+    </tr>
+    <tr>
+      <td rowspan="5">IP</td>
+      <td rowspan="3">PIOP</td>
+      <td>R1CS / Plonk</td>
+      <td>KZG&nbsp;PCS</td>
+      <td>pairing</td>
+      <td>○</td>
+      <td>✗</td>
+      <td>$O(N\log N)$</td>
+      <td>$O(l)$</td>
+      <td>$O(1)$</td>
+      <td>Plonk, Marlin</td>
+      <td>[44, 72, 73]</td>
+    </tr>
+    <tr>
+      <td>R1CS / Plonk</td>
+      <td>IPA&nbsp;PCS</td>
+      <td>discrete&nbsp;log</td>
+      <td>○</td>
+      <td>✓</td>
+      <td>$O(N)$</td>
+      <td>$O(\log N)$</td>
+      <td>$O(\log N)$</td>
+      <td>Halo, Bulletproof</td>
+      <td>[45, 56, 74, 75]</td>
+    </tr>
+    <tr>
+      <td>R1CS / Plonk</td>
+      <td>FRI&nbsp;PCS</td>
+      <td>hash</td>
+      <td>●</td>
+      <td>✓</td>
+      <td>$O(N)$</td>
+      <td>$O(\log^{2} N)$</td>
+      <td>$O(\mathrm{polylog}\,N)$</td>
+      <td>Aurora, Fractal</td>
+      <td>[48, 49, 71]</td>
+    </tr>
+    <tr>
+      <td>Multi-PIOP</td>
+      <td>R1CS / Plonk</td>
+      <td>Multi-PCS</td>
+      <td>/</td>
+      <td>◐</td>
+      <td>✓</td>
+      <td>$O(N)$</td>
+      <td>$O(l)$</td>
+      <td>$O(\log N)$</td>
+      <td>Hyperplonk, Spartan</td>
+      <td>[41, 42, 50, 51, 52]</td>
+    </tr>
+    <tr>
+      <td>/</td>
+      <td>布尔/算术电路</td>
+      <td>MPC</td>
+      <td>/</td>
+      <td>○</td>
+      <td>✓</td>
+      <td>$O(N)$</td>
+      <td>$O(N)$</td>
+      <td>$O(N)$</td>
+      <td>Zkboo</td>
+      <td>[16, 76, 77]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><small><strong>注释：</strong>
+后量子：○ 不具后量子安全；● 可能具备后量子安全；◐ 该类别中部分工作具备后量子安全。
+对于 R1CS，电路规模 $N$ 表示乘法门数量；对于 plonk 电路，$N$ 为加法门与乘法门之和；
+对于分层电路，电路规模 $N=dg$，其中 $d$ 与 $g$ 分别为电路的深度与宽度。在这些电路中，$l$ 表示输入规模。
+表中可扩展性的渐近复杂度为该类别中的优化方案。
+</small></p>
