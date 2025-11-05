@@ -1,0 +1,1 @@
+import{E as c,s as i}from"./app-Bd5bzCee.js";function u(o){if(!o)return{color:"",icon:"",styles:void 0};const s=c();o in s.value.types||(o="link");const r=s.value.types[o].color,n=s.value.types[o].icon,e=i(()=>o?{"--card-c-primary":r}:void 0);return{color:r,icon:n,styles:e}}export{u};
