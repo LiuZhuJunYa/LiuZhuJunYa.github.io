@@ -2,6 +2,7 @@ import { defineValaxyConfig } from 'valaxy'
 import type { UserThemeConfig } from 'valaxy-theme-yun'
 import { addonComponents } from 'valaxy-addon-components'
 import extendMarkdown from './components/extendMarkdown'
+import { fixNestedChineseRoutes } from './fixNestedChineseRoutes'
 // add icons what you will need
 const safelist = [
   'i-ri-home-line',
@@ -12,7 +13,8 @@ const safelist = [
  */
 export default defineValaxyConfig<UserThemeConfig>({
   vite: {
-    publicDir: 'public'
+    publicDir: 'public',
+    plugins: [fixNestedChineseRoutes()],
   },
   markdown: {
     /**
