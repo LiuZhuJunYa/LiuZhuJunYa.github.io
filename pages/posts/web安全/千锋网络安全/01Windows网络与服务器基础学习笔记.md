@@ -180,7 +180,6 @@ VMware vSphere 是面向数据中心的虚拟化平台。ESXi 是直接安装在
 课程实验使用 VMware Workstation 15.5 嵌套安装 ESXi 6.5，核心步骤如下。
 
 ::: algorithm 在 Workstation 中搭建 ESXi 实验节点
-
 1. 新建虚拟机，选择“稍后安装操作系统”。
 2. 客户操作系统选择 VMware ESXi 6.x，设置名称与存储路径。
 3. 配置约 60 GB 虚拟磁盘，并根据宿主机资源分配 CPU 和内存。
@@ -191,7 +190,7 @@ VMware vSphere 是面向数据中心的虚拟化平台。ESXi 是直接安装在
 8. 在 `Configure Management Network` 中设置管理网卡、静态 IPv4、网关、DNS 和主机名。
 9. 应用配置并重启管理网络，在宿主机浏览器访问 `https://<ESXi管理IP>`。
 10. 登录 ESXi Host Client，检查存储、网络和主机资源，再创建虚拟机或快照。
-    :::
+:::
 
 实验示例使用了类似 `192.168.200.10/24` 的静态管理地址。实际地址必须与 VMware NAT 网段一致，并避免与网关、DHCP 地址池或其他设备冲突。
 
