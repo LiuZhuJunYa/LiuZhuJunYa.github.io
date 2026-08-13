@@ -1,6 +1,9 @@
 # valaxy
 
 valaxy-fuse-list.json
+public/atom.xml
+public/feed.json
+public/feed.xml
 
 # vite-ssg
 

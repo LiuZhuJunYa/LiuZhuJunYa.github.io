@@ -2,7 +2,7 @@ import { defineSiteConfig } from 'valaxy'
 // site.config.ts
 
 export default defineSiteConfig({
-  // url: 'https://valaxy.site/',
+  url: 'https://liuzhujunya.top/',
   lang: 'zh-CN',
   title: '流竹筠雅の家',
   subtitle: 'I Fall Apart',
