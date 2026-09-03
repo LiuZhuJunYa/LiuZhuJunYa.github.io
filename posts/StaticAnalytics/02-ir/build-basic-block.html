@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!-- Setup KaTeX -->
+    <script src="../katex.js" type="text/javascript"></script>
+    <!-- Pseudocode -->
+    <link rel="stylesheet" href="../pseudocode.css" type="text/css">
+    <script src="../pseudocode.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <pre id="demo" style="display:none;">
+        \begin{algorithm}
+        \caption{Build-Basic-Blocks}
+        \begin{algorithmic}
+        \INPUT IR 表示下的指令序列 $P[1..n]$.
+        \OUTPUT 所有的基块.
+        \STATE Let $L[1..n]$ be a new array. \COMMENT{$L[1..n]$ 用来存放所有的Leader的下标}
+        \STATE Let $IsLeader[1..n]$ be a new array. \COMMENT{$IsLeader[1..n]$ 用来表示第$i$条指令是否为Leader,初始化为false}
+        \STATE $IsLeader[1]=true$ \COMMENT{根据定义2.3， $1$ 号结点一定是Leader}
+        \FOR{$i = 2$ \TO $n$}
+            \IF{the type of $P[i]$ is jump}
+                \STATE \COMMENT{根据定理2.1寻找Leader}
+                \STATE $IsLeader[ target(P[i]) ]=true$ \COMMENT{$target(x) \to$ 跳转指令x的目标指令的序号}
+                \STATE $IsLeader[ i + 1 ]=true$
+            \ENDIF
+        \ENDFOR
+        \STATE $k = 0$ \COMMENT{$k$为Leader的数量}
+        \FOR{$i = 1$ \TO $n$}
+            \IF{ IsLeader[i] }
+                \STATE $L[k+1]=i$
+                \STATE $k=k + 1$
+            \ENDIF
+        \ENDFOR
+        \STATE \COMMENT{根据定理2.2输出Basic Block}
+        \FOR{$i = 1$ \TO $k$}
+            \STATE \textbf{output} $P[L[i]..L[i+1]-1]$
+        \ENDFOR
+        \end{algorithmic}
+        \end{algorithm}
+    </pre>
+    <script>
+        let options = {
+            indentSize: '1.4em',
+            commentDelimiter: ' // ',
+            lineNumber: true,
+            lineNumberPunc: ':',
+            noEnd: false,
+            captionCount: 1.1//,
+            //titlePrefix: "Program"
+        };
+        pseudocode.renderElement(document.getElementById("demo"), options);                                 
+    </script>
+</body>
+</html>

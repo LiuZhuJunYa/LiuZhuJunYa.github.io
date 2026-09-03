@@ -1,0 +1,344 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "流竹筠雅の家",
+    "home_page_url": "https://liuzhujunya.top/",
+    "feed_url": "https://liuzhujunya.top/feed.json",
+    "description": "希望能成为一个有趣的人",
+    "icon": "https://liuzhujunya.top/avatar.jpg",
+    "author": {
+        "name": "流竹筠雅",
+        "url": "https://valaxy.site"
+    },
+    "items": [
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/12-soundiness/\">https://static-analysis.cuijiacai.com/12-soundiness/</a></p>\n<h1>12 完全性与近似完全性</h1>\n<h2>12.1 完全性和近似完全性的概念</h2>\n<h2></h2>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240810 12 完全性与近似完全性/20240810 12 完全性与近似完全性\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240810 12 完全性与近似完全性/20240810 12 完全性与近似完全性</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240810 12 完全性与近似完全性/20240810 12 完全性与近似完全性",
+            "title": "12 完全性与近似完全性",
+            "date_modified": "2024-08-10T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.439Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/11-ifds/\">https://static-analysis.cuijiacai.com/11-ifds/</a></p>\n<h1>11 CFL 可达与 IFDS</h1>\n<h2>11.1 可行路径与可实现路径</h2>\n<h3>11.</h3>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240809 11 CFL 可达与 IFDS/20240809 11 CFL 可达与 IFDS\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240809 11 CFL 可达与 IFDS/20240809 11 CFL 可达与 IFDS</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240809 11 CFL 可达与 IFDS/20240809 11 CFL 可达与 IFDS",
+            "title": "11 CFL 可达与 IFDS",
+            "date_modified": "2024-08-09T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.409Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/10-datalog/\">https://static-analysis.cuijiacai.com/10-datalog/</a></p>\n<h1>10 基于 Datalog 的程序分析</h1>\n<h2>10.1 命令式与申述式</h2>\n<p>:::</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240807 10 基于 Datalog 的程序分析/20240807 10 基于 Datalog 的程序分析\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240807 10 基于 Datalog 的程序分析/20240807 10 基于 Datalog 的程序分析</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240807 10 基于 Datalog 的程序分析/20240807 10 基于 Datalog 的程序分析",
+            "title": "10 基于 Datalog 的程序分析",
+            "date_modified": "2024-08-07T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.405Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/09-security/\">https://static-analysis.cuijiacai.com/09-security/</a></p>\n<h1>9 静态分析与安全</h1>\n<h2>9.1 信息流安全</h2>\n<h3>9.1.1 关于安全</h3>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240806 9 静态分析与安全/20240806 9 静态分析与安全\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240806 9 静态分析与安全/20240806 9 静态分析与安全</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240806 9 静态分析与安全/20240806 9 静态分析与安全",
+            "title": "9 静态分析与安全",
+            "date_modified": "2024-08-06T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.402Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/08-pta-cs/\">https://static-analysis.cuijiacai.com/08-pta-cs/</a></p>\n<h1>8 指针分析-上下文敏感</h1>\n<h2>8.1 引入</h2>\n<h3>8.1.1 引例</h3>\n<p>首先，</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240805 8 指针分析-上下文敏感/20240805 8 指针分析-上下文敏感\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240805 8 指针分析-上下文敏感/20240805 8 指针分析-上下文敏感</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240805 8 指针分析-上下文敏感/20240805 8 指针分析-上下文敏感",
+            "title": "8 指针分析-上下文敏感",
+            "date_modified": "2024-08-05T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.389Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/07-pta-fd/\">https://static-analysis.cuijiacai.com/07-pta-fd/</a></p>\n<h1>7 指针分析-基础</h1>\n<h2>7.1 指针分析的规则</h2>\n<p>在上一讲的最后，我们提到了Ja</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240804 7 指针分析-基础/20240804 7 指针分析-基础\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240804 7 指针分析-基础/20240804 7 指针分析-基础</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240804 7 指针分析-基础/20240804 7 指针分析-基础",
+            "title": "7 指针分析-基础",
+            "date_modified": "2024-08-04T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.383Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/06-pta-intro/\">https://static-analysis.cuijiacai.com/06-pta-intro/</a></p>\n<h1>6 指针分析-引入</h1>\n<blockquote>\n<p>这一章主要是指针分析的一些概念和要素，具体的算法和理</p>\n</blockquote>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240803 6 指针分析-引入/20240803 6 指针分析-引入\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240803 6 指针分析-引入/20240803 6 指针分析-引入</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240803 6 指针分析-引入/20240803 6 指针分析-引入",
+            "title": "6 指针分析-引入",
+            "date_modified": "2024-08-03T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.381Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/05-inter/\">https://static-analysis.cuijiacai.com/05-inter/</a></p>\n<h1>5 过程间分析</h1>\n<blockquote>\n<p>在这一章当中只考虑传值调用（Call-By-Value），传址调</p>\n</blockquote>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240802 5 过程间分析/20240802 5 过程间分析\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240802 5 过程间分析/20240802 5 过程间分析</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240802 5 过程间分析/20240802 5 过程间分析",
+            "title": "5 过程间分析",
+            "date_modified": "2024-08-02T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.375Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/04-dfa-fd/\">https://static-analysis.cuijiacai.com/04-dfa-fd/</a></p>\n<h1>4 数据流分析-基础</h1>\n<h2>4.1 重新审视迭代算法</h2>\n<p>::: algorithm</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240801 4 数据流分析-基础/20240801 4 数据流分析-基础\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240801 4 数据流分析-基础/20240801 4 数据流分析-基础</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240801 4 数据流分析-基础/20240801 4 数据流分析-基础",
+            "title": "4 数据流分析-基础",
+            "date_modified": "2024-08-01T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.371Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/03-dfa-ap/\">https://static-analysis.cuijiacai.com/03-dfa-ap/</a></p>\n<h1>3 数据流分析-应用</h1>\n<h2>3.1 数据流分析初步</h2>\n<h3>3.1.1 基本概念</h3>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240731 3 数据流分析-应用/20240731 3 数据流分析-应用\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240731 3 数据流分析-应用/20240731 3 数据流分析-应用</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240731 3 数据流分析-应用/20240731 3 数据流分析-应用",
+            "title": "3 数据流分析-应用",
+            "date_modified": "2024-07-31T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.359Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/02-ir/\">https://static-analysis.cuijiacai.com/02-ir/</a></p>\n<h1>2 程序的中间表示</h1>\n<h2>2.1 编译器和静态分析器</h2>\n<h3>2.1.1 编程语言的各个</h3>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240730 2 程序的中间表示/20240730 2 程序的中间表示\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240730 2 程序的中间表示/20240730 2 程序的中间表示</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240730 2 程序的中间表示/20240730 2 程序的中间表示",
+            "title": "2 程序的中间表示",
+            "date_modified": "2024-07-30T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.353Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h1>交大胖本地latex安装教学</h1>\n<p>本来是直接用 overleaf 就不需要本地 latex 了，但是由于 overleaf 会编译超时的问题，所以还是搭建一个本地的会比较友好，教程来源博主交大胖，</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/科研杂项技术/20250618 交大胖本地latex安装教学\" target=\"_blank\">https://liuzhujunya.top/posts/科研杂项技术/20250618 交大胖本地latex安装教学</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/科研杂项技术/20250618 交大胖本地latex安装教学",
+            "title": "交大胖本地latex安装教学",
+            "date_modified": "1970-01-01T05:37:30.618Z",
+            "date_published": "2026-09-03T08:45:12.352Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://static-analysis.cuijiacai.com/01-intro/\">https://static-analysis.cuijiacai.com/01-intro/</a></p>\n<h1>1 静态分析概述</h1>\n<iframe src=\"https://liuzhujunya.top//player.bilibili.co<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/静态代码分析/20240729 1 静态分析概述/20240729 1 静态分析概述\" target=\"_blank\">https://liuzhujunya.top/posts/静态代码分析/20240729 1 静态分析概述/20240729 1 静态分析概述</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/静态代码分析/20240729 1 静态分析概述/20240729 1 静态分析概述",
+            "title": "1 静态分析概述",
+            "date_modified": "2024-07-29T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.352Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h1>zkCross：一种新颖的跨链隐私保护审计架构</h1>\n<h2>摘要</h2>\n<p>区块链研究的重点领域之一是如何在不牺牲系统安全性和可信度的情况下，实现隐私保护审计。然而，同时实现审计和隐私保护这两个看似矛盾的目</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250603zkCross：一种新颖的跨链隐私保护审计架构（山东大学等）/zkCross：一种新颖的跨链隐私保护审计架构\" target=\"_blank\">https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250603zkCross：一种新颖的跨链隐私保护审计架构（山东大学等）/zkCross：一种新颖的跨链隐私保护审计架构</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250603zkCross：一种新颖的跨链隐私保护审计架构（山东大学等）/zkCross：一种新颖的跨链隐私保护审计架构",
+            "title": "zkCross：一种新颖的跨链隐私保护审计架构",
+            "date_modified": "2025-05-24T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.351Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h1>使用我的函数就应遵循我的检查：理解并检测智能合约中的不安全 OpenZeppelin 代码</h1>\n<h2>摘要</h2>\n<p>OpenZeppelin 是一种在构建智能合约时广受欢迎的框架。它提供了诸如 Safe</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250421使用我的函数就应遵循我的检查（华东师范大学等）/使用我的函数就应遵循我的检查：理解并检测智能合约中的不安全 OpenZeppelin 代码\" target=\"_blank\">https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250421使用我的函数就应遵循我的检查（华东师范大学等）/使用我的函数就应遵循我的检查：理解并检测智能合约中的不安全 OpenZeppelin 代码</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250421使用我的函数就应遵循我的检查（华东师范大学等）/使用我的函数就应遵循我的检查：理解并检测智能合约中的不安全 OpenZeppelin 代码",
+            "title": "使用我的函数就应遵循我的检查：理解并检测智能合约中的不安全 OpenZeppelin 代码",
+            "date_modified": "2025-04-21T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.337Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h1>所有的代币都是我们的：揭秘Solidity智能合约中的地址验证漏洞</h1>\n<h2>摘要</h2>\n<p>在以太坊中，验证传入地址的有效性是一种常见实践，这对于确保智能合约的安全执行至关重要。然而，地址验证过程中的漏</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250324你所有的代币都属于我们（北大等）/你所有的代币都属于我们：揭秘Solidity智能合约中的地址验证漏洞\" target=\"_blank\">https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250324你所有的代币都属于我们（北大等）/你所有的代币都属于我们：揭秘Solidity智能合约中的地址验证漏洞</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250324你所有的代币都属于我们（北大等）/你所有的代币都属于我们：揭秘Solidity智能合约中的地址验证漏洞",
+            "title": "你所有的代币都属于我们：揭秘Solidity智能合约中的地址验证漏洞",
+            "date_modified": "2025-03-30T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.331Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h1>DefectChecker：基于 EVM 字节码分析的智能合约缺陷检测自动化</h1>\n<h2>摘要</h2>\n<p>智能合约是在区块链上运行的图灵完备程序。它们是不可变的，一旦部署后即便发现错误也无法修改。因此，在将</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20241030DefectChecker（中大等）/DefectChecker：基于EVM字节码分析的智能合约缺陷检测自动化\" target=\"_blank\">https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20241030DefectChecker（中大等）/DefectChecker：基于EVM字节码分析的智能合约缺陷检测自动化</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20241030DefectChecker（中大等）/DefectChecker：基于EVM字节码分析的智能合约缺陷检测自动化",
+            "title": "DefectChecker：基于EVM字节码分析的智能合约缺陷检测自动化",
+            "date_modified": "2024-10-30T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.308Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h1>SmartAxe：基于细粒度静态分析检测桥接智能合约中的跨链漏洞</h1>\n<p>随着区块链的日益普及，不同的区块链平台在生态系统中共存（如以太坊、BNB、EOSIO等），这促使了对跨链通信的高需求。跨链桥接</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20241008SmartAxe（中大）/SmartAxe 基于细粒度静态分析检测桥接智能合约中的跨链漏洞\" target=\"_blank\">https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20241008SmartAxe（中大）/SmartAxe 基于细粒度静态分析检测桥接智能合约中的跨链漏洞</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20241008SmartAxe（中大）/SmartAxe 基于细粒度静态分析检测桥接智能合约中的跨链漏洞",
+            "title": "SmartAxe：基于细粒度静态分析检测桥接智能合约中的跨链漏洞",
+            "date_modified": "2024-10-07T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.287Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h1>SmartState：通过细粒度状态依赖分析检测智能合约中的状态回退漏洞</h1>\n<h2>摘要</h2>\n<p>用 Solidity 编写的智能合约广泛应用于不同的区块链平台，如以太坊、波场（TRON）和 BNB 链</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20240904SmartState（中大）/20240904 SmartState：通过细粒度状态依赖分析检测智能合约中的状态回退漏洞\" target=\"_blank\">https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20240904SmartState（中大）/20240904 SmartState：通过细粒度状态依赖分析检测智能合约中的状态回退漏洞</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20240904SmartState（中大）/20240904 SmartState：通过细粒度状态依赖分析检测智能合约中的状态回退漏洞",
+            "title": "SmartState：通过细粒度状态依赖分析检测智能合约中的状态回退漏洞",
+            "date_modified": "2024-09-04T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.251Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h2>作者</h2>\n<p style=\"text-align:center\">Junkai Liang¹,，Daqi Hu¹,，Pengfei Wu²,*，Yunbo Yang³，Qingni Shen¹<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20251005 SoK Understanding zk-SNARKs/SoK 理解 zk-SNARKs 研究与实践之间的差距\" target=\"_blank\">https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20251005 SoK Understanding zk-SNARKs/SoK 理解 zk-SNARKs 研究与实践之间的差距</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20251005 SoK Understanding zk-SNARKs/SoK 理解 zk-SNARKs 研究与实践之间的差距",
+            "title": "SoK：理解 zk-SNARKs：研究与实践之间的差距",
+            "date_modified": "2025-10-05T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.247Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h2>作者</h2>\n<p style=\"text-align:center\">Alberto Sonnino\\*†, Mustafa Al-Bassam\\*†, Shehar Bano\\*†, Sarah<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20250803 coconut/Coconut：阈值发行选择性披露凭证及其在分布式账本中的应用\" target=\"_blank\">https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20250803 coconut/Coconut：阈值发行选择性披露凭证及其在分布式账本中的应用</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20250803 coconut/Coconut：阈值发行选择性披露凭证及其在分布式账本中的应用",
+            "title": "Coconut：具有分布式账本应用的门限签发选择性披露凭证",
+            "date_modified": "2025-08-08T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.235Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h2>摘要</h2>\n<p>当今社会似乎正处于意识到在现代 Web 应用中对敏感数据进行掌控之必要性的边缘。近年来，许多系统宣称将控制权交还个体，承诺实现数据主权这一至高目标。然而，尽管该领域备受关注，学术界与产</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20250716 综述/SoK：数据主权\" target=\"_blank\">https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20250716 综述/SoK：数据主权</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20250716 综述/SoK：数据主权",
+            "title": "SoK：数据主权",
+            "date_modified": "2025-06-20T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.232Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h1>Windows 网络与服务器基础学习笔记</h1>\n<blockquote>\n<p>本笔记由 12 份课程材料整理而成，按照“基础认知 → 虚拟化环境 → Windows 管理 → 权限与共享 → 网络基础服务 → 靶场实践”的顺</p>\n</blockquote>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/web安全/千锋网络安全/01Windows网络与服务器基础学习笔记\" target=\"_blank\">https://liuzhujunya.top/posts/web安全/千锋网络安全/01Windows网络与服务器基础学习笔记</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/web安全/千锋网络安全/01Windows网络与服务器基础学习笔记",
+            "title": "Windows 网络与服务器基础：从 VMware 实验环境到 DHCP、DNS、IIS 与 FTP",
+            "date_modified": "2026-08-11T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.227Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://github.com/autistic-symposium/mev-toolkit\">https://github.com/autistic-symposium/mev-toolkit</a></p>\n<h2>learn (toxic and non-toxic) extraction s</h2>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/MEV/20241101 MEV进阶学习/20241101 MEV进阶学习\" target=\"_blank\">https://liuzhujunya.top/posts/MEV/20241101 MEV进阶学习/20241101 MEV进阶学习</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/MEV/20241101 MEV进阶学习/20241101 MEV进阶学习",
+            "title": "MEV进阶学习",
+            "date_modified": "2024-11-01T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.226Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<p>原文链接：<a href=\"https://biquanlibai.notion.site/MEV-0069872a7241476f82bf5f7a4e1068ea\">https://biquanlibai.notion.site/MEV-0069872a7241476f82bf5f7a4e1068ea</a></p>\n<h2>什么是 MEV</h2>\n<ol>\n<li>MEV 全称 Mi</li>\n</ol>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/MEV/20241020 初识MEV/20241020 初识MEV\" target=\"_blank\">https://liuzhujunya.top/posts/MEV/20241020 初识MEV/20241020 初识MEV</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/MEV/20241020 初识MEV/20241020 初识MEV",
+            "title": "MEV和套利",
+            "date_modified": "2024-10-20T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.220Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<h1>重建博客声明</h1>\n<p>之前的博客使用的是 hexo + GitHub 的模式，但是可惜 hexo 框架无法很好解析 latex 的数学公式，于是在听从博客主题 Yun 的发布者的劝告下，选择使用他们开</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/20240728 建站说明\" target=\"_blank\">https://liuzhujunya.top/posts/20240728 建站说明</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/20240728 建站说明",
+            "title": "重新建站说明",
+            "date_modified": "2024-07-28T00:00:00.000Z",
+            "date_published": "2026-09-03T08:45:12.208Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<blockquote>\n<p>配套实践入口：<a href=\"/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA\">学习工作区</a>（当前从第 1 周“量子威胁与签名接口”开始）</p>\n</blockquote>\n<blockquote>\n<p>适用对象：密码学方向刚入学博士，对区块链与后量子密码感兴趣，但尚未</p>\n</blockquote>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/后量子密码学基础/20260901 区块链后量子密码迁移博士学习路线\" target=\"_blank\">https://liuzhujunya.top/posts/后量子密码学基础/20260901 区块链后量子密码迁移博士学习路线</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/后量子密码学基础/20260901 区块链后量子密码迁移博士学习路线",
+            "title": "区块链后量子密码迁移方向博士学习路线",
+            "date_modified": "2026-09-01T00:00:00.000Z",
+            "date_published": "2026-09-03T00:00:00.000Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<blockquote>\n<p>工作区状态：第 01 周学习单元正在进行；数学补给 01 已按需激活</p>\n<p>更新日期：2026-09-03</p>\n<p>完整规划：[区块链后量子密码迁移博士学习路线](/posts/后量子密码学基</p>\n</blockquote>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/后量子密码学基础/学习工作区/index\" target=\"_blank\">https://liuzhujunya.top/posts/后量子密码学基础/学习工作区/index</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/后量子密码学基础/学习工作区/index",
+            "title": "区块链后量子密码迁移学习工作区",
+            "date_modified": "2026-09-01T00:00:00.000Z",
+            "date_published": "2026-09-03T00:00:00.000Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<blockquote>\n<p>状态：<code>▶ 正在学习</code></p>\n<p>当前进度：第一讲——量子计算究竟威胁了什么</p>\n<p>建议本次用时：60—90 分钟</p>\n</blockquote>\n<p><a href=\"/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA\">返回学习工作区</a> · [查看</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/后量子密码学基础/学习工作区/01_后量子密码学先行/第01周_量子威胁与签名接口/index\" target=\"_blank\">https://liuzhujunya.top/posts/后量子密码学基础/学习工作区/01_后量子密码学先行/第01周_量子威胁与签名接口/index</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/后量子密码学基础/学习工作区/01_后量子密码学先行/第01周_量子威胁与签名接口/index",
+            "title": "第 01 周：量子威胁与签名接口",
+            "date_modified": "2026-09-01T00:00:00.000Z",
+            "date_published": "2026-09-03T00:00:00.000Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        },
+        {
+            "content_html": "<blockquote>\n<p>状态：<code>▶ 正在学习</code></p>\n<p>触发位置：第 01 周第一讲——Shor 算法的结构性威胁</p>\n<p>建议第一轮用时：90—120 分钟</p>\n</blockquote>\n<p>[返回第 01 周主线](/posts/后量子密码学基础</p>\n<br/><p>访问 <a href=\"https://liuzhujunya.top/posts/后量子密码学基础/学习工作区/02_数学与现代密码学按需回补/Shor算法所需的整数分解与离散对数/index\" target=\"_blank\">https://liuzhujunya.top/posts/后量子密码学基础/学习工作区/02_数学与现代密码学按需回补/Shor算法所需的整数分解与离散对数/index</a> 阅读全文。</p>",
+            "url": "https://liuzhujunya.top/posts/后量子密码学基础/学习工作区/02_数学与现代密码学按需回补/Shor算法所需的整数分解与离散对数/index",
+            "title": "数学补给 01：Shor 算法所需的整数分解与离散对数",
+            "date_modified": "2026-09-03T00:00:00.000Z",
+            "date_published": "2026-09-03T00:00:00.000Z",
+            "author": {
+                "name": "流竹筠雅",
+                "url": "https://valaxy.site"
+            }
+        }
+    ]
+}
