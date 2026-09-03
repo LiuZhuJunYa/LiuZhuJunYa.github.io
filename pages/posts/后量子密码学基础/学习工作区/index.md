@@ -5,7 +5,6 @@ date: 2026-09-01
 updated: 2026-09-03
 toc: true
 outline: [2, 3]
-hide: true
 nav: false
 comment: false
 tags:
