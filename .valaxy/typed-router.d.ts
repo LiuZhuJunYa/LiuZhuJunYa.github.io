@@ -32,6 +32,7 @@ declare module 'vue-router/auto-routes' {
     '/posts/后量子密码学基础/20260901 区块链后量子密码迁移博士学习路线': RouteRecordInfo<'/posts/后量子密码学基础/20260901 区块链后量子密码迁移博士学习路线', '/posts/后量子密码学基础/20260901 区块链后量子密码迁移博士学习路线', Record<never, never>, Record<never, never>>,
     '/posts/后量子密码学基础/学习工作区/': RouteRecordInfo<'/posts/后量子密码学基础/学习工作区/', '/posts/后量子密码学基础/学习工作区', Record<never, never>, Record<never, never>>,
     '/posts/后量子密码学基础/学习工作区/01_后量子密码学先行/第01周_量子威胁与签名接口/': RouteRecordInfo<'/posts/后量子密码学基础/学习工作区/01_后量子密码学先行/第01周_量子威胁与签名接口/', '/posts/后量子密码学基础/学习工作区/01_后量子密码学先行/第01周_量子威胁与签名接口', Record<never, never>, Record<never, never>>,
+    '/posts/后量子密码学基础/学习工作区/02_数学与现代密码学按需回补/Shor算法所需的整数分解与离散对数/': RouteRecordInfo<'/posts/后量子密码学基础/学习工作区/02_数学与现代密码学按需回补/Shor算法所需的整数分解与离散对数/', '/posts/后量子密码学基础/学习工作区/02_数学与现代密码学按需回补/Shor算法所需的整数分解与离散对数', Record<never, never>, Record<never, never>>,
     '/posts/静态代码分析/20240729 1 静态分析概述/20240729 1 静态分析概述': RouteRecordInfo<'/posts/静态代码分析/20240729 1 静态分析概述/20240729 1 静态分析概述', '/posts/静态代码分析/20240729 1 静态分析概述/20240729 1 静态分析概述', Record<never, never>, Record<never, never>>,
     '/posts/静态代码分析/20240730 2 程序的中间表示/20240730 2 程序的中间表示': RouteRecordInfo<'/posts/静态代码分析/20240730 2 程序的中间表示/20240730 2 程序的中间表示', '/posts/静态代码分析/20240730 2 程序的中间表示/20240730 2 程序的中间表示', Record<never, never>, Record<never, never>>,
     '/posts/静态代码分析/20240731 3 数据流分析-应用/20240731 3 数据流分析-应用': RouteRecordInfo<'/posts/静态代码分析/20240731 3 数据流分析-应用/20240731 3 数据流分析-应用', '/posts/静态代码分析/20240731 3 数据流分析-应用/20240731 3 数据流分析-应用', Record<never, never>, Record<never, never>>,
