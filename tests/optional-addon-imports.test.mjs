@@ -85,13 +85,16 @@ test('framework empty-addon sentinels survive and every accidental helper call f
 })
 
 test('Windows IDs work and stateful alias expressions are not mutated', () => {
+  // Use a Windows fixture on every host: emptyId is a POSIX path on Linux CI.
+  const physicalId = 'C:/project/node_modules/valaxy/client/addons/index.ts'
   const expression = /^valaxy-addon-(.*)$/g
   expression.lastIndex = 4
-  const { plugin, result } = configure([{ find: expression, replacement: `/@fs/${emptyId}`.replaceAll('/', '\\') }])
+  const { plugin, result } = configure([{ find: expression, replacement: `/@fs/${physicalId}`.replaceAll('/', '\\') }])
   assert.equal(expression.lastIndex, 4)
   assert.equal(result.optimizeDeps.exclude.length, 4)
-  assert.ok(plugin.transform(emptySource, emptyId.replaceAll('/', '\\')))
-  assert.ok(plugin.transform(emptySource, `/@fs/${emptyId}?v=123`))
+  assert.ok(plugin.transform(emptySource, physicalId))
+  assert.ok(plugin.transform(emptySource, physicalId.replaceAll('/', '\\')))
+  assert.ok(plugin.transform(emptySource, `/@fs/${physicalId}?v=123`))
 })
 
 test('Valaxy filesystem URL aliases also match POSIX transform IDs', () => {
@@ -99,6 +102,7 @@ test('Valaxy filesystem URL aliases also match POSIX transform IDs', () => {
   const { plugin, result } = configure([{ find: /^valaxy-addon-(.*)$/, replacement: `/@fs${physicalId}` }])
   assert.equal(result.optimizeDeps.exclude.length, 4)
   assert.ok(plugin.transform(emptySource, physicalId))
+  assert.ok(plugin.transform(emptySource, `/@fs${physicalId}?v=123`))
 })
 
 test('unexpected changes to the framework placeholder fail explicitly', () => {
@@ -137,6 +141,9 @@ test('real Valaxy aliases pass through Vite client and SSR transforms with helpe
   const { createHooks } = await import('hookable')
   const projectRoot = fileURLToPath(new URL('..', import.meta.url))
   const options = await resolveOptions({ userRoot: projectRoot }, 'dev')
+  // A transform test should not rewrite the project's generated declarations.
+  options.config.router = { ...options.config.router, dts: false }
+  options.config.components = { ...options.config.components, dts: false }
   const hooks = createHooks()
   const app = { options, hooks, hook: hooks.hook.bind(hooks), version: '0.19.5' }
   const plugins = await ViteValaxyPlugins(app)
