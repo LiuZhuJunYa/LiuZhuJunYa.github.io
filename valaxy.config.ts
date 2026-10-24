@@ -1,8 +1,14 @@
-import { defineValaxyConfig } from 'valaxy'
-import type { UserThemeConfig } from 'valaxy-theme-yun'
-import { addonComponents } from 'valaxy-addon-components'
+import type { UserValaxyNodeConfig } from 'valaxy'
+import type { UserThemeConfig } from 'valaxy-theme-yun/theme'
+import { icons as remixIcons } from '@iconify-json/ri'
 import extendMarkdown from './components/extendMarkdown'
 import { fixNestedChineseRoutes } from './fixNestedChineseRoutes'
+import { createPaginationRoutes } from './paginationRoutes'
+import siteConfig from './site.config'
+import { fixOptionalAddonImports } from './fixOptionalAddonImports'
+import { createHighlightLanguages } from './highlightLanguages'
+
+const highlighting = createHighlightLanguages()
 // add icons what you will need
 const safelist = [
   'i-ri-home-line',
@@ -11,12 +17,32 @@ const safelist = [
 /**
  * User Config
  */
-export default defineValaxyConfig<UserThemeConfig>({
+export default {
+  // Writing posts needs hot reload, but not the component inspection toolchain.
+  devtools: process.env.BLOG_DEVTOOLS === '1',
+  build: {
+    // The built-in counter includes directory routes; use actual visible posts below.
+    ssgForPagination: false,
+  },
   vite: {
     publicDir: 'public',
-    plugins: [fixNestedChineseRoutes()],
+    plugins: [fixNestedChineseRoutes(), fixOptionalAddonImports(), highlighting.plugin],
+    server: {
+      watch: { ignored: ['**/.cache/**'] },
+    },
+    css: {
+      preprocessorMaxWorkers: 0,
+      preprocessorOptions: {
+        scss: { api: 'modern' },
+      },
+    },
+    ssgOptions: {
+      includedRoutes: (paths, routes) => createPaginationRoutes(paths, routes, siteConfig.pageSize ?? 7),
+    },
   },
   markdown: {
+    languages: highlighting.languages,
+    shikiSetup: highlighting.shikiSetup,
     /**
      * KaTeX options
      * @see https://katex.org/docs/options.html
@@ -36,7 +62,7 @@ export default defineValaxyConfig<UserThemeConfig>({
 
   // site config see site.config.ts
   addons: [
-    addonComponents(),
+    'valaxy-addon-components',
   ],
 
   theme: 'yun',
@@ -74,5 +100,12 @@ export default defineValaxyConfig<UserThemeConfig>({
     },
   },
 
+  // UnoCSS 0.61 disables its Node icon loader when launched from VS Code.
+  // Supplying the collection explicitly keeps IDE and CI builds consistent.
+  unocssPresets: {
+    icons: {
+      collections: { ri: () => remixIcons },
+    },
+  },
   unocss: { safelist },
-})
+} satisfies UserValaxyNodeConfig<UserThemeConfig>

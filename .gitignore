@@ -17,6 +17,7 @@ temp/
 dist
 dist-ssr
 node_modules
+.cache/
 .idea/
 *.log
 

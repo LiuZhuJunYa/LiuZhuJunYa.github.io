@@ -158,7 +158,7 @@ Coconut 假设诚实多数（$n/2 < t$）以防止恶意权威机构任意签发
     \pi_s = NIZK\{(d, m, o, k) : \gamma = g_1^d \wedge c_m = g_1^m h_1^o \wedge c = (g_1^k, \gamma^k h^m) \wedge \phi(m) = 1\}
     $$
 
-  * **BlindSign**$(\text{sk}_i, \Lambda, \phi) \rightarrow (\tilde{\sigma}_i)$：权威 $i$ 解析 $\Lambda = (\gamma, c_m, c, \pi_s)$，$\text{sk}_i = (x_i, y_i)$，以及 $c = (a, b)$，重新计算 $h = H(c_m)$ 并用 $\gamma, c_m, \phi$ 验证 $\pi_s$。若验证通过，构造 $\tilde{c}_i = (a^{y}, h^{x_i} b^{y_i})$ 输出 $\tilde{\sigma}_i = (h, \tilde{c}_i)$；否则输出 $⊥$ 并终止协议。
+  * **BlindSign**$(\text{sk}_i, \Lambda, \phi) \rightarrow (\tilde{\sigma}_i)$：权威 $i$ 解析 $\Lambda = (\gamma, c_m, c, \pi_s)$，$\text{sk}_i = (x_i, y_i)$，以及 $c = (a, b)$，重新计算 $h = H(c_m)$ 并用 $\gamma, c_m, \phi$ 验证 $\pi_s$。若验证通过，构造 $\tilde{c}_i = (a^{y}, h^{x_i} b^{y_i})$ 输出 $\tilde{\sigma}_i = (h, \tilde{c}_i)$；否则输出 $\bot$ 并终止协议。
 
   * **Unblind**$(\tilde{\sigma}_i, d) \rightarrow (\sigma_i)$：用户解析 $\tilde{\sigma}_i = (h, \tilde{c})$ 和 $\tilde{c} = (\tilde{a}, \tilde{b})$，计算 $\sigma_i = (h, \tilde{b}(\tilde{a})^{-d})$ 输出 $\sigma_i$。
 
@@ -184,7 +184,7 @@ Coconut 假设诚实多数（$n/2 < t$）以防止恶意权威机构任意签发
 
 为了使属性 $m \in \mathbb{F}_p$ 对权威机构保密，用户运行 **PrepareBlindSign** 生成 $\Lambda = (\gamma, c_m, c, \pi_s)$。他们创建一个 El-Gamal 密钥对 $(d, \gamma = g_1^d)$，选择一个随机数 $o \in \mathbb{F}_p$，并计算承诺值 $c_m = g_1^m h_1^o$。然后，用户计算 $h = H(c_m)$ 以及 $h^m$ 的加密：
 $$
-c = Enc(h^m) = (a, b) = (g_1^k, \gamma^k h^m)，其中 \ k \in \mathbb{F}_p
+c = Enc(h^m) = (a, b) = (g_1^k, \gamma^k h^m)\text{，其中 } k \in \mathbb{F}_p
 $$
 最后，用户将 $(\Lambda, \phi)$ 发送给签发者，其中 $\pi_s$ 是一个零知识证明，用于证明 $m$ 满足应用特定谓词 $\phi$，并且 $\gamma, c_m, c$ 的正确性（①）。Coconut 所需的所有零知识证明均基于标准 sigma 协议，用于展示离散对数表示的知识；它们基于 DH 假设 [17]，且不需要任何可信设置。
 

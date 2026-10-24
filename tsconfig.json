@@ -1,15 +1,12 @@
 {
   "compilerOptions": {
-    "typeRoots": [
-      "node_modules/@types",
-      "typings"
-    ],
+    "types": ["vite/client", "node"],
     "target": "ESNext",
     "jsx": "preserve",
     "lib": ["DOM", "ESNext"],
     "baseUrl": ".",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "paths": {
       "~/*": ["./*"]
     },

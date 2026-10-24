@@ -1,43 +1,86 @@
-.definition {
+:is(.definition, .theorem, .algorithm, .conclusion) {
+  --blog-container-link: #005eb4;
   margin: 1rem 0;
   padding: 0.1rem 1.5rem;
   border-radius: 0.4rem;
-  background-color: #f0f4f8;
+  color: var(--smc-c-text, var(--va-c-text, #24292e));
+  background-color: var(--blog-container-bg);
 }
 
-.definition .title {
-  font-weight: bold;
+.definition {
+  --blog-container-bg: #f0f4f8;
 }
 
 .theorem {
-  margin: 1rem 0;
-  padding: 0.1rem 1.5rem;
-  border-radius: 0.4rem;
-  background-color: #edfbf2;
-}
-
-.theorem .title {
-  font-weight: bold;
+  --blog-container-bg: #edfbf2;
 }
 
 .algorithm {
-  margin: 1rem 0;
-  padding: 0.1rem 1.5rem;
-  border-radius: 0.4rem;
-  background-color: #fbfbed;
-}
-
-.algorithm .title {
-  font-weight: bold;
+  --blog-container-bg: #fbfbed;
 }
 
 .conclusion {
-  margin: 1rem 0;
-  padding: 0.1rem 1.5rem;
-  border-radius: 0.4rem;
-  background-color: #f9f2f9;
+  --blog-container-bg: #f9f2f9;
 }
 
-.conclusion .title {
+:is(.definition, .theorem, .algorithm, .conclusion) > .title {
   font-weight: bold;
+}
+
+:is(.definition, .theorem, .algorithm, .conclusion) a[href],
+:is(.definition, .theorem, .algorithm, .conclusion) a[href]:hover {
+  color: var(--blog-container-link);
+}
+
+:is(.definition, .theorem, .algorithm, .conclusion) a[href]:hover {
+  border-bottom-color: currentColor;
+}
+
+html.dark :is(.definition, .theorem, .algorithm, .conclusion) {
+  --blog-container-link: #9acfff;
+}
+
+html.dark .definition {
+  --blog-container-bg: #1e2a36;
+}
+
+html.dark .theorem {
+  --blog-container-bg: #1e3228;
+}
+
+html.dark .algorithm {
+  --blog-container-bg: #34301d;
+}
+
+html.dark .conclusion {
+  --blog-container-bg: #33253a;
+}
+
+/* MathML output has no .katex-display wrapper, so long formulas need their
+   own scroll area, including formulas inside lists and custom containers. */
+.markdown-body .katex:has(> math) {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  vertical-align: middle;
+  padding-block: 0.125em;
+}
+
+.markdown-body .katex:has(> math[display="block"]) {
+  display: block;
+}
+
+/* Let both previous/next links shrink inside a phone-sized article. */
+.post-nav .post-nav-item {
+  min-width: 0;
+}
+
+.post-nav .post-nav-item a {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.post-nav .post-nav-item .title {
+  min-width: 0;
 }

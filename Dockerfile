@@ -1,17 +1,16 @@
-FROM node:16-alpine as build-stage
+FROM node:20-alpine AS build-stage
 
 WORKDIR /app
-RUN corepack enable
-
-COPY .npmrc package.json ./
-RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
-    pnpm install
+COPY .npmrc package.json package-lock.json ./
+COPY scripts/prepare-valaxy.mjs ./scripts/prepare-valaxy.mjs
+RUN --mount=type=cache,target=/root/.npm npm ci
 
 COPY . .
-RUN pnpm build
+RUN npm run check && npm run build && npm run verify:pages
 
-FROM nginx:stable-alpine as production-stage
+FROM nginx:stable-alpine AS production-stage
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 EXPOSE 80
 

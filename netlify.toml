@@ -1,14 +1,9 @@
 [build]
 publish = "dist"
-command = "npm run build"
+command = "npm run check && npm run build && npm run verify:pages"
 
 [build.environment]
-NODE_VERSION = "16"
-
-[[redirects]]
-from = "/*"
-to = "/index.html"
-status = 200
+NODE_VERSION = "20"
 
 [[headers]]
 for = "/manifest.webmanifest"

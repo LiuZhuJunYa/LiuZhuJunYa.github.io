@@ -1,51 +1,21 @@
-import markdownItContainer from 'markdown-it-container';
+import type MarkdownIt from 'markdown-it'
+import type Token from 'markdown-it/lib/token.mjs'
+import markdownItContainer from 'markdown-it-container'
 
-export default function extendMarkdown(md: any) {
-  md.use(markdownItContainer, 'definition', {
-    validate: (params: string) => params.trim().match(/^definition\s+(.*)$/),
-    render: (tokens: any[], idx: number) => {
-      const m = tokens[idx].info.trim().match(/^definition\s+(.*)$/);
-      if (tokens[idx].nesting === 1) {
-        return `<div class="definition"><p class="title">${md.utils.escapeHtml(m[1])}</p>\n`;
-      } else {
-        return '</div>\n';
-      }
-    },
-  });
+const containerTypes = ['definition', 'theorem', 'algorithm', 'conclusion'] as const
 
-  md.use(markdownItContainer, 'theorem', {
-    validate: (params: string) => params.trim().match(/^theorem\s+(.*)$/),
-    render: (tokens: any[], idx: number) => {
-      const m = tokens[idx].info.trim().match(/^theorem\s+(.*)$/);
-      if (tokens[idx].nesting === 1) {
-        return `<div class="theorem"><p class="title">${md.utils.escapeHtml(m[1])}</p>\n`;
-      } else {
-        return '</div>\n';
-      }
-    },
-  });
+export default function extendMarkdown(md: MarkdownIt) {
+  for (const name of containerTypes) {
+    const titlePattern = new RegExp(`^${name}\\s+(.+)$`)
+    md.use(markdownItContainer, name, {
+      validate: (params: string) => titlePattern.test(params.trim()),
+      render: (tokens: Token[], idx: number) => {
+        if (tokens[idx].nesting !== 1)
+          return '</div>\n'
 
-  md.use(markdownItContainer, 'algorithm', {
-    validate: (params: string) => params.trim().match(/^algorithm\s+(.*)$/),
-    render: (tokens: any[], idx: number) => {
-      const m = tokens[idx].info.trim().match(/^algorithm\s+(.*)$/);
-      if (tokens[idx].nesting === 1) {
-        return `<div class="algorithm"><p class="title">${md.utils.escapeHtml(m[1])}</p>\n`;
-      } else {
-        return '</div>\n';
-      }
-    },
-  });
-
-  md.use(markdownItContainer, 'conclusion', {
-    validate: (params: string) => params.trim().match(/^conclusion\s+(.*)$/),
-    render: (tokens: any[], idx: number) => {
-      const m = tokens[idx].info.trim().match(/^conclusion\s+(.*)$/);
-      if (tokens[idx].nesting === 1) {
-        return `<div class="conclusion"><p class="title">${md.utils.escapeHtml(m[1])}</p>\n`;
-      } else {
-        return '</div>\n';
-      }
-    },
-  });
+        const title = titlePattern.exec(tokens[idx].info.trim())?.[1] || ''
+        return `<div class="${name}"><p class="title">${md.utils.escapeHtml(title)}</p>\n`
+      },
+    })
+  }
 }

@@ -1,12 +1,12 @@
 declare module 'markdown-it-container' {
-    import { PluginWithOptions } from 'markdown-it';
-  
-    interface ContainerOptions {
-      validate?: (params: string) => boolean;
-      render?: (tokens: any[], idx: number) => string;
-    }
-  
-    const container: PluginWithOptions<ContainerOptions>;
-    export default container;
+  import type { PluginWithOptions } from 'markdown-it'
+  import type Token from 'markdown-it/lib/token.mjs'
+
+  interface ContainerOptions {
+    validate?: (params: string) => boolean
+    render?: (tokens: Token[], idx: number) => string
   }
-  
+
+  const container: PluginWithOptions<ContainerOptions>
+  export default container
+}

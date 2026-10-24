@@ -6,22 +6,37 @@
   "scripts": {
     "build": "npm run build:ssg",
     "build:spa": "valaxy build",
-    "build:ssg": "valaxy build --ssg",
+    "build:ssg": "node scripts/build.mjs",
+    "postinstall": "node scripts/prepare-valaxy.mjs",
+    "predev": "node scripts/prepare-valaxy.mjs",
     "dev": "valaxy",
-    "rss": "valaxy rss",
+    "rss": "valaxy rss && node scripts/postprocess-feeds.mjs",
     "serve": "vite preview",
-    "verify:pages": "node scripts/verify-pages-build.mjs"
+    "verify:pages": "node scripts/verify-pages-build.mjs",
+    "verify:browser": "node scripts/verify-browser.mjs",
+    "typecheck": "vue-tsc --noEmit",
+    "test": "node --test",
+    "check": "npm run typecheck && npm test"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "markdown-it": "^14.1.0",
-    "valaxy-theme-yun": "0.19.5",
-    "vue-gtag-next": "^1.14.0"
+    "valaxy-theme-yun": "0.19.5"
   },
   "devDependencies": {
+    "@iconify-json/ri": "1.2.5",
+    "@types/markdown-it": "14.1.2",
+    "gray-matter": "4.0.3",
+    "katex": "0.16.22",
     "markdown-it-container": "^4.0.0",
-    "markdown-it-katex": "^2.0.3",
-    "typescript": "^5.5.4",
+    "parse5": "7.3.0",
+    "playwright-core": "1.64.1",
+    "typescript": "5.5.4",
     "valaxy": "0.19.5",
-    "valaxy-addon-components": "^0.0.2"
+    "valaxy-addon-components": "^0.0.2",
+    "vue-tsc": "2.2.10",
+    "xml-js": "1.6.11"
   }
 }

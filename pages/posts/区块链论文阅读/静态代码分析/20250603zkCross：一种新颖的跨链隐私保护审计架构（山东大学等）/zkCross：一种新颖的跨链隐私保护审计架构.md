@@ -319,7 +319,7 @@ $$
 
 **图 8：** 用于跨链审计协议 Ψ 的电路逻辑图。参数的具体取值基于图 7 中所示的从 Block I-2 到 Block I-3 的状态转换过程派生。私有输入以灰色背景表示。
 
-**Ψ.Commit。** 在此步骤中，提交者 $C_T$ 需要准备信息以设置算法 $\Pi.\mathrm{Prove}$ 的特定私有输入和公共输入。我们继续以图 7 中所示的 Block I-3 为例。具体而言，$C_T$ 收集一组交易 $(t_{x1} – t_{xn})$，并将账户状态信息 $\bigl(\mathrm{State}^{\mathrm{old}},\,\mathrm{State}^{\mathrm{new}}\bigr)$ 与交易内容（例如转账金额 $v$、公钥 $pk$ 以及签名 $\sigma$）作为私有输入 $\widetilde{w}$；同时，将初始根（$\mathrm{root}_2$）和最终状态根（$\mathrm{root}_3$）作为公共输入 $\bar{x}$。需要注意的是，黑名单可以直接作为常量写入电路，从而减少电路的输入数量。随后，$C_T$ 根据上述数据 $(\bar{x};\,\widetilde{w})$ 以及由 $\Psi.\mathrm{Initialize}$ 生成的证明密钥 $pk$ 调用算法 $\Pi.\mathrm{Prove}$，以生成对应状态转换的证明 $\pi_{\Psi}^3$。最后，$C_T$ 注册为审计链上的轻节点，并将公共输入 $\bar{x}$ 与证明 $\pi_{\Psi}^3$ 一并封装到新的交易 $\mathrm{Tx}_{\mathrm{Commit}}$ 中，提交至审计链。
+**Ψ.Commit。** 在此步骤中，提交者 $C_T$ 需要准备信息以设置算法 $\Pi.\mathrm{Prove}$ 的特定私有输入和公共输入。我们继续以图 7 中所示的 Block I-3 为例。具体而言，$C_T$ 收集一组交易 $(t_{x1} \text{--} t_{xn})$，并将账户状态信息 $\bigl(\mathrm{State}^{\mathrm{old}},\,\mathrm{State}^{\mathrm{new}}\bigr)$ 与交易内容（例如转账金额 $v$、公钥 $pk$ 以及签名 $\sigma$）作为私有输入 $\widetilde{w}$；同时，将初始根（$\mathrm{root}_2$）和最终状态根（$\mathrm{root}_3$）作为公共输入 $\bar{x}$。需要注意的是，黑名单可以直接作为常量写入电路，从而减少电路的输入数量。随后，$C_T$ 根据上述数据 $(\bar{x};\,\widetilde{w})$ 以及由 $\Psi.\mathrm{Initialize}$ 生成的证明密钥 $pk$ 调用算法 $\Pi.\mathrm{Prove}$，以生成对应状态转换的证明 $\pi_{\Psi}^3$。最后，$C_T$ 注册为审计链上的轻节点，并将公共输入 $\bar{x}$ 与证明 $\pi_{\Psi}^3$ 一并封装到新的交易 $\mathrm{Tx}_{\mathrm{Commit}}$ 中，提交至审计链。
 
 $$
 \mathrm{Tx}_{\mathrm{Commit}} \overset{\mathrm{def}}{=} (\mathrm{From}:C_T;\ \mathrm{To}:\xi;\ \bar{x},\,\pi)\,.
