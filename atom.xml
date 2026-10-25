@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://liuzhujunya.top/</id>
+    <title>流竹筠雅の家</title>
+    <updated>2026-10-25T08:00:58.455Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <author>
+        <name>流竹筠雅</name>
+        <email>i@valaxy.site</email>
+        <uri>https://valaxy.site</uri>
+    </author>
+    <link rel="alternate" href="https://liuzhujunya.top/"/>
+    <link rel="self" href="https://liuzhujunya.top/atom.xml"/>
+    <subtitle>希望能成为一个有趣的人</subtitle>
+    <logo>https://liuzhujunya.top/avatar.jpg</logo>
+    <icon>https://liuzhujunya.top/favicon.svg</icon>
+    <rights>CC BY-NC-SA 4.0 2026 © 流竹筠雅</rights>
+    <entry>
+        <title type="html"><![CDATA[12 完全性与近似完全性]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240810 12 完全性与近似完全性/20240810 12 完全性与近似完全性</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240810 12 完全性与近似完全性/20240810 12 完全性与近似完全性"/>
+        <updated>2024-08-10T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/12-soundiness/ 12 完全性与近似完全性 12.1 完全性和近似完全性的概念 12.1.1 完全性的现实困境 其实完全性（Soundness）我们在定义1.2中已经定义过了，简单来说就是需要过近似（Over-Approximation），具有完全性的静态分析应当能够捕捉到所有的程序行为，或者说该分析应当模拟出程序所有可能的执行状态，给出最…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240810%2012%20%E5%AE%8C%E5%85%A8%E6%80%A7%E4%B8%8E%E8%BF%91%E4%BC%BC%E5%AE%8C%E5%85%A8%E6%80%A7/20240810%2012%20%E5%AE%8C%E5%85%A8%E6%80%A7%E4%B8%8E%E8%BF%91%E4%BC%BC%E5%AE%8C%E5%85%A8%E6%80%A7">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-08-10T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[11 CFL 可达与 IFDS]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240809 11 CFL 可达与 IFDS/20240809 11 CFL 可达与 IFDS</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240809 11 CFL 可达与 IFDS/20240809 11 CFL 可达与 IFDS"/>
+        <updated>2024-08-09T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/11-ifds/ 11 CFL 可达与 IFDS 11.1 可行路径与可实现路径 11.1.1 可行路径 到现在为止，为了演示方便，我们讲过的例子都是比较简单的。但在实际应用当中，一个程序可以是很复杂的，比如说下图是JDK中的一个方法的真实的控制流图： 这个控制流图肉眼可见的胖达，但是这张图里面的所有的路径，在程序运行的时候都会被执行吗？ 答案是否定的…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240809%2011%20CFL%20%E5%8F%AF%E8%BE%BE%E4%B8%8E%20IFDS/20240809%2011%20CFL%20%E5%8F%AF%E8%BE%BE%E4%B8%8E%20IFDS">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-08-09T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[10 基于 Datalog 的程序分析]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240807 10 基于 Datalog 的程序分析/20240807 10 基于 Datalog 的程序分析</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240807 10 基于 Datalog 的程序分析/20240807 10 基于 Datalog 的程序分析"/>
+        <updated>2024-08-07T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/10-datalog/ 10 基于 Datalog 的程序分析 10.1 命令式与申述式 称描述怎么做的编程语言是 命令式（Imperative） 的，其内容是一个目标的 实现（Implementation） ；描述做什么的语言是 申述式（Declarative） 的，其内容是一个目标的 规约（Specification） 。 比如说，如果我要从一群人…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240807%2010%20%E5%9F%BA%E4%BA%8E%20Datalog%20%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90/20240807%2010%20%E5%9F%BA%E4%BA%8E%20Datalog%20%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-08-07T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[9 静态分析与安全]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240806 9 静态分析与安全/20240806 9 静态分析与安全</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240806 9 静态分析与安全/20240806 9 静态分析与安全"/>
+        <updated>2024-08-06T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/09-security/ 9 静态分析与安全 9.1 信息流安全 9.1.1 关于安全 称一个系统是 安全的（secure） ，如果它能够在存在 对手（adversaries） 的情况下达成原本的目标。 比如说，在现实生活中，我们可以称自己是安全的，如果我们能够在存在小偷和罪犯的情况下保持自己的生命和财产安全。在数字世界中，如果某个系统能够在骇客以及数…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240806%209%20%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%89%E5%85%A8/20240806%209%20%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%89%E5%85%A8">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-08-06T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[8 指针分析-上下文敏感]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240805 8 指针分析-上下文敏感/20240805 8 指针分析-上下文敏感</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240805 8 指针分析-上下文敏感/20240805 8 指针分析-上下文敏感"/>
+        <updated>2024-08-05T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/08-pta-cs/ 8 指针分析-上下文敏感 8.1 引入 8.1.1 引例 首先，我们通过一个例子来看一下上下文不敏感的指针分析存在的问题。考虑如下的类结构： 假设我们要对下面这段程序进行常量传播的分析： 变量 $i$ 在常量传播分析中的结果是？ 如果我们进行上下文不敏感的指针分析，最终我们得到的PFG如下： 从而，分析 x.get() 时会对两个…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240805%208%20%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%95%8F%E6%84%9F/20240805%208%20%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%95%8F%E6%84%9F">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-08-05T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[7 指针分析-基础]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240804 7 指针分析-基础/20240804 7 指针分析-基础</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240804 7 指针分析-基础/20240804 7 指针分析-基础"/>
+        <updated>2024-08-04T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/07-pta-fd/ 7 指针分析-基础 7.1 指针分析的规则 在上一讲的最后，我们提到了Java中的 5 类指针影响型语句（见6.4.2）。在这一讲的前 3 大部分中，我们会重点聚焦于创建、赋值、存储、载入这四种，也就是说，我们会先从过程内分析开始做起；最后第 4 部分里面，我们会引入调用语句，学习全程序的指针分析。 7.1.1 定义和记号 为了后…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240804%207%20%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90-%E5%9F%BA%E7%A1%80/20240804%207%20%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90-%E5%9F%BA%E7%A1%80">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-08-04T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[6 指针分析-引入]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240803 6 指针分析-引入/20240803 6 指针分析-引入</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240803 6 指针分析-引入/20240803 6 指针分析-引入"/>
+        <updated>2024-08-03T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/06-pta-intro/ 6 指针分析-引入 这一章主要是指针分析的一些概念和要素，具体的算法和理论见后两讲的内容。 6.1 指针分析的动机 我们用一个简单的常量传播的例子来说明一下为什么要进行指针分析。考虑如下的类结构： 当我们分析下面的方法时： 如果我们用CHA来构建调用图，由于CHA只考虑声明类型的层级结构， n.get() 会指向3个目标方法…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240803%206%20%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90-%E5%BC%95%E5%85%A5/20240803%206%20%E6%8C%87%E9%92%88%E5%88%86%E6%9E%90-%E5%BC%95%E5%85%A5">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-08-03T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[5 过程间分析]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240802 5 过程间分析/20240802 5 过程间分析</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240802 5 过程间分析/20240802 5 过程间分析"/>
+        <updated>2024-08-02T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/05-inter/ 5 过程间分析 在这一章当中只考虑传值调用（Call-By-Value），传址调用（Call-By-Reference）暂不考虑，会在指针分析中详细讲解。 5.1 过程间分析的动机 我们称一个静态分析是 过程内分析（Intraprocedural Analysis） ，如果它因为 安全近似（Safe-approximation） 的…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240802%205%20%E8%BF%87%E7%A8%8B%E9%97%B4%E5%88%86%E6%9E%90/20240802%205%20%E8%BF%87%E7%A8%8B%E9%97%B4%E5%88%86%E6%9E%90">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-08-02T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[4 数据流分析-基础]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240801 4 数据流分析-基础/20240801 4 数据流分析-基础</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240801 4 数据流分析-基础/20240801 4 数据流分析-基础"/>
+        <updated>2024-08-01T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/04-dfa-fd/ 4 数据流分析-基础 4.1 重新审视迭代算法 其他类型的数据流分析也有类似的迭代算法，我们后续以算法4.1为例进行理论的分析和讲解。迭代算法是一个具有通用性的数据流分析算法，能够提供一种数据流分析的解决方案（解决方案的含义见结论3.2）。 下面我们从另一个视角来审视一下迭代算法。 给定一个具有k个结点的程序流程图CFG，对于CF…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240801%204%20%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90-%E5%9F%BA%E7%A1%80/20240801%204%20%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90-%E5%9F%BA%E7%A1%80">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-08-01T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[3 数据流分析-应用]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240731 3 数据流分析-应用/20240731 3 数据流分析-应用</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240731 3 数据流分析-应用/20240731 3 数据流分析-应用"/>
+        <updated>2024-07-31T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/03-dfa-ap/ 3 数据流分析-应用 3.1 数据流分析初步 3.1.1 基本概念 数据流分析（Data Flow Analysis, DFA） 是指分析“数据在程序中是怎样流动的”。具体来讲，其 分析的对象是基于抽象（Abstraction，见定义1.7）的 应用特定型数据（Application-Specific Data） ； 分析的行为是…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240731%203%20%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90-%E5%BA%94%E7%94%A8/20240731%203%20%E6%95%B0%E6%8D%AE%E6%B5%81%E5%88%86%E6%9E%90-%E5%BA%94%E7%94%A8">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-07-31T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[2 程序的中间表示]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240730 2 程序的中间表示/20240730 2 程序的中间表示</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240730 2 程序的中间表示/20240730 2 程序的中间表示"/>
+        <updated>2024-07-30T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/02-ir/ 2 程序的中间表示 2.1 编译器和静态分析器 2.1.1 编程语言的各个层次 我们编写的源文件本质上是一个ASCII码字符串文件，它最终会被转化为二进制比特流以供CPU处理。一般的，需要编译的静态类型语言，其源代码向机器码转化的过程大致如下： 扫描器（Scanner） 扫描源代码，进行词法分析（Lexical Analysis）,词法分…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240730%202%20%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA/20240730%202%20%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%AD%E9%97%B4%E8%A1%A8%E7%A4%BA">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-07-30T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[交大胖本地latex安装教学]]></title>
+        <id>https://liuzhujunya.top/posts/科研杂项技术/20250618 交大胖本地latex安装教学</id>
+        <link href="https://liuzhujunya.top/posts/科研杂项技术/20250618 交大胖本地latex安装教学"/>
+        <updated>2025-06-18T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>交大胖本地latex安装教学 本来是直接用 overleaf 就不需要本地 latex 了，但是由于 overleaf 会编译超时的问题，所以还是搭建一个本地的会比较友好，教程来源博主交大胖，https://www.bilibili.com/video/BV1p44y1P7P4?spm_id_from=333.788.videopod.sections&amp;vd_source=234a85edef825c67e44c786eaf168908…</p>
+<p><a href="https://liuzhujunya.top/posts/%E7%A7%91%E7%A0%94%E6%9D%82%E9%A1%B9%E6%8A%80%E6%9C%AF/20250618%20%E4%BA%A4%E5%A4%A7%E8%83%96%E6%9C%AC%E5%9C%B0latex%E5%AE%89%E8%A3%85%E6%95%99%E5%AD%A6">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2025-06-18T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[1 静态分析概述]]></title>
+        <id>https://liuzhujunya.top/posts/静态代码分析/20240729 1 静态分析概述/20240729 1 静态分析概述</id>
+        <link href="https://liuzhujunya.top/posts/静态代码分析/20240729 1 静态分析概述/20240729 1 静态分析概述"/>
+        <updated>2024-07-29T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://static-analysis.cuijiacai.com/01-intro/ 1 静态分析概述 1.1 静态分析的基本概念 静态分析（Static Analysis） 是指在实际运行程序 $P$ 之前，通过分析静态程序 $P$ 本身来推测程序的行为，并判断程序是否满足某些特定的 性质（Property） $Q$ 。 我们会关心的程序性质可能有： 程序P是否会产生私有信息泄漏（Private Informati…</p>
+<p><a href="https://liuzhujunya.top/posts/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240729%201%20%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E6%A6%82%E8%BF%B0/20240729%201%20%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E6%A6%82%E8%BF%B0">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-07-29T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[zkCross：一种新颖的跨链隐私保护审计架构]]></title>
+        <id>https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250603zkCross：一种新颖的跨链隐私保护审计架构（山东大学等）/zkCross：一种新颖的跨链隐私保护审计架构</id>
+        <link href="https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250603zkCross：一种新颖的跨链隐私保护审计架构（山东大学等）/zkCross：一种新颖的跨链隐私保护审计架构"/>
+        <updated>2025-05-24T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>zkCross：一种新颖的跨链隐私保护审计架构 摘要 区块链研究的重点领域之一是如何在不牺牲系统安全性和可信度的情况下，实现隐私保护审计。然而，同时实现审计和隐私保护这两个看似矛盾的目标具有挑战性，因为审计系统需要透明性和问责制，这可能会引入隐私和安全漏洞。在跨链场景中，来自多个链的信息孤岛进一步使问题复杂化。在本文中，我们确定了跨链隐私保护审计中的三个重要挑战，分别是跨链链接可暴露性（Cross-chain Linkability E…</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%8C%BA%E5%9D%97%E9%93%BE%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20250603zkCross%EF%BC%9A%E4%B8%80%E7%A7%8D%E6%96%B0%E9%A2%96%E7%9A%84%E8%B7%A8%E9%93%BE%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E5%AE%A1%E8%AE%A1%E6%9E%B6%E6%9E%84%EF%BC%88%E5%B1%B1%E4%B8%9C%E5%A4%A7%E5%AD%A6%E7%AD%89%EF%BC%89/zkCross%EF%BC%9A%E4%B8%80%E7%A7%8D%E6%96%B0%E9%A2%96%E7%9A%84%E8%B7%A8%E9%93%BE%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E5%AE%A1%E8%AE%A1%E6%9E%B6%E6%9E%84">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2025-05-24T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[使用我的函数就应遵循我的检查：理解并检测智能合约中的不安全 OpenZeppelin 代码]]></title>
+        <id>https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250421使用我的函数就应遵循我的检查（华东师范大学等）/使用我的函数就应遵循我的检查：理解并检测智能合约中的不安全 OpenZeppelin 代码</id>
+        <link href="https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250421使用我的函数就应遵循我的检查（华东师范大学等）/使用我的函数就应遵循我的检查：理解并检测智能合约中的不安全 OpenZeppelin 代码"/>
+        <updated>2025-04-21T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>使用我的函数就应遵循我的检查：理解并检测智能合约中的不安全 OpenZeppelin 代码 摘要 OpenZeppelin 是一种在构建智能合约时广受欢迎的框架。它提供了诸如 SafeMath 之类的常用库、以太坊标准（如 ERC20）实现，以及用于访问控制和可升级性的可复用组件。然而，与传统软件库通常以静态链接或动态加载方式被引入不同，OpenZeppelin 在 Solidity 合约中是以源代码形式使用的。因此，开发者往往会对各自…</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%8C%BA%E5%9D%97%E9%93%BE%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20250421%E4%BD%BF%E7%94%A8%E6%88%91%E7%9A%84%E5%87%BD%E6%95%B0%E5%B0%B1%E5%BA%94%E9%81%B5%E5%BE%AA%E6%88%91%E7%9A%84%E6%A3%80%E6%9F%A5%EF%BC%88%E5%8D%8E%E4%B8%9C%E5%B8%88%E8%8C%83%E5%A4%A7%E5%AD%A6%E7%AD%89%EF%BC%89/%E4%BD%BF%E7%94%A8%E6%88%91%E7%9A%84%E5%87%BD%E6%95%B0%E5%B0%B1%E5%BA%94%E9%81%B5%E5%BE%AA%E6%88%91%E7%9A%84%E6%A3%80%E6%9F%A5%EF%BC%9A%E7%90%86%E8%A7%A3%E5%B9%B6%E6%A3%80%E6%B5%8B%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%AE%89%E5%85%A8%C2%A0OpenZeppelin%C2%A0%E4%BB%A3%E7%A0%81">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2025-04-21T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[你所有的代币都属于我们：揭秘Solidity智能合约中的地址验证漏洞]]></title>
+        <id>https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250324你所有的代币都属于我们（北大等）/你所有的代币都属于我们：揭秘Solidity智能合约中的地址验证漏洞</id>
+        <link href="https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20250324你所有的代币都属于我们（北大等）/你所有的代币都属于我们：揭秘Solidity智能合约中的地址验证漏洞"/>
+        <updated>2025-03-30T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>所有的代币都是我们的：揭秘Solidity智能合约中的地址验证漏洞 摘要 在以太坊中，验证传入地址的有效性是一种常见实践，这对于确保智能合约的安全执行至关重要。然而，地址验证过程中的漏洞可能会导致严重的安全问题，我们的社区也已报道了相关的实际案例。尽管如此，这类漏洞的系统研究仍未受到足够重视。为填补这一空白，本文旨在描述并检测这种新兴的漏洞。我们设计并实现了AVVERIFIER，这是一种基于静态EVM操作码模拟的轻量级污点分析工具。其三…</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%8C%BA%E5%9D%97%E9%93%BE%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20250324%E4%BD%A0%E6%89%80%E6%9C%89%E7%9A%84%E4%BB%A3%E5%B8%81%E9%83%BD%E5%B1%9E%E4%BA%8E%E6%88%91%E4%BB%AC%EF%BC%88%E5%8C%97%E5%A4%A7%E7%AD%89%EF%BC%89/%E4%BD%A0%E6%89%80%E6%9C%89%E7%9A%84%E4%BB%A3%E5%B8%81%E9%83%BD%E5%B1%9E%E4%BA%8E%E6%88%91%E4%BB%AC%EF%BC%9A%E6%8F%AD%E7%A7%98Solidity%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E4%B8%AD%E7%9A%84%E5%9C%B0%E5%9D%80%E9%AA%8C%E8%AF%81%E6%BC%8F%E6%B4%9E">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2025-03-30T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DefectChecker：基于EVM字节码分析的智能合约缺陷检测自动化]]></title>
+        <id>https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20241030DefectChecker（中大等）/DefectChecker：基于EVM字节码分析的智能合约缺陷检测自动化</id>
+        <link href="https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20241030DefectChecker（中大等）/DefectChecker：基于EVM字节码分析的智能合约缺陷检测自动化"/>
+        <updated>2024-10-30T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>DefectChecker：基于 EVM 字节码分析的智能合约缺陷检测自动化 摘要 智能合约是在区块链上运行的图灵完备程序。它们是不可变的，一旦部署后即便发现错误也无法修改。因此，在将智能合约部署到区块链之前，确保其无错误且设计完善极为重要。合约缺陷是指智能合约中的错误、缺陷或漏洞，这些问题可能导致合约产生错误或意外结果，或者因意外行为而无法正常工作。检测和消除合约缺陷可以避免潜在的攻击，增强程序的鲁棒性。我们之前的工作定义了 20 种…</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%8C%BA%E5%9D%97%E9%93%BE%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20241030DefectChecker%EF%BC%88%E4%B8%AD%E5%A4%A7%E7%AD%89%EF%BC%89/DefectChecker%EF%BC%9A%E5%9F%BA%E4%BA%8EEVM%E5%AD%97%E8%8A%82%E7%A0%81%E5%88%86%E6%9E%90%E7%9A%84%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E7%BC%BA%E9%99%B7%E6%A3%80%E6%B5%8B%E8%87%AA%E5%8A%A8%E5%8C%96">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-10-30T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SmartAxe：基于细粒度静态分析检测桥接智能合约中的跨链漏洞]]></title>
+        <id>https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20241008SmartAxe（中大）/SmartAxe 基于细粒度静态分析检测桥接智能合约中的跨链漏洞</id>
+        <link href="https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20241008SmartAxe（中大）/SmartAxe 基于细粒度静态分析检测桥接智能合约中的跨链漏洞"/>
+        <updated>2024-10-07T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>SmartAxe：基于细粒度静态分析检测桥接智能合约中的跨链漏洞 随着区块链的日益普及，不同的区块链平台在生态系统中共存（如以太坊、BNB、EOSIO等），这促使了对跨链通信的高需求。跨链桥接是跨不同区块链平台进行资产交换的一种特定去中心化应用。由于最近发生了多起因桥接智能合约漏洞引发的安全事故，造成了严重的财务损失，确保跨链桥接智能合约的安全成为了当务之急。我们称这些漏洞为跨链漏洞（CCVs）。然而，自动识别智能合约中的 CCVs 面…</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%8C%BA%E5%9D%97%E9%93%BE%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20241008SmartAxe%EF%BC%88%E4%B8%AD%E5%A4%A7%EF%BC%89/SmartAxe%20%E5%9F%BA%E4%BA%8E%E7%BB%86%E7%B2%92%E5%BA%A6%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90%E6%A3%80%E6%B5%8B%E6%A1%A5%E6%8E%A5%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E4%B8%AD%E7%9A%84%E8%B7%A8%E9%93%BE%E6%BC%8F%E6%B4%9E">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-10-07T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SmartState：通过细粒度状态依赖分析检测智能合约中的状态回退漏洞]]></title>
+        <id>https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20240904SmartState（中大）/20240904 SmartState：通过细粒度状态依赖分析检测智能合约中的状态回退漏洞</id>
+        <link href="https://liuzhujunya.top/posts/区块链论文阅读/静态代码分析/20240904SmartState（中大）/20240904 SmartState：通过细粒度状态依赖分析检测智能合约中的状态回退漏洞"/>
+        <updated>2024-09-04T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>SmartState：通过细粒度状态依赖分析检测智能合约中的状态回退漏洞 摘要 用 Solidity 编写的智能合约广泛应用于不同的区块链平台，如以太坊、波场（TRON）和 BNB 链。Solidity 智能合约中的一个独特设计是其用于错误处理和访问控制的状态还原机制。不幸的是，最近的一些安全事件表明，攻击者也利用了这种机制来操控智能合约的关键状态，从而导致诸如非法获利和拒绝服务（DoS）等安全后果。在本文中，我们将这种漏洞称为状态还原…</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%8C%BA%E5%9D%97%E9%93%BE%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/20240904SmartState%EF%BC%88%E4%B8%AD%E5%A4%A7%EF%BC%89/20240904%20SmartState%EF%BC%9A%E9%80%9A%E8%BF%87%E7%BB%86%E7%B2%92%E5%BA%A6%E7%8A%B6%E6%80%81%E4%BE%9D%E8%B5%96%E5%88%86%E6%9E%90%E6%A3%80%E6%B5%8B%E6%99%BA%E8%83%BD%E5%90%88%E7%BA%A6%E4%B8%AD%E7%9A%84%E7%8A%B6%E6%80%81%E5%9B%9E%E9%80%80%E6%BC%8F%E6%B4%9E">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-09-04T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SoK：理解 zk-SNARKs：研究与实践之间的差距]]></title>
+        <id>https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20251005 SoK Understanding zk-SNARKs/SoK 理解 zk-SNARKs 研究与实践之间的差距</id>
+        <link href="https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20251005 SoK Understanding zk-SNARKs/SoK 理解 zk-SNARKs 研究与实践之间的差距"/>
+        <updated>2025-10-05T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>作者 Junkai Liang¹,，Daqi Hu¹,，Pengfei Wu²,*，Yunbo Yang³，Qingni Shen¹,†，Zhonghai Wu¹,† ¹ 北京大学，² 新加坡管理大学，³ 华东师范大学 摘要 零知识、简洁、非交互式的知识论证（zk-SNARK）作为一种强有力的技术，用于证明计算的正确性，并已引起研究人员的高度关注。学术界和工业界提出了大量具体方案与实现。不幸的是，zk-SNARK 的内在复杂性在研究人员…</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%8C%BA%E5%9D%97%E9%93%BE%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/Decentralized%20Identity/20251005%20SoK%20Understanding%20zk-SNARKs/SoK%20%E7%90%86%E8%A7%A3%20zk-SNARKs%20%E7%A0%94%E7%A9%B6%E4%B8%8E%E5%AE%9E%E8%B7%B5%E4%B9%8B%E9%97%B4%E7%9A%84%E5%B7%AE%E8%B7%9D">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2025-10-05T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Coconut：具有分布式账本应用的门限签发选择性披露凭证]]></title>
+        <id>https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20250803 coconut/Coconut：阈值发行选择性披露凭证及其在分布式账本中的应用</id>
+        <link href="https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20250803 coconut/Coconut：阈值发行选择性披露凭证及其在分布式账本中的应用"/>
+        <updated>2025-08-08T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>作者 Alberto Sonnino\*†, Mustafa Al-Bassam\*†, Shehar Bano\*†, Sarah Meiklejohn\* 和 George Danezis\*† \* 英国伦敦大学学院 † chainspace.io 摘要 Coconut 是一种新型的选择性披露凭证方案，支持分布式门限签发、公共与私有属性、重新随机化，以及多种不可链接的选择性属性披露。Coconut 与区块链集成，以确保即使在部分凭…</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%8C%BA%E5%9D%97%E9%93%BE%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/Decentralized%20Identity/20250803%20coconut/Coconut%EF%BC%9A%E9%98%88%E5%80%BC%E5%8F%91%E8%A1%8C%E9%80%89%E6%8B%A9%E6%80%A7%E6%8A%AB%E9%9C%B2%E5%87%AD%E8%AF%81%E5%8F%8A%E5%85%B6%E5%9C%A8%E5%88%86%E5%B8%83%E5%BC%8F%E8%B4%A6%E6%9C%AC%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2025-08-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[SoK：数据主权]]></title>
+        <id>https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20250716 综述/SoK：数据主权</id>
+        <link href="https://liuzhujunya.top/posts/区块链论文阅读/Decentralized Identity/20250716 综述/SoK：数据主权"/>
+        <updated>2025-06-20T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>摘要 当今社会似乎正处于意识到在现代 Web 应用中对敏感数据进行掌控之必要性的边缘。近年来，许多系统宣称将控制权交还个体，承诺实现数据主权这一至高目标。然而，尽管该领域备受关注，学术界与产业界的研究与实践仍然碎片化，缺乏整体性的系统视角。本文首次从分散的知识体系中横向梳理数据主权，厘清其研究版图，并将其划分为三个主要方向：(i) 去中心化身份，(ii) 去中心化访问控制，以及 (iii) 符合策略的去中心化计算。我们发现现有文献缺乏一…</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%8C%BA%E5%9D%97%E9%93%BE%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/Decentralized%20Identity/20250716%20%E7%BB%BC%E8%BF%B0/SoK%EF%BC%9A%E6%95%B0%E6%8D%AE%E4%B8%BB%E6%9D%83">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2025-06-20T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MEV进阶学习]]></title>
+        <id>https://liuzhujunya.top/posts/MEV/20241101 MEV进阶学习/20241101 MEV进阶学习</id>
+        <link href="https://liuzhujunya.top/posts/MEV/20241101 MEV进阶学习/20241101 MEV进阶学习"/>
+        <updated>2024-11-01T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://github.com/autistic-symposium/mev-toolkit learn (toxic and non-toxic) extraction strategies（有毒和无毒的提取策略”） Toxic（有毒）提取策略：这些策略对普通用户或整个市场生态系统可能有负面影响。例如，“三明治攻击”（sandwich attack）和“抢跑”（frontrunning）等策略会导致其他用户的交易成本增…</p>
+<p><a href="https://liuzhujunya.top/posts/MEV/20241101%20MEV%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0/20241101%20MEV%E8%BF%9B%E9%98%B6%E5%AD%A6%E4%B9%A0">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-11-01T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[MEV和套利]]></title>
+        <id>https://liuzhujunya.top/posts/MEV/20241020 初识MEV/20241020 初识MEV</id>
+        <link href="https://liuzhujunya.top/posts/MEV/20241020 初识MEV/20241020 初识MEV"/>
+        <updated>2024-10-20T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>原文链接：https://biquanlibai.notion.site/MEV-0069872a7241476f82bf5f7a4e1068ea 什么是 MEV MEV 全称 Miner/MaximumExtractable Value Block 创建者（PoW 里的 Miner，PoS 里的 Validator）通过在 Block 中插入、排除、重排交易来获取收益 为什么会有 MEV：Decentralized Sequencer…</p>
+<p><a href="https://liuzhujunya.top/posts/MEV/20241020%20%E5%88%9D%E8%AF%86MEV/20241020%20%E5%88%9D%E8%AF%86MEV">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-10-20T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[重新建站说明]]></title>
+        <id>https://liuzhujunya.top/posts/20240728 建站说明</id>
+        <link href="https://liuzhujunya.top/posts/20240728 建站说明"/>
+        <updated>2024-07-28T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>重建博客声明 之前的博客使用的是 hexo + GitHub 的模式，但是可惜 hexo 框架无法很好解析 latex 的数学公式，于是在听从博客主题 Yun 的发布者的劝告下，选择使用他们开发的 valaxy 框架重建博客。</p>
+<p><a href="https://liuzhujunya.top/posts/20240728%20%E5%BB%BA%E7%AB%99%E8%AF%B4%E6%98%8E">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2024-07-28T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[千锋 Web 安全学习笔记（一）：预热阶段与学习路线]]></title>
+        <id>https://liuzhujunya.top/posts/web安全/千锋网络安全/00-预热阶段学习笔记</id>
+        <link href="https://liuzhujunya.top/posts/web安全/千锋网络安全/00-预热阶段学习笔记"/>
+        <updated>2026-10-25T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>结合四段课程视频与课件，梳理网络安全行业、攻防演练、SRC 规则和项目驱动的学习路线，附实际演示要点与视频时间索引。</p>
+<p><a href="https://liuzhujunya.top/posts/web%E5%AE%89%E5%85%A8/%E5%8D%83%E9%94%8B%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/00-%E9%A2%84%E7%83%AD%E9%98%B6%E6%AE%B5%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2026-10-24T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[千锋 Web 安全学习笔记（二）：Windows 内网服务与安全管理]]></title>
+        <id>https://liuzhujunya.top/posts/web安全/千锋网络安全/01-Windows内网服务阶段学习笔记</id>
+        <link href="https://liuzhujunya.top/posts/web安全/千锋网络安全/01-Windows内网服务阶段学习笔记"/>
+        <updated>2026-10-25T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>结合 33 段视频与课件整理 Windows 内网服务、身份权限、安全检查和应急，补充真实演示、失败现象、课内作业与逐视频时间索引。</p>
+<p><a href="https://liuzhujunya.top/posts/web%E5%AE%89%E5%85%A8/%E5%8D%83%E9%94%8B%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/01-Windows%E5%86%85%E7%BD%91%E6%9C%8D%E5%8A%A1%E9%98%B6%E6%AE%B5%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2026-10-24T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[区块链后量子密码迁移方向博士学习路线]]></title>
+        <id>https://liuzhujunya.top/posts/后量子密码学基础/20260901 区块链后量子密码迁移博士学习路线</id>
+        <link href="https://liuzhujunya.top/posts/后量子密码学基础/20260901 区块链后量子密码迁移博士学习路线"/>
+        <updated>2026-09-03T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>后量子密码学先行、数学与现代密码学按需回补，并行补齐 Bitcoin、Ethereum 与共识机制，逐步形成可投稿的迁移安全研究问题。</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/20260901%20%E5%8C%BA%E5%9D%97%E9%93%BE%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E8%BF%81%E7%A7%BB%E5%8D%9A%E5%A3%AB%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2026-09-01T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[区块链后量子密码迁移学习工作区]]></title>
+        <id>https://liuzhujunya.top/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA</id>
+        <link href="https://liuzhujunya.top/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA"/>
+        <updated>2026-09-03T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>区块链后量子密码迁移学习路线的渐进式目录、当前进度与阶段验收入口。</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2026-09-01T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[第 01 周：量子威胁与签名接口]]></title>
+        <id>https://liuzhujunya.top/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA/01_%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%85%88%E8%A1%8C/%E7%AC%AC01%E5%91%A8_%E9%87%8F%E5%AD%90%E5%A8%81%E8%83%81%E4%B8%8E%E7%AD%BE%E5%90%8D%E6%8E%A5%E5%8F%A3</id>
+        <link href="https://liuzhujunya.top/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA/01_%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%85%88%E8%A1%8C/%E7%AC%AC01%E5%91%A8_%E9%87%8F%E5%AD%90%E5%A8%81%E8%83%81%E4%B8%8E%E7%AD%BE%E5%90%8D%E6%8E%A5%E5%8F%A3"/>
+        <updated>2026-09-03T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>从 Shor 与 Grover 算法出发，区分 Bitcoin 交易授权、Taproot、Ethereum EOA、验证者 BLS 与 KZG 所面临的量子威胁。</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA/01_%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%85%88%E8%A1%8C/%E7%AC%AC01%E5%91%A8_%E9%87%8F%E5%AD%90%E5%A8%81%E8%83%81%E4%B8%8E%E7%AD%BE%E5%90%8D%E6%8E%A5%E5%8F%A3">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2026-09-01T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[数学补给 01：Shor 算法所需的整数分解与离散对数]]></title>
+        <id>https://liuzhujunya.top/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA/02_%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%E6%8C%89%E9%9C%80%E5%9B%9E%E8%A1%A5/Shor%E7%AE%97%E6%B3%95%E6%89%80%E9%9C%80%E7%9A%84%E6%95%B4%E6%95%B0%E5%88%86%E8%A7%A3%E4%B8%8E%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0</id>
+        <link href="https://liuzhujunya.top/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA/02_%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%E6%8C%89%E9%9C%80%E5%9B%9E%E8%A1%A5/Shor%E7%AE%97%E6%B3%95%E6%89%80%E9%9C%80%E7%9A%84%E6%95%B4%E6%95%B0%E5%88%86%E8%A7%A3%E4%B8%8E%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0"/>
+        <updated>2026-09-03T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p>从整除、最大公因数、模运算和群的最小知识出发，理解整数分解、循环群离散对数及其与 Shor 算法和区块链密钥的关系。</p>
+<p><a href="https://liuzhujunya.top/posts/%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81%E5%AD%A6%E5%9F%BA%E7%A1%80/%E5%AD%A6%E4%B9%A0%E5%B7%A5%E4%BD%9C%E5%8C%BA/02_%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%8E%B0%E4%BB%A3%E5%AF%86%E7%A0%81%E5%AD%A6%E6%8C%89%E9%9C%80%E5%9B%9E%E8%A1%A5/Shor%E7%AE%97%E6%B3%95%E6%89%80%E9%9C%80%E7%9A%84%E6%95%B4%E6%95%B0%E5%88%86%E8%A7%A3%E4%B8%8E%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0">阅读全文</a></p>]]></content>
+        <author>
+            <name>流竹筠雅</name>
+            <email>i@valaxy.site</email>
+            <uri>https://valaxy.site</uri>
+        </author>
+        <published>2026-09-03T00:00:00.000Z</published>
+    </entry>
+</feed>
