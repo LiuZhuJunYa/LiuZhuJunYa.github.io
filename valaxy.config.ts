@@ -68,6 +68,12 @@ export default {
   theme: 'yun',
 
   themeConfig: {
+    bg_image: {
+      enable: true,
+      url: '/images/pikachu-garden.jpg',
+      dark: '/images/pikachu-garden.jpg',
+      opacity: 0.55,
+    },
     banner: {
       enable: true,
       title: '流竹君的小站',

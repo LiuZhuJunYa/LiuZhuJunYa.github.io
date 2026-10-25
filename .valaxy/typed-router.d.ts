@@ -57,7 +57,8 @@ declare module 'vue-router/auto-routes' {
     '/posts/区块链论文阅读/Decentralized Identity/20251005 SoK Understanding zk-SNARKs/SoK 理解 zk-SNARKs 研究与实践之间的差距': RouteRecordInfo<'/posts/区块链论文阅读/Decentralized Identity/20251005 SoK Understanding zk-SNARKs/SoK 理解 zk-SNARKs 研究与实践之间的差距', '/posts/区块链论文阅读/Decentralized Identity/20251005 SoK Understanding zk-SNARKs/SoK 理解 zk-SNARKs 研究与实践之间的差距', Record<never, never>, Record<never, never>>,
     '/posts/MEV/20241020 初识MEV/20241020 初识MEV': RouteRecordInfo<'/posts/MEV/20241020 初识MEV/20241020 初识MEV', '/posts/MEV/20241020 初识MEV/20241020 初识MEV', Record<never, never>, Record<never, never>>,
     '/posts/MEV/20241101 MEV进阶学习/20241101 MEV进阶学习': RouteRecordInfo<'/posts/MEV/20241101 MEV进阶学习/20241101 MEV进阶学习', '/posts/MEV/20241101 MEV进阶学习/20241101 MEV进阶学习', Record<never, never>, Record<never, never>>,
-    '/posts/web安全/千锋网络安全/01Windows网络与服务器基础学习笔记': RouteRecordInfo<'/posts/web安全/千锋网络安全/01Windows网络与服务器基础学习笔记', '/posts/web安全/千锋网络安全/01Windows网络与服务器基础学习笔记', Record<never, never>, Record<never, never>>,
+    '/posts/web安全/千锋网络安全/00-预热阶段学习笔记': RouteRecordInfo<'/posts/web安全/千锋网络安全/00-预热阶段学习笔记', '/posts/web安全/千锋网络安全/00-预热阶段学习笔记', Record<never, never>, Record<never, never>>,
+    '/posts/web安全/千锋网络安全/01-Windows内网服务阶段学习笔记': RouteRecordInfo<'/posts/web安全/千锋网络安全/01-Windows内网服务阶段学习笔记', '/posts/web安全/千锋网络安全/01-Windows内网服务阶段学习笔记', Record<never, never>, Record<never, never>>,
     '/tags/': RouteRecordInfo<'/tags/', '/tags', Record<never, never>, Record<never, never>>,
   }
 }

@@ -1,3 +1,14 @@
+/* Keep the shared background softer in dark mode, with the subject visible on phones. */
+html.dark .yun-bg {
+  --yun-bg-img-opacity: 0.28;
+}
+
+@media (max-width: 767px) {
+  html .yun-bg {
+    background-position: 35% center;
+  }
+}
+
 :is(.definition, .theorem, .algorithm, .conclusion) {
   --blog-container-link: #005eb4;
   margin: 1rem 0;
